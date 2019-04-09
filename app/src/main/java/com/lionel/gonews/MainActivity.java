@@ -6,12 +6,14 @@ import android.util.Log;
 
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.NewsSource;
+import com.lionel.gonews.data.QueryNews;
 import com.lionel.gonews.data.remote.NewsRemoteSource;
 
 import java.util.List;
 
-import static com.lionel.gonews.Constants.COUNTRY_US;
-import static com.lionel.gonews.Constants.NEWS_TYPE_HEADLINES;
+import static com.lionel.gonews.Constants.GENERAL;
+import static com.lionel.gonews.Constants.PUBLISHEDAT;
+import static com.lionel.gonews.Constants.US;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void testGetNews() {
-        Log.d("<>", "start test getting news");
+        Log.d("<>", "test: starting get news");
         NewsRemoteSource newsRemoteSource = new NewsRemoteSource(this);
         NewsSource.LoadNewsCallback callback = new NewsSource.LoadNewsCallback() {
             @Override
-            public void onSuccess(List<News> newsList) {
-                Log.d("<>", "onSuccess");
+            public void onSuccess(int totalResults, List<News> newsList) {
+                Log.d("<>", "totalResults: " + totalResults + "\n");
                 for (int i = 0; i < newsList.size(); i++) {
                     News news = newsList.get(i);
                     Log.d("<>", news.source.id + "\t" + news.source.name
@@ -51,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        newsRemoteSource.getNews(NEWS_TYPE_HEADLINES, COUNTRY_US, null, callback);
+//       newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(US, GENERAL), callback);
+
+        newsRemoteSource.queryNews(new QueryNews.QueryEverythingNews("apple",
+                        "1",
+                        PUBLISHEDAT,
+                        "2019-04-08",
+                        "2019-04-09")
+                , callback);
     }
 }
