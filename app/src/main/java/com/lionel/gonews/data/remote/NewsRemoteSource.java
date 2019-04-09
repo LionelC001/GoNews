@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import static com.lionel.gonews.Constants.DEFAULT_PAGESIZE;
+import static com.lionel.gonews.Constants.ENG;
 import static com.lionel.gonews.Constants.EVERYTHING_ENDPOINT;
 import static com.lionel.gonews.Constants.HEADLINES_ENDPOINT;
 import static com.lionel.gonews.Constants.NEWS_API_KEY;
@@ -32,6 +33,7 @@ import static com.lionel.gonews.Constants.QUERY_CATEGORY;
 import static com.lionel.gonews.Constants.QUERY_COUNTRY;
 import static com.lionel.gonews.Constants.QUERY_DATEFROM;
 import static com.lionel.gonews.Constants.QUERY_DATETO;
+import static com.lionel.gonews.Constants.QUERY_LANGUAGE;
 import static com.lionel.gonews.Constants.QUERY_PAGE;
 import static com.lionel.gonews.Constants.QUERY_PAGESIZE;
 import static com.lionel.gonews.Constants.QUERY_SORTBY;
@@ -100,6 +102,7 @@ public class NewsRemoteSource implements NewsSource {
             url.append(QUERY_DATETO).append(queryEverything.dateTo).append("&");
         }
 
+        url.append(QUERY_LANGUAGE).append(ENG).append("&");
         url.append(QUERY_PAGESIZE).append(DEFAULT_PAGESIZE).append("&");
         url.append(NEWS_API_KEY);
 
