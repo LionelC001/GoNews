@@ -21,23 +21,23 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.lionel.gonews.Constants.DEFAULT_PAGESIZE;
-import static com.lionel.gonews.Constants.ENG;
-import static com.lionel.gonews.Constants.EVERYTHING_ENDPOINT;
-import static com.lionel.gonews.Constants.HEADLINES_ENDPOINT;
-import static com.lionel.gonews.Constants.NEWS_API_KEY;
-import static com.lionel.gonews.Constants.NEWS_TYPE_HEADLINES;
-import static com.lionel.gonews.Constants.NODE_ARTICLES;
-import static com.lionel.gonews.Constants.NODE_TOTAL_RESULTS;
-import static com.lionel.gonews.Constants.QUERY_CATEGORY;
-import static com.lionel.gonews.Constants.QUERY_COUNTRY;
-import static com.lionel.gonews.Constants.QUERY_DATEFROM;
-import static com.lionel.gonews.Constants.QUERY_DATETO;
-import static com.lionel.gonews.Constants.QUERY_LANGUAGE;
-import static com.lionel.gonews.Constants.QUERY_PAGE;
-import static com.lionel.gonews.Constants.QUERY_PAGESIZE;
-import static com.lionel.gonews.Constants.QUERY_SORTBY;
-import static com.lionel.gonews.Constants.QUERY_WORD;
+import static com.lionel.gonews.util.Constants.DEFAULT_PAGESIZE;
+import static com.lionel.gonews.util.Constants.ENG;
+import static com.lionel.gonews.util.Constants.EVERYTHING_ENDPOINT;
+import static com.lionel.gonews.util.Constants.HEADLINES_ENDPOINT;
+import static com.lionel.gonews.util.Constants.NEWS_API_KEY;
+import static com.lionel.gonews.util.Constants.NEWS_TYPE_HEADLINES;
+import static com.lionel.gonews.util.Constants.NODE_ARTICLES;
+import static com.lionel.gonews.util.Constants.NODE_TOTAL_RESULTS;
+import static com.lionel.gonews.util.Constants.QUERY_CATEGORY;
+import static com.lionel.gonews.util.Constants.QUERY_COUNTRY;
+import static com.lionel.gonews.util.Constants.QUERY_DATEFROM;
+import static com.lionel.gonews.util.Constants.QUERY_DATETO;
+import static com.lionel.gonews.util.Constants.QUERY_LANGUAGE;
+import static com.lionel.gonews.util.Constants.QUERY_PAGE;
+import static com.lionel.gonews.util.Constants.QUERY_PAGESIZE;
+import static com.lionel.gonews.util.Constants.QUERY_SORTBY;
+import static com.lionel.gonews.util.Constants.QUERY_WORD;
 
 public class NewsRemoteSource implements NewsSource {
 

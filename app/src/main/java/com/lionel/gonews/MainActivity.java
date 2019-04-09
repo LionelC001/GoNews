@@ -11,9 +11,7 @@ import com.lionel.gonews.data.remote.NewsRemoteSource;
 
 import java.util.List;
 
-import static com.lionel.gonews.Constants.GENERAL;
-import static com.lionel.gonews.Constants.PUBLISHEDAT;
-import static com.lionel.gonews.Constants.US;
+import static com.lionel.gonews.util.Constants.PUBLISHEDAT;
 
 public class MainActivity extends AppCompatActivity {
 

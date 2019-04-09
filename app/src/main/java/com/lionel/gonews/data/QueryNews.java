@@ -1,7 +1,7 @@
 package com.lionel.gonews.data;
 
-import static com.lionel.gonews.Constants.NEWS_TYPE_EVERYTHING;
-import static com.lionel.gonews.Constants.NEWS_TYPE_HEADLINES;
+import static com.lionel.gonews.util.Constants.NEWS_TYPE_EVERYTHING;
+import static com.lionel.gonews.util.Constants.NEWS_TYPE_HEADLINES;
 
 /**
  * Condition object for query news
