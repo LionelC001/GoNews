@@ -4,8 +4,18 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="QueryBoxBeforeTouch">
+        <item name="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textSize">@dimen/x24sp</item>
+        <item name="android:fontFamily">"sans-serif-thin" </item>
+
     </style>
 
 </resources>
