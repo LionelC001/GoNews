@@ -3,6 +3,7 @@ package com.lionel.gonews.data.remote;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -13,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.NewsSource;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +40,7 @@ public class NewsRemoteSource implements NewsSource {
     @Override
     public void getNews(@NonNull String newsType, @NonNull String country, @Nullable String category, @NonNull LoadNewsCallback callback) {
         String url = getUrl(newsType, country, category);
+        Log.d("<>", "url: " + url);
         NewsRequest newsRequest = new NewsRequest(url, callback);
         Volley.newRequestQueue(context).add(newsRequest);
     }
@@ -72,9 +75,8 @@ public class NewsRemoteSource implements NewsSource {
                         public void onResponse(JSONObject response) {
                             Gson gson = new Gson();
                             try {
-                                JSONObject newsJsonObject = response.getJSONObject(NODE_ARTICLES);
-                                String news = gson.toJson(newsJsonObject);
-                                List<News> newsList = gson.fromJson(news, new TypeToken<List<News>>() {
+                                JSONArray newsJsonArray = response.getJSONArray(NODE_ARTICLES);
+                                List<News> newsList = gson.fromJson(newsJsonArray.toString(), new TypeToken<List<News>>() {
                                 }.getType());
 
                                 callback.onSuccess(newsList);
