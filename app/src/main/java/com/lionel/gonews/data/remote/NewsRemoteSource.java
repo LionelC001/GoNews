@@ -40,7 +40,6 @@ public class NewsRemoteSource implements NewsSource {
     @Override
     public void getNews(@NonNull String newsType, @NonNull String country, @Nullable String category, @NonNull LoadNewsCallback callback) {
         String url = getUrl(newsType, country, category);
-        Log.d("<>", "url: " + url);
         NewsRequest newsRequest = new NewsRequest(url, callback);
         Volley.newRequestQueue(context).add(newsRequest);
     }
@@ -73,6 +72,7 @@ public class NewsRemoteSource implements NewsSource {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Log.d("<>", response.toString());
                             Gson gson = new Gson();
                             try {
                                 JSONArray newsJsonArray = response.getJSONArray(NODE_ARTICLES);
@@ -88,6 +88,7 @@ public class NewsRemoteSource implements NewsSource {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            Log.d("<>", new String(error.networkResponse.data));
                             callback.onFailed();
                         }
                     });
