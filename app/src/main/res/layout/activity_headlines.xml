@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.lionel.gonews.headlines.HeadlinesViewModel" />
     </data>
 
     <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:openDrawer="start">
@@ -25,16 +27,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/x8dp"
-                android:background="@drawable/bg_query_box"
+                android:background="@drawable/bg_search_box"
                 android:focusableInTouchMode="true">
 
                 <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/Toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="?attr/actionBarSize">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_search_box"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -42,27 +47,24 @@
                             android:id="@+id/img_btn_menu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/x12dp"
                             android:layout_marginEnd="@dimen/x12dp"
                             android:background="@null"
                             android:src="@drawable/ic_menu"
                             tools:ignore="ContentDescription" />
 
                         <TextView
+                            android:id="@+id/txt_search_box"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:drawableEnd="@drawable/ic_search"
                             android:gravity="center_vertical"
                             android:hint="@string/go_news"
+                            android:paddingEnd="@dimen/x12dp"
                             android:textSize="@dimen/x24sp"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/x12dp"
-                            android:src="@drawable/ic_search"
-                            tools:ignore="ContentDescription" />
-
+                            android:textStyle="bold"
+                            tools:ignore="RtlSymmetry" />
                     </LinearLayout>
 
                 </android.support.v7.widget.Toolbar>

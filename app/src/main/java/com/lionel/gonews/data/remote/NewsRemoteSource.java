@@ -10,7 +10,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.NewsSource;
+import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.QueryNews;
 import com.lionel.gonews.data.QueryNews.QueryEverythingNews;
 import com.lionel.gonews.data.QueryNews.QueryHeadlinesNews;
@@ -39,7 +39,7 @@ import static com.lionel.gonews.util.Constants.QUERY_PAGESIZE;
 import static com.lionel.gonews.util.Constants.QUERY_SORTBY;
 import static com.lionel.gonews.util.Constants.QUERY_WORD;
 
-public class NewsRemoteSource implements NewsSource {
+public class NewsRemoteSource implements INewsSource {
 
     private final Context context;
 

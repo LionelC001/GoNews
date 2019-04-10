@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
-public interface NewsSource {
+public interface INewsSource {
 
     interface LoadNewsCallback {
         void onSuccess(int totalResults, List<News> newsList);

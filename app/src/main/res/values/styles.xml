@@ -1,19 +1,33 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Toolbar">
+        <item name="contentInsetLeft">0dp</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetRight">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+        <item name="android:contentInsetLeft">0dp</item>
+        <item name="android:contentInsetStart">0dp</item>
+        <item name="android:contentInsetRight">0dp</item>
+        <item name="android:contentInsetEnd">0dp</item>
+    </style>
 
-    <style name="QueryBoxTextStyle">
+    <style name="SearchBoxText">
         <item name="android:textColor">@color/colorDeepGray</item>
         <item name="android:textSize">@dimen/x24sp</item>
     </style>
+
+    <style name="SearchBoxHistoryText">
+        <item name="android:textColor">@color/colorLightGray</item>
+        <item name="android:textSize">@dimen/x20sp</item>
+    </style>
+
 
 </resources>

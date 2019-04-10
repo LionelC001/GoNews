@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.NewsSource;
+import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.QueryNews;
 import com.lionel.gonews.data.remote.NewsRemoteSource;
 
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private void testGetNews() {
         Log.d("<>", "test: starting get news");
         NewsRemoteSource newsRemoteSource = new NewsRemoteSource(this);
-        NewsSource.LoadNewsCallback callback = new NewsSource.LoadNewsCallback() {
+        INewsSource.LoadNewsCallback callback = new INewsSource.LoadNewsCallback() {
             @Override
             public void onSuccess(int totalResults, List<News> newsList) {
                 Log.d("<>", "totalResults: " + totalResults + "\n");
