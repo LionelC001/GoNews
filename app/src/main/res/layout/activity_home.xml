@@ -23,17 +23,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.v7.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/query_box"
-                    style="@style/QueryBoxBeforeTouch"
+                <!--   <android.support.v7.widget.AppCompatAutoCompleteTextView
+                       android:id="@+id/query_box"
+                       style="@style/QueryBoxTextStyle"
+                       android:layout_width="match_parent"
+                       android:layout_height="?attr/actionBarSize"
+                       android:background="@null"
+                       android:drawableStart="@drawable/ic_menu"
+                       android:drawablePadding="@dimen/x12dp"
+                       android:gravity="center_vertical"
+                       android:hint="@string/go_news"
+                       android:textStyle="bold" />-->
+                <com.lionel.gonews.QueryBox
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@null"
-                    android:drawableStart="@drawable/ic_menu"
-                    android:drawablePadding="@dimen/x12dp"
-                    android:gravity="center_vertical"
-                    android:hint="@string/go_news"
-                    android:textStyle="bold" />
+                    android:layout_height="?attr/actionBarSize" />
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>

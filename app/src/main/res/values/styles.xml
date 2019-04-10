@@ -11,11 +11,9 @@
     </style>
 
 
-    <style name="QueryBoxBeforeTouch">
+    <style name="QueryBoxTextStyle">
         <item name="android:textColor">@color/colorDeepGray</item>
         <item name="android:textSize">@dimen/x24sp</item>
-        <item name="android:fontFamily">"sans-serif-thin" </item>
-
     </style>
 
 </resources>
