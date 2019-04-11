@@ -13,12 +13,12 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.PUBLISHEDAT;
 
-public class MainActivity extends AppCompatActivity {
+public class TestQueryRemoteActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.act_test_query_remote);
 
 
         testGetNews();

@@ -28,7 +28,7 @@ public class HeadlinesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_headlines);
+        setContentView(R.layout.act_headlines);
 
         initDrawerLayout();
         initBtnMenu();

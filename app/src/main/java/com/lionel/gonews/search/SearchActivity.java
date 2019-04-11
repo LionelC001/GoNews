@@ -16,7 +16,7 @@ public class SearchActivity extends AppCompatActivity implements SearchBox.ISear
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.act_search);
 
         initViews();
 
