@@ -36,7 +36,7 @@ public class SearchActivity extends AppCompatActivity implements SearchBox.ISear
         for (int i = 0; i <= 10; i++) {
             data.add("" + (i + 1));
         }
-        searchBox.setData(data);
+        searchBox.setSearchHistory(data);
     }
 
     @Override

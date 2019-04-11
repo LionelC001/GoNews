@@ -6,18 +6,22 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lionel.gonews.R;
+import com.lionel.gonews.util.KeyboardManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchBox extends FrameLayout {
@@ -34,7 +38,7 @@ public class SearchBox extends FrameLayout {
 
     public SearchBox(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.layout_search_box, this);
+        inflate(context, R.layout.search_box, this);
 
         this.context = context;
 
@@ -47,10 +51,11 @@ public class SearchBox extends FrameLayout {
         this.callback = callback;
     }
 
-    public void setData(List<String> data) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+    public void setSearchHistory(List<String> data) {
+        ArrayAdapter<String> adapter = new SearchHistoryAdapter(context,
                 R.layout.item_search_box_history, R.id.txItemSearchHistory,
-                data);
+                data,
+                edtSearchBox);
 
         if (edtSearchBox != null) {
             edtSearchBox.setAdapter(adapter);
@@ -60,12 +65,11 @@ public class SearchBox extends FrameLayout {
     private void initEdtSearchBox() {
         edtSearchBox = findViewById(R.id.edtSearchBox);
 
-        // show history as edt box is touched
-        edtSearchBox.setOnTouchListener(new View.OnTouchListener() {
+        //show history list only once at beginning
+        edtSearchBox.post(new Runnable() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void run() {
                 edtSearchBox.showDropDown();
-                return false;
             }
         });
 
@@ -83,10 +87,7 @@ public class SearchBox extends FrameLayout {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     doSearch();
-
-                    //hide keyboard
-                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    KeyboardManager.hideKeyboard(context, v);
                     return true;
                 }
                 return false;
@@ -121,6 +122,92 @@ public class SearchBox extends FrameLayout {
         if (callback != null) {
             edtSearchBox.clearFocus();
             callback.startQuery(queryWord);
+        }
+    }
+
+
+    private class SearchHistoryAdapter extends ArrayAdapter<String> {
+        private final int resource;
+        private final int textViewResourceId;
+        private final List<String> originalData;
+        private List<String> data;
+        private final View targetView;
+
+        public SearchHistoryAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects, @NonNull View targetView) {
+            super(context, resource, textViewResourceId, objects);
+
+            this.resource = resource;
+            this.textViewResourceId = textViewResourceId;
+            this.originalData = objects;
+            this.data = objects;
+            this.targetView = targetView;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            if (convertView == null) {
+                convertView = inflater.inflate(resource, parent, false);
+            }
+            TextView textView = convertView.findViewById(textViewResourceId);
+            textView.setText(data.get(position));
+
+            //hide keyboard if list is scrolling or touched
+            convertView.setOnTouchListener(new OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        KeyboardManager.hideKeyboard(context, targetView);
+                    }
+                    return false;
+                }
+            });
+
+            return convertView;
+        }
+
+        @Override
+        public int getCount() {
+            return data != null ? data.size() : 0;
+        }
+
+        @Nullable
+        @Override
+        public String getItem(int position) {
+            return data.get(position);
+        }
+
+        @NonNull
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults filteredResults = new FilterResults();
+                    if (constraint != null && constraint.length() > 0) {
+                        List<String> filter = new ArrayList<>();
+
+                        for (String item : originalData) {
+                            if (item.contains(constraint)) {
+                                filter.add(item);
+                            }
+                        }
+                        filteredResults.count = filter.size();
+                        filteredResults.values = filter;
+                    } else {
+                        filteredResults.count = originalData.size();
+                        filteredResults.values = originalData;
+                    }
+                    return filteredResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    data = (ArrayList<String>) results.values;
+                    notifyDataSetChanged();
+                }
+            };
         }
     }
 }
