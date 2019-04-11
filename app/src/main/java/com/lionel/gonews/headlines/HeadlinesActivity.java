@@ -32,13 +32,13 @@ public class HeadlinesActivity extends AppCompatActivity {
 
 
     private void initView() {
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.drawerLayout);
 
 
     }
 
     private void setupBtnMenu() {
-        ImageButton btnMenu = findViewById(R.id.img_btn_menu);
+        ImageButton btnMenu = findViewById(R.id.imgBtnMenu);
         btnMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,7 +49,7 @@ public class HeadlinesActivity extends AppCompatActivity {
 
 
     private void setupSearchBox() {
-        TextView searchBox = findViewById(R.id.txt_search_box);
+        TextView searchBox = findViewById(R.id.txtSearchBox);
         searchBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

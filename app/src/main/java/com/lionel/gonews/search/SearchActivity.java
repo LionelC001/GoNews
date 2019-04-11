@@ -24,7 +24,7 @@ public class SearchActivity extends AppCompatActivity implements SearchBox.ISear
     }
 
     private void initViews() {
-        searchBox = findViewById(R.id.search_box);
+        searchBox = findViewById(R.id.searchBox);
         searchBox.setCallback(this);
     }
 

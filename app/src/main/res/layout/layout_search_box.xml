@@ -9,7 +9,7 @@
     android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/img_btn_back"
+        android:id="@+id/imgBtnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/x12dp"
@@ -19,7 +19,7 @@
         tools:ignore="ContentDescription" />
 
     <android.support.v7.widget.AppCompatAutoCompleteTextView
-        android:id="@+id/edt_search_box"
+        android:id="@+id/edtSearchBox"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -30,15 +30,15 @@
         android:hint="@string/search"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:nextFocusLeft="@id/edt_search_box"
-        android:nextFocusUp="@id/edt_search_box"
+        android:nextFocusLeft="@id/edtSearchBox"
+        android:nextFocusUp="@id/edtSearchBox"
         android:textCursorDrawable="@drawable/bg_search_box_cursor"
         android:textSize="@dimen/x24sp"
         android:textStyle="bold"
         tools:ignore="RtlSymmetry" />
 
     <ImageButton
-        android:id="@+id/img_btn_cancel"
+        android:id="@+id/imgBtnCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/x12dp"

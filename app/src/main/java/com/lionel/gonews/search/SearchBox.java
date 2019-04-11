@@ -49,7 +49,7 @@ public class SearchBox extends FrameLayout {
 
     public void setData(List<String> data) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
-                R.layout.item_search_box_history, R.id.txt_item_search_box_history,
+                R.layout.item_search_box_history, R.id.txItemSearchHistory,
                 data);
 
         if (edtSearchBox != null) {
@@ -58,7 +58,7 @@ public class SearchBox extends FrameLayout {
     }
 
     private void initEdtSearchBox() {
-        edtSearchBox = findViewById(R.id.edt_search_box);
+        edtSearchBox = findViewById(R.id.edtSearchBox);
 
         // show history as edt box is touched
         edtSearchBox.setOnTouchListener(new View.OnTouchListener() {
@@ -95,7 +95,7 @@ public class SearchBox extends FrameLayout {
     }
 
     private void initBackBtn() {
-        ImageButton btnBack = findViewById(R.id.img_btn_back);
+        ImageButton btnBack = findViewById(R.id.imgBtnBack);
         btnBack.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +107,7 @@ public class SearchBox extends FrameLayout {
     }
 
     private void initCancelBtn() {
-        ImageButton btnCancel = findViewById(R.id.img_btn_cancel);
+        ImageButton btnCancel = findViewById(R.id.imgBtnCancel);
         btnCancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
