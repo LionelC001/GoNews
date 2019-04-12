@@ -9,6 +9,7 @@
     <dimen name="x4dp">4dp</dimen>
     <dimen name="x8dp">8dp</dimen>
     <dimen name="x12dp">12dp</dimen>
+    <dimen name="x48dp">48dp</dimen>
 
 
 </resources>

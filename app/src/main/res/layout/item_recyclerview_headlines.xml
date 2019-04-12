@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="itemDataNews"
+            type="com.lionel.gonews.data.News" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgHeadlines"
+            android:layout_width="@dimen/x48dp"
+            android:layout_height="48dp"
+            app:imageUrl="@{itemDataNews.urlToImage}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtHeadlinesDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x8dp"
+            android:maxLines="3"
+            android:text="@{itemDataNews.description}"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgHeadlines"
+            app:layout_constraintTop_toTopOf="@+id/imgHeadlines" />
+
+        <TextView
+            android:id="@+id/txtHeadlinesData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x4dp"
+            android:text="@{itemDataNews.publishedAt}"
+            app:layout_constraintEnd_toEndOf="@id/txtHeadlinesDescription"
+            app:layout_constraintTop_toBottomOf="@id/txtHeadlinesDescription" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

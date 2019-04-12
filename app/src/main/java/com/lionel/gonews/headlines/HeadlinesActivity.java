@@ -36,7 +36,6 @@ public class HeadlinesActivity extends AppCompatActivity {
         initViewPager();
     }
 
-
     private void initDrawerLayout() {
         drawerLayout = findViewById(R.id.drawerLayout);
     }
@@ -50,7 +49,6 @@ public class HeadlinesActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void initSearchBox() {
         TextView searchBox = findViewById(R.id.txtSearchBox);
