@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,9 @@ import com.lionel.gonews.R;
 import com.lionel.gonews.data.News;
 
 import java.util.List;
+
+import static com.lionel.gonews.util.Constants.DISTANCE_TO_SYNC;
+import static com.lionel.gonews.util.Constants.END_POSITION;
 
 public class HeadlinesFrag extends Fragment {
 
@@ -97,7 +99,11 @@ public class HeadlinesFrag extends Fragment {
 
     private void initRefreshLayout() {
         refreshLayout = getView().findViewById(R.id.refreshLayout);
-        //TODO refreshLayout setAttribute
+        refreshLayout.setColorSchemeResources(R.color.colorDeepGray);
+        refreshLayout.setDistanceToTriggerSync(DISTANCE_TO_SYNC);
+        refreshLayout.setProgressViewEndTarget(false, END_POSITION);
+        refreshLayout.setSize(SwipeRefreshLayout.LARGE);
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
