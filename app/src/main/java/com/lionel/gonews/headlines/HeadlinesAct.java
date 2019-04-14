@@ -66,7 +66,6 @@ public class HeadlinesAct extends AppCompatActivity {
         HeadlinesViewPagerAdapter adapter = new HeadlinesViewPagerAdapter(getSupportFragmentManager(), initFragments(), getTopics());
 
         ViewPager viewPager = findViewById(R.id.viewPager);
-//        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);

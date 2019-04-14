@@ -23,7 +23,7 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
 
     private List<News> cachedNewsData = new ArrayList<>();
     private final String category;
-    private final NewsRemoteSource newsRemoteSource;
+    private final INewsSource newsRemoteSource;
     private int page ;
 
 
@@ -47,7 +47,13 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
         loadNews(++page);
     }
 
+    public void reloadNews(){
+        cachedNewsData  = new ArrayList<>();
+        loadNews(1);
+    }
+
     public void loadNews(int page) {
+        Log.d("<>", "loadnews: " + category );
         newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
     }
 
