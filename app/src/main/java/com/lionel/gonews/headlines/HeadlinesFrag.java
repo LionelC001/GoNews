@@ -18,20 +18,20 @@ import com.lionel.gonews.data.News;
 
 import java.util.List;
 
-public class HeadlinesFragment extends Fragment {
+public class HeadlinesFrag extends Fragment {
 
     private static final String CATEGORY = "category";
 
-    private HeadlinesFragmentViewModel viewModel;
+    private HeadlinesFragViewModel viewModel;
     private HeadlinesRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
 
-    public HeadlinesFragment() {
+    public HeadlinesFrag() {
 
     }
 
-    public static HeadlinesFragment newInstance(String category) {
-        HeadlinesFragment fragment = new HeadlinesFragment();
+    public static HeadlinesFrag newInstance(String category) {
+        HeadlinesFrag fragment = new HeadlinesFrag();
         Bundle bundle = new Bundle();
         bundle.putString(CATEGORY, category);
         fragment.setArguments(bundle);
@@ -43,7 +43,7 @@ public class HeadlinesFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ViewModelProvider.Factory factory = new HeadlinesFragViewModelFactory(getActivity().getApplication(), getArguments().getString(CATEGORY));
-        viewModel = ViewModelProviders.of(this, factory).get(HeadlinesFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(this, factory).get(HeadlinesFragViewModel.class);
         adapter = new HeadlinesRecyclerViewAdapter();
 
         initObserve();

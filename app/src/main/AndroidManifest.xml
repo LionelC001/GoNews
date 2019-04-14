@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".search.SearchActivity"></activity>
-        <activity android:name=".headlines.HeadlinesActivity">
+        <activity android:name=".search.SearchAct"></activity>
+        <activity android:name=".headlines.HeadlinesAct">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

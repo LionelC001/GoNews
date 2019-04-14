@@ -15,7 +15,7 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.PAGESIZE;
 
-public class HeadlinesFragmentViewModel extends ViewModel implements INewsSource.LoadNewsCallback {
+public class HeadlinesFragViewModel extends ViewModel implements INewsSource.LoadNewsCallback {
 
 
     public MutableLiveData<List<News>> newsData = new MutableLiveData<>();
@@ -27,7 +27,7 @@ public class HeadlinesFragmentViewModel extends ViewModel implements INewsSource
     private int page ;
 
 
-    public HeadlinesFragmentViewModel(Application application, String category) {
+    public HeadlinesFragViewModel(Application application, String category) {
         super();
         this.category = category;
         newsRemoteSource = new NewsRemoteSource(application.getApplicationContext());

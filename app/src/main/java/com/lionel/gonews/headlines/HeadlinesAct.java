@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lionel.gonews.R;
-import com.lionel.gonews.search.SearchActivity;
+import com.lionel.gonews.search.SearchAct;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.CATEGORYS;
 
-public class HeadlinesActivity extends AppCompatActivity {
+public class HeadlinesAct extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
 
@@ -56,7 +56,7 @@ public class HeadlinesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(HeadlinesActivity.this, SearchActivity.class);
+                intent.setClass(HeadlinesAct.this, SearchAct.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +76,7 @@ public class HeadlinesActivity extends AppCompatActivity {
     private List<Fragment> initFragments() {
         List<Fragment> fragments = new ArrayList<>();
         for (String category : CATEGORYS) {
-            fragments.add(HeadlinesFragment.newInstance(category));
+            fragments.add(HeadlinesFrag.newInstance(category));
         }
         return fragments;
     }
