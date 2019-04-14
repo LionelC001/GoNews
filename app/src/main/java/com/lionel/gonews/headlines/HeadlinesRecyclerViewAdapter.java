@@ -19,7 +19,7 @@ public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<Headlines
     private List<News> data = new ArrayList<>();
 
     public HeadlinesRecyclerViewAdapter() {
-
+        setHasStableIds(true);  // avoid blink after call notifyDataSetChanged()
     }
 
     public void setData(List<News> data) {
@@ -57,5 +57,10 @@ public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<Headlines
     @Override
     public int getItemCount() {
         return data != null ? data.size() : 0;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return data.get(position).title.hashCode();  // a unique id for call setHasStableIds()
     }
 }
