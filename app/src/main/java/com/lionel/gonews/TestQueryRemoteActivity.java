@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.INewsSource;
+import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
 import com.lionel.gonews.data.remote.NewsRemoteSource;
 
@@ -54,7 +54,7 @@ public class TestQueryRemoteActivity extends AppCompatActivity {
 //       newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(US, GENERAL), callback);
 
         newsRemoteSource.queryNews(new QueryNews.QueryEverythingNews("apple",
-                        "1",
+                        1,
                         PUBLISHEDAT,
                         "2019-04-08",
                         "2019-04-09")

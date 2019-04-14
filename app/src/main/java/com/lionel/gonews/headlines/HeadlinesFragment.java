@@ -1,16 +1,13 @@
 package com.lionel.gonews.headlines;
 
-import android.content.Context;
-import android.databinding.BindingAdapter;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +22,8 @@ public class HeadlinesFragment extends Fragment {
     private static final String CATEGORY = "category";
 
     private HeadlinesFragmentViewModel viewModel;
+    private HeadlinesRecyclerViewAdapter adapter;
+    private RecyclerView recyclerView;
 
     public HeadlinesFragment() {
 
@@ -38,35 +37,50 @@ public class HeadlinesFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        viewModel = ViewModelProviders.of(this).get(HeadlinesFragmentViewModel.class);
+        adapter = new HeadlinesRecyclerViewAdapter();
+        initObserve();
+    }
+
+    private void initObserve() {
+        viewModel.newsData.observe(this, new Observer<List<News>>() {
+            @Override
+            public void onChanged(@Nullable List<News> newsList) {
+                showNews(newsList);
+            }
+        });
+//        viewModel.getStatus().
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewDataBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.frag_headlines, container, false);
-        viewModel = new HeadlinesFragmentViewModel(getContext(), dataBinding);
-
-        return dataBinding.getRoot();
+        return inflater.inflate(R.layout.frag_headlines, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        String category = getArguments().getString(CATEGORY);
-        if (category !=null){
-            //start loading
-            viewModel.start(category);
-        }
+        initRecyclerView();
+        getNews();
     }
 
-    @BindingAdapter("setData")
-    public static void setData(RecyclerView view, List<News> data) {
-        if (data != null) {
-            HeadlinesRecyclerViewAdapter adapter = new HeadlinesRecyclerViewAdapter(data);
-            view.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL, false));
-            view.setAdapter(adapter);
+    private void initRecyclerView() {
+        recyclerView = getView().findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(adapter);
+    }
 
-            //hide loading
-        }
+    private void getNews() {
+        String category = getArguments().getString(CATEGORY);
+        viewModel.getNews(category, 1);
+    }
+
+    private void showNews(List<News> data) {
+        adapter.setData(data);
     }
 }

@@ -1,11 +1,11 @@
 package com.lionel.gonews.headlines;
 
-import android.content.Context;
-import android.databinding.ObservableField;
-import android.databinding.ViewDataBinding;
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.lionel.gonews.BR;
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
@@ -14,28 +14,30 @@ import com.lionel.gonews.data.remote.NewsRemoteSource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.US;
+public class HeadlinesFragmentViewModel extends AndroidViewModel implements INewsSource.LoadNewsCallback {
 
-public class HeadlinesFragmentViewModel implements INewsSource.LoadNewsCallback {
-
-    private List<News> cachedNews = new ArrayList<>();
-
-    private final ViewDataBinding binding;
+    public MutableLiveData<List<News>> newsData = new MutableLiveData<>();
+    private List<News> cachedNewsData = new ArrayList<>();
     private final NewsRemoteSource newsRemoteSource;
 
-    public HeadlinesFragmentViewModel(Context context, ViewDataBinding binding) {
-        this.binding = binding;
-        this.newsRemoteSource = new NewsRemoteSource(context);
+
+    public HeadlinesFragmentViewModel(@NonNull Application application) {
+        super(application);
+        newsRemoteSource = new NewsRemoteSource(application.getApplicationContext());
     }
 
-
-    public void start(String category) {
-        newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(US, category), this);
+    public void getNews(String category, int page) {
+        if (cachedNewsData != null && cachedNewsData.size() > 0) {
+            newsData.setValue(cachedNewsData);
+        } else {
+            newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
+        }
     }
 
     @Override
     public void onSuccess(int totalResults, List<News> newsList) {
-        binding.setVariable(BR.dataNews, newsList);
+        newsData.setValue(newsList);
+        cachedNewsData.addAll(newsList);
     }
 
     @Override

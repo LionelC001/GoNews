@@ -1,7 +1,6 @@
 package com.lionel.gonews.data.remote;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -9,8 +8,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.INewsSource;
+import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
 import com.lionel.gonews.data.QueryNews.QueryEverythingNews;
 import com.lionel.gonews.data.QueryNews.QueryHeadlinesNews;
@@ -38,6 +37,7 @@ import static com.lionel.gonews.util.Constants.QUERY_PAGE;
 import static com.lionel.gonews.util.Constants.QUERY_PAGESIZE;
 import static com.lionel.gonews.util.Constants.QUERY_SORTBY;
 import static com.lionel.gonews.util.Constants.QUERY_WORD;
+import static com.lionel.gonews.util.Constants.US;
 
 public class NewsRemoteSource implements INewsSource {
 
@@ -64,14 +64,11 @@ public class NewsRemoteSource implements INewsSource {
 
         url.append(HEADLINES_ENDPOINT).append("?");
 
-        if (queryHeadlines.country != null) {
-            url.append(QUERY_COUNTRY).append(queryHeadlines.country).append("&");
-        }
-
         if (queryHeadlines.category != null) {
             url.append(QUERY_CATEGORY).append(queryHeadlines.category).append("&");
         }
 
+        url.append(QUERY_COUNTRY).append(US).append("&");
         url.append(NEWS_API_KEY);
 
         return url.toString();
@@ -115,23 +112,24 @@ public class NewsRemoteSource implements INewsSource {
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            Gson gson = new Gson();
-                            try {
-                                int totalResults = response.getInt(NODE_TOTAL_RESULTS);
-                                JSONArray newsJsonArray = response.getJSONArray(NODE_ARTICLES);
-                                List<News> newsList = gson.fromJson(newsJsonArray.toString(), new TypeToken<List<News>>() {
-                                }.getType());
+                            if (callback != null && response != null) {
+                                Gson gson = new Gson();
+                                try {
+                                    int totalResults = response.getInt(NODE_TOTAL_RESULTS);
+                                    JSONArray newsJsonArray = response.getJSONArray(NODE_ARTICLES);
+                                    List<News> newsList = gson.fromJson(newsJsonArray.toString(), new TypeToken<List<News>>() {
+                                    }.getType());
 
-                                callback.onSuccess(totalResults, newsList);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                    callback.onSuccess(totalResults, newsList);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.d("<>", new String(error.networkResponse.data));
                             callback.onFailed();
                         }
                     });

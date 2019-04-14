@@ -12,14 +12,20 @@ import com.lionel.gonews.BR;
 import com.lionel.gonews.R;
 import com.lionel.gonews.data.News;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<HeadlinesRecyclerViewAdapter.NewsHolder> {
 
-    private List<News> data;
+    private List<News> data = new ArrayList<>();
 
-    public HeadlinesRecyclerViewAdapter(List<News> data) {
+    public HeadlinesRecyclerViewAdapter() {
+
+    }
+
+    public void setData(List<News> data) {
         this.data = data;
+        notifyDataSetChanged();
     }
 
     public class NewsHolder extends RecyclerView.ViewHolder {
