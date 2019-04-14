@@ -75,6 +75,7 @@ public class NewsRemoteSource implements INewsSource {
 
         url.append(QUERY_COUNTRY).append(US).append("&");
         url.append(QUERY_LANGUAGE).append(ENG).append("&");
+        url.append(QUERY_PAGESIZE).append(PAGESIZE).append("&");
         url.append(NEWS_API_KEY);
 
         return url.toString();

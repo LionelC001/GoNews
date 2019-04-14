@@ -22,12 +22,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtHeadlinesDescription"
+            android:id="@+id/txtHeadlinesTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/x8dp"
             android:maxLines="3"
-            android:text="@{itemDataNews.description}"
+            android:text="@{itemDataNews.title}"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgHeadlines"
@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x4dp"
             android:text="@{itemDataNews.publishedAt}"
-            app:layout_constraintEnd_toEndOf="@id/txtHeadlinesDescription"
-            app:layout_constraintTop_toBottomOf="@id/txtHeadlinesDescription" />
+            app:layout_constraintEnd_toEndOf="@id/txtHeadlinesTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtHeadlinesTitle" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
