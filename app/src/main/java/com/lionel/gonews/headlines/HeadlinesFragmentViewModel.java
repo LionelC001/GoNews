@@ -1,9 +1,8 @@
 package com.lionel.gonews.headlines;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.support.annotation.NonNull;
+import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
 import com.lionel.gonews.data.INewsSource;
@@ -14,30 +13,58 @@ import com.lionel.gonews.data.remote.NewsRemoteSource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeadlinesFragmentViewModel extends AndroidViewModel implements INewsSource.LoadNewsCallback {
+import static com.lionel.gonews.util.Constants.PAGESIZE;
+
+public class HeadlinesFragmentViewModel extends ViewModel implements INewsSource.LoadNewsCallback {
+
 
     public MutableLiveData<List<News>> newsData = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
+
     private List<News> cachedNewsData = new ArrayList<>();
+    private final String category;
     private final NewsRemoteSource newsRemoteSource;
+    private int page ;
 
 
-    public HeadlinesFragmentViewModel(@NonNull Application application) {
-        super(application);
+    public HeadlinesFragmentViewModel(Application application, String category) {
+        super();
+        this.category = category;
         newsRemoteSource = new NewsRemoteSource(application.getApplicationContext());
+        isLastPage.setValue(false);
+        page = 0;
     }
 
-    public void getNews(String category, int page) {
+    public void initNews() {
         if (cachedNewsData != null && cachedNewsData.size() > 0) {
             newsData.setValue(cachedNewsData);
         } else {
-            newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
+            loadNews(1);
         }
+    }
+
+    public void loadMoreNews() {
+        loadNews(++page);
+    }
+
+    public void loadNews(int page) {
+        newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
     }
 
     @Override
     public void onSuccess(int totalResults, List<News> newsList) {
-        newsData.setValue(newsList);
-        cachedNewsData.addAll(newsList);
+        if (isLastPage.getValue() != null && !isLastPage.getValue()) {
+            newsData.setValue(newsList);
+            cachedNewsData.addAll(newsList);
+
+            checkIsLastPage(newsList.size());
+        }
+    }
+
+    private void checkIsLastPage(int currentSize) {
+        if (currentSize < Integer.valueOf(PAGESIZE)) {
+            isLastPage.setValue(true);
+        }
     }
 
     @Override

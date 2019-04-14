@@ -1,6 +1,7 @@
 package com.lionel.gonews.headlines;
 
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -41,8 +42,10 @@ public class HeadlinesFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this).get(HeadlinesFragmentViewModel.class);
+        ViewModelProvider.Factory factory = new HeadlinesFragViewModelFactory(getActivity().getApplication(), getArguments().getString(CATEGORY));
+        viewModel = ViewModelProviders.of(this, factory).get(HeadlinesFragmentViewModel.class);
         adapter = new HeadlinesRecyclerViewAdapter();
+
         initObserve();
     }
 
@@ -56,6 +59,10 @@ public class HeadlinesFragment extends Fragment {
 //        viewModel.getStatus().
     }
 
+    private void showNews(List<News> data) {
+        adapter.setData(data);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,7 +73,7 @@ public class HeadlinesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initRecyclerView();
-        getNews();
+        initNews();
     }
 
     private void initRecyclerView() {
@@ -75,12 +82,7 @@ public class HeadlinesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private void getNews() {
-        String category = getArguments().getString(CATEGORY);
-        viewModel.getNews(category, 1);
-    }
-
-    private void showNews(List<News> data) {
-        adapter.setData(data);
+    private void initNews() {
+        viewModel.initNews();
     }
 }

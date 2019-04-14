@@ -1,6 +1,7 @@
 package com.lionel.gonews.data.remote;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,7 +21,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.DEFAULT_PAGESIZE;
+import static com.lionel.gonews.util.Constants.PAGESIZE;
 import static com.lionel.gonews.util.Constants.ENG;
 import static com.lionel.gonews.util.Constants.EVERYTHING_ENDPOINT;
 import static com.lionel.gonews.util.Constants.HEADLINES_ENDPOINT;
@@ -68,7 +69,12 @@ public class NewsRemoteSource implements INewsSource {
             url.append(QUERY_CATEGORY).append(queryHeadlines.category).append("&");
         }
 
+        if (queryHeadlines.page != null) {
+            url.append(QUERY_PAGE).append(queryHeadlines.page).append("&");
+        }
+
         url.append(QUERY_COUNTRY).append(US).append("&");
+        url.append(QUERY_LANGUAGE).append(ENG).append("&");
         url.append(NEWS_API_KEY);
 
         return url.toString();
@@ -99,8 +105,9 @@ public class NewsRemoteSource implements INewsSource {
             url.append(QUERY_DATETO).append(queryEverything.dateTo).append("&");
         }
 
+        url.append(QUERY_COUNTRY).append(US).append("&");
         url.append(QUERY_LANGUAGE).append(ENG).append("&");
-        url.append(QUERY_PAGESIZE).append(DEFAULT_PAGESIZE).append("&");
+        url.append(QUERY_PAGESIZE).append(PAGESIZE).append("&");
         url.append(NEWS_API_KEY);
 
         return url.toString();
@@ -130,6 +137,9 @@ public class NewsRemoteSource implements INewsSource {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            if (error != null&&error.networkResponse!=null) {
+                                Log.d("<>", new String(error.networkResponse.data));
+                            }
                             callback.onFailed();
                         }
                     });
