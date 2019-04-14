@@ -20,6 +20,7 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
 
     public MutableLiveData<List<News>> newsData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     private List<News> cachedNewsData = new ArrayList<>();
     private final String category;
@@ -54,6 +55,7 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
 
     public void loadNews(int page) {
         Log.d("<>", "loadnews: " + category );
+        isLoading.setValue(true);
         newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
     }
 
@@ -62,6 +64,7 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
         if (isLastPage.getValue() != null && !isLastPage.getValue()) {
             newsData.setValue(newsList);
             cachedNewsData.addAll(newsList);
+            isLoading.setValue(false);
 
             checkIsLastPage(newsList.size());
         }
@@ -75,6 +78,7 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
 
     @Override
     public void onFailed() {
+        isLoading.setValue(false);
         Log.d("<>", "onFailed");
     }
 }
