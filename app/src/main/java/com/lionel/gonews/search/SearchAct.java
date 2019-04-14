@@ -9,7 +9,7 @@ import com.lionel.gonews.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements SearchBox.ISearchBoxCallback {
+public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback {
 
     private SearchBox searchBox;
 
