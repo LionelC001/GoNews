@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,16 @@ public class HeadlinesFrag extends Fragment {
                 showNews(newsList);
             }
         });
-//        viewModel.getStatus().
+        viewModel.isLoading.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                if (isLoading != null && isLoading) {
+                    refreshLayout.setRefreshing(true);  //show loading anim
+                } else {
+                    refreshLayout.setRefreshing(false); //stop loading anim
+                }
+            }
+        });
     }
 
     private void showNews(List<News> data) {
@@ -87,6 +97,7 @@ public class HeadlinesFrag extends Fragment {
 
     private void initRefreshLayout() {
         refreshLayout = getView().findViewById(R.id.refreshLayout);
+        //TODO refreshLayout setAttribute
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -97,13 +108,5 @@ public class HeadlinesFrag extends Fragment {
 
     private void initNews() {
         viewModel.initNews();
-    }
-
-    private void showLoading() {
-
-    }
-
-    private void stopLoading(){
-
     }
 }
