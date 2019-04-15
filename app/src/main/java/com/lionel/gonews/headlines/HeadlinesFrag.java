@@ -71,6 +71,12 @@ public class HeadlinesFrag extends Fragment {
                 }
             }
         });
+        viewModel.isLastPage.observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLastPage) {
+                adapter.setIsLastPage(isLastPage);
+            }
+        });
     }
 
     private void showNews(List<News> data) {

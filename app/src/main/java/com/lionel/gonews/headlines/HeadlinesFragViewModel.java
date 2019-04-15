@@ -20,13 +20,15 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
     private final String category;
     private final INewsSource newsRemoteSource;
 
+
     public MutableLiveData<List<News>> newsData = new MutableLiveData<>();
     public MutableLiveData<Boolean> isInitLoading = new MutableLiveData<>();
     public MutableLiveData<Boolean> isMoreLoading = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
 
-    private boolean isLastPage = false;
 
     private List<News> cachedNewsData = new ArrayList<>();
+    private int maxPage = 0;
     private int currentPage = 1;
 
 
@@ -37,6 +39,7 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
 
         isInitLoading.setValue(false);
         isMoreLoading.setValue(false);
+        isLastPage.setValue(false);
     }
 
     public void initNews() {
@@ -57,12 +60,12 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
     public void reloadNews() {
         cachedNewsData = new ArrayList<>();
         currentPage = 1;
-        isLastPage = false;
+        isLastPage.setValue(false);
         initNews();
     }
 
     public void loadNews(int page) {
-        if (!isLastPage) {
+        if (!isLastPage.getValue()) {
             newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
         }
     }
@@ -73,17 +76,28 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
 
     @Override
     public void onSuccess(int totalSize, List<News> newsList) {
+        checkIsLastPage(totalSize);  // this line must be called before newsData.setValue()
+        closeLoadingState();
+
         cachedNewsData.addAll(newsList);
         newsData.setValue(cachedNewsData);
-
-        checkIsLastPage(newsList.size());
-        closeLoadingState();
     }
 
-    private void checkIsLastPage(int currentSize) {
-        int pageSize = Integer.valueOf(PAGESIZE);
-        if (currentSize < pageSize) {
-            isLastPage = true;
+    private void checkIsLastPage(int totalSize) {
+        getMaxPage(totalSize);
+        if (maxPage <= currentPage) {
+            isLastPage.setValue(true);
+        }
+    }
+
+    private void getMaxPage(int totalSize) {
+        if (maxPage == 0) {
+            int pageSize = Integer.valueOf(PAGESIZE);
+            if (totalSize % pageSize != 0) {
+                maxPage = totalSize / pageSize + 1;
+            } else {
+                maxPage = totalSize / pageSize;
+            }
         }
     }
 
