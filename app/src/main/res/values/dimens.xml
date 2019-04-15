@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="x12sp">12sp</dimen>
+    <dimen name="x16sp">16sp</dimen>
     <dimen name="x20sp">20sp</dimen>
     <dimen name="x24sp">24sp</dimen>
     <dimen name="x30sp">30sp</dimen>
@@ -10,6 +12,10 @@
     <dimen name="x8dp">8dp</dimen>
     <dimen name="x12dp">12dp</dimen>
     <dimen name="x48dp">48dp</dimen>
+    <dimen name="x64dp">64dp</dimen>
+    <dimen name="x96dp">96dp</dimen>
+    <dimen name="x108dp">108dp</dimen>
+    <dimen name="x120dp">120dp</dimen>
 
 
 </resources>

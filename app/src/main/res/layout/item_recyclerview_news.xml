@@ -9,38 +9,58 @@
             type="com.lionel.gonews.data.News" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
+
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
 
-        <ImageView
-            android:id="@+id/imgNews"
-            android:layout_width="@dimen/x48dp"
-            android:layout_height="48dp"
-            app:imageUrl="@{itemDataNews.urlToImage}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="@dimen/x8dp">
 
-        <TextView
-            android:id="@+id/txtNewsTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/x8dp"
-            android:maxLines="3"
-            android:text="@{itemDataNews.title}"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imgNews"
-            app:layout_constraintTop_toTopOf="@+id/imgNews" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/txtNewsData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x4dp"
-            android:text="@{itemDataNews.publishedAt}"
-            app:layout_constraintEnd_toEndOf="@id/txtNewsTitle"
-            app:layout_constraintTop_toBottomOf="@id/txtNewsTitle" />
+            <ImageView
+                android:id="@+id/imgNews"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/x120dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{itemDataNews.urlToImage}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.35" />
 
-    </android.support.constraint.ConstraintLayout>
+            <TextView
+                android:id="@+id/txtNewsTitle"
+                style="@style/ItemNewsTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:paddingStart="@dimen/x8dp"
+                android:paddingTop="@dimen/x8dp"
+                android:paddingEnd="@dimen/x4dp"
+                android:text="@{itemDataNews.title}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgNews"
+                app:layout_constraintTop_toTopOf="@+id/imgNews"
+                app:layout_constraintWidth_percent="0.65" />
+
+            <TextView
+                android:id="@+id/txtNewsData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/x4dp"
+                android:text="@{itemDataNews.publishedAt}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/txtNewsTitle"
+                app:layout_constraintTop_toBottomOf="@id/txtNewsTitle"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
 </layout>
