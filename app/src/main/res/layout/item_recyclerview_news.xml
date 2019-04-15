@@ -49,15 +49,26 @@
                 app:layout_constraintWidth_percent="0.65" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="@dimen/x4dp"
+                android:text="@{itemDataNews.source.name}"
+                app:layout_constraintBottom_toBottomOf="@+id/txtNewsData"
+                app:layout_constraintEnd_toStartOf="@+id/txtNewsData" />
+
+            <TextView
                 android:id="@+id/txtNewsData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:padding="@dimen/x4dp"
-                app:passedTime = "@{itemDataNews.publishedAt}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/txtNewsTitle"
                 app:layout_constraintTop_toBottomOf="@id/txtNewsTitle"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="1.0"
+                app:passedTime="@{itemDataNews.publishedAt}" />
 
         </android.support.constraint.ConstraintLayout>
 
