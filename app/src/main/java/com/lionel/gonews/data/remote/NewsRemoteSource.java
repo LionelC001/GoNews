@@ -1,6 +1,8 @@
 package com.lionel.gonews.data.remote;
 
+import android.arch.paging.PageKeyedDataSource;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -9,11 +11,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
-import com.lionel.gonews.data.QueryNews.QueryEverythingNews;
-import com.lionel.gonews.data.QueryNews.QueryHeadlinesNews;
+import com.lionel.gonews.util.NewsRemoteUrlParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,101 +21,45 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.PAGESIZE;
-import static com.lionel.gonews.util.Constants.ENG;
-import static com.lionel.gonews.util.Constants.EVERYTHING_ENDPOINT;
-import static com.lionel.gonews.util.Constants.HEADLINES_ENDPOINT;
-import static com.lionel.gonews.util.Constants.NEWS_API_KEY;
-import static com.lionel.gonews.util.Constants.NEWS_TYPE_HEADLINES;
 import static com.lionel.gonews.util.Constants.NODE_ARTICLES;
 import static com.lionel.gonews.util.Constants.NODE_TOTAL_RESULTS;
-import static com.lionel.gonews.util.Constants.QUERY_CATEGORY;
-import static com.lionel.gonews.util.Constants.QUERY_COUNTRY;
-import static com.lionel.gonews.util.Constants.QUERY_DATEFROM;
-import static com.lionel.gonews.util.Constants.QUERY_DATETO;
-import static com.lionel.gonews.util.Constants.QUERY_LANGUAGE;
-import static com.lionel.gonews.util.Constants.QUERY_PAGE;
-import static com.lionel.gonews.util.Constants.QUERY_PAGESIZE;
-import static com.lionel.gonews.util.Constants.QUERY_SORTBY;
-import static com.lionel.gonews.util.Constants.QUERY_WORD;
-import static com.lionel.gonews.util.Constants.US;
 
-public class NewsRemoteSource implements INewsSource {
+public class NewsRemoteSource extends PageKeyedDataSource<Integer, News> {
 
     private final Context context;
+    private QueryNews queryObject;
+    private final int initPage = 1;
 
     public NewsRemoteSource(Context context) {
         this.context = context;
+
+    }
+
+    public void setQueryCondition(QueryNews queryObject) {
+        this.queryObject = queryObject;
     }
 
     @Override
-    public void queryNews(QueryNews queryObject, LoadNewsCallback callback) {
-        String url;
-        if (queryObject.type.equals(NEWS_TYPE_HEADLINES)) {
-            url = getHeadlinesUrl((QueryHeadlinesNews) queryObject);
-        } else {
-            url = getEverythingUrl((QueryEverythingNews) queryObject);
-        }
-        NewsRequest newsRequest = new NewsRequest(url, callback);
+    public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Integer, News> callback) {
+        String url = NewsRemoteUrlParser.getUrl(queryObject);
+        Request newsRequest = new Request(url, callback, initPage);
         Volley.newRequestQueue(context).add(newsRequest);
     }
 
-    private String getHeadlinesUrl(QueryHeadlinesNews queryHeadlines) {
-        StringBuilder url = new StringBuilder();
-
-        url.append(HEADLINES_ENDPOINT).append("?");
-
-        if (queryHeadlines.category != null) {
-            url.append(QUERY_CATEGORY).append(queryHeadlines.category).append("&");
-        }
-
-        if (queryHeadlines.page != null) {
-            url.append(QUERY_PAGE).append(queryHeadlines.page).append("&");
-        }
-
-        url.append(QUERY_COUNTRY).append(US).append("&");
-        url.append(QUERY_LANGUAGE).append(ENG).append("&");
-        url.append(QUERY_PAGESIZE).append(PAGESIZE).append("&");
-        url.append(NEWS_API_KEY);
-
-        return url.toString();
+    @Override
+    public void loadBefore(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, News> callback) {
+        // it is not necessary
     }
 
-    private String getEverythingUrl(QueryEverythingNews queryEverything) {
-        StringBuilder url = new StringBuilder();
-
-        url.append(EVERYTHING_ENDPOINT).append("?");
-
-        if (queryEverything.queryWord != null) {
-            url.append(QUERY_WORD).append(queryEverything.queryWord).append("&");
-        }
-
-        if (queryEverything.page != null) {
-            url.append(QUERY_PAGE).append(queryEverything.page).append("&");
-        }
-
-        if (queryEverything.sortBy != null) {
-            url.append(QUERY_SORTBY).append(queryEverything.sortBy).append("&");
-        }
-
-        if (queryEverything.dateFrom != null) {
-            url.append(QUERY_DATEFROM).append(queryEverything.dateFrom).append("&");
-        }
-
-        if (queryEverything.dateTo != null) {
-            url.append(QUERY_DATETO).append(queryEverything.dateTo).append("&");
-        }
-
-        url.append(QUERY_COUNTRY).append(US).append("&");
-        url.append(QUERY_LANGUAGE).append(ENG).append("&");
-        url.append(QUERY_PAGESIZE).append(PAGESIZE).append("&");
-        url.append(NEWS_API_KEY);
-
-        return url.toString();
+    @Override
+    public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, News> callback) {
+        String url = NewsRemoteUrlParser.getUrl(queryObject);
+        Request newsRequest = new Request(url, callback, params.key);
+        Volley.newRequestQueue(context).add(newsRequest);
     }
 
-    private class NewsRequest extends JsonObjectRequest {
-        NewsRequest(String url, final LoadNewsCallback callback) {
+    private class Request extends JsonObjectRequest {
+        Request(String url, final Object callback, final int page) {
             super(url,
                     new Response.Listener<JSONObject>() {
                         @Override
@@ -128,7 +72,13 @@ public class NewsRemoteSource implements INewsSource {
                                     List<News> newsList = gson.fromJson(newsJsonArray.toString(), new TypeToken<List<News>>() {
                                     }.getType());
 
-                                    callback.onSuccess(totalResults, newsList);
+
+                                    // for DataSource of Paging Library
+                                    if (page == initPage && callback instanceof LoadInitialCallback) {
+                                        ((LoadInitialCallback) callback).onResult(newsList, 0, totalResults, null, page + 1);
+                                    } else if (callback instanceof LoadCallback) {
+                                        ((LoadCallback) callback).onResult(newsList, page + 1);
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -138,10 +88,9 @@ public class NewsRemoteSource implements INewsSource {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            if (error != null&&error.networkResponse!=null) {
+                            if (error != null && error.networkResponse != null) {
                                 Log.d("<>", new String(error.networkResponse.data));
                             }
-                            callback.onFailed();
                         }
                     });
         }
