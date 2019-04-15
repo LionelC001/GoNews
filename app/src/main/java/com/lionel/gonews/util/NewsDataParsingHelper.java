@@ -84,11 +84,12 @@ public class NewsDataParsingHelper {
     @BindingAdapter("shortDate")
     public static void setShortDate(TextView view, String oldTime) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
-        sdf.setTimeZone(TimeZone.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Date oldDate = sdf.parse(oldTime);
             sdf.setTimeZone(TimeZone.getDefault());
             sdf.applyPattern(DATE_YY_MM_DD);
+
             String shortDate = sdf.format(oldDate);
             view.setText(shortDate);
         } catch (ParseException e) {
