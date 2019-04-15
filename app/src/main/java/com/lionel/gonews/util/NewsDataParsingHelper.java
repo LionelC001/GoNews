@@ -2,11 +2,13 @@ package com.lionel.gonews.util;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.lionel.gonews.R;
 
 import java.text.ParseException;
@@ -20,8 +22,22 @@ import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
 public class NewsDataParsingHelper {
 
     @BindingAdapter("imageUrl")
-    public static void setImageFromUrl(ImageView imageView, String url) {
-        Glide.with(imageView.getContext()).load(url).diskCacheStrategy(DiskCacheStrategy.DATA).into(imageView);
+    public static void setImageFromUrl(ImageView view, String url) {
+        Context context = view.getContext();
+
+        CircularProgressDrawable loadingDrawable = new CircularProgressDrawable(view.getContext());
+        loadingDrawable.setColorSchemeColors(context.getResources().getColor(R.color.colorLightGray));
+        loadingDrawable.setStrokeWidth(8f);
+        loadingDrawable.setCenterRadius(45f);
+        loadingDrawable.start();
+
+        Glide.with(context)
+                .load(url)
+                .placeholder(loadingDrawable)
+                .error(R.drawable.ic_error_cat_yellow_lean)
+                .transition(DrawableTransitionOptions.withCrossFade(500))
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(view);
     }
 
     // cut off the tail of titles after "-"
@@ -36,7 +52,6 @@ public class NewsDataParsingHelper {
         }
         view.setText(cleanTitle);
     }
-
 
     @BindingAdapter("passedTime")
     public static void setPassedTimeOrShortDate(TextView view, String oldTime) {

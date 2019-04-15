@@ -24,6 +24,7 @@
                 android:id="@+id/imgNews"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/x120dp"
+                android:padding="@dimen/x4dp"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{itemDataNews.urlToImage}"
                 app:layout_constraintEnd_toEndOf="parent"
