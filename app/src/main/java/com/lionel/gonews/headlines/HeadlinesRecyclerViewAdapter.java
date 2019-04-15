@@ -23,7 +23,7 @@ public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<Headlines
     }
 
     public void setData(List<News> data) {
-        this.data.addAll(data);
+        this.data= data;
         notifyDataSetChanged();
     }
 
