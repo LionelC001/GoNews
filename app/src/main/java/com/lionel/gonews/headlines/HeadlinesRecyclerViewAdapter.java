@@ -62,7 +62,7 @@ public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         if (viewType == TYPE_NEWS) {
-            ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.item_recyclerview_headlines, viewGroup, false);
+            ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.item_recyclerview_news, viewGroup, false);
             return new NewsHolder(binding);
         } else {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_recyclerview_bottom, viewGroup, false);

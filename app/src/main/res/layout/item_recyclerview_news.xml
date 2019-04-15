@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imgHeadlines"
+            android:id="@+id/imgNews"
             android:layout_width="@dimen/x48dp"
             android:layout_height="48dp"
             app:imageUrl="@{itemDataNews.urlToImage}"
@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtHeadlinesTitle"
+            android:id="@+id/txtNewsTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/x8dp"
@@ -30,17 +30,17 @@
             android:text="@{itemDataNews.title}"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imgHeadlines"
-            app:layout_constraintTop_toTopOf="@+id/imgHeadlines" />
+            app:layout_constraintStart_toEndOf="@+id/imgNews"
+            app:layout_constraintTop_toTopOf="@+id/imgNews" />
 
         <TextView
-            android:id="@+id/txtHeadlinesData"
+            android:id="@+id/txtNewsData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x4dp"
             android:text="@{itemDataNews.publishedAt}"
-            app:layout_constraintEnd_toEndOf="@id/txtHeadlinesTitle"
-            app:layout_constraintTop_toBottomOf="@id/txtHeadlinesTitle" />
+            app:layout_constraintEnd_toEndOf="@id/txtNewsTitle"
+            app:layout_constraintTop_toBottomOf="@id/txtNewsTitle" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>
