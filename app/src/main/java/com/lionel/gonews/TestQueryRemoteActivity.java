@@ -53,11 +53,11 @@ public class TestQueryRemoteActivity extends AppCompatActivity {
 
 //       newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(US, GENERAL), callback);
 
-        newsRemoteSource.queryNews(new QueryNews.QueryEverythingNews("apple",
-                        1,
-                        PUBLISHEDAT,
-                        "2019-04-08",
-                        "2019-04-09")
-                , callback);
+//        newsRemoteSource.queryNews(new QueryNews.QueryEverythingNews("apple",
+//                        1,
+//                        PUBLISHEDAT,
+//                        "2019-04-08",
+//                        "2019-04-09")
+//                , callback);
     }
 }

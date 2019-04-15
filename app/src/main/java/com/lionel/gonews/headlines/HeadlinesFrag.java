@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,27 +56,27 @@ public class HeadlinesFrag extends Fragment {
     }
 
     private void initObserve() {
-        viewModel.newsData.observe(this, new Observer<List<News>>() {
-            @Override
-            public void onChanged(@Nullable List<News> newsList) {
-                showNews(newsList);
-            }
-        });
-        viewModel.isLoading.observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean isLoading) {
-                if (isLoading != null && isLoading) {
-                    refreshLayout.setRefreshing(true);  //show loading anim
-                } else {
-                    refreshLayout.setRefreshing(false); //stop loading anim
-                }
-            }
-        });
+//        viewModel.newsData.observe(this, new Observer<List<News>>() {
+//            @Override
+//            public void onChanged(@Nullable List<News> newsList) {
+//                showNews(newsList);
+//            }
+//        });
+//        viewModel.isLoading.observe(this, new Observer<Boolean>() {
+//            @Override
+//            public void onChanged(@Nullable Boolean isLoading) {
+//                if (isLoading != null && isLoading) {
+//                    refreshLayout.setRefreshing(true);  //show loading anim
+//                } else {
+//                    refreshLayout.setRefreshing(false); //stop loading anim
+//                }
+//            }
+//        });
     }
 
-    private void showNews(List<News> data) {
-        adapter.setData(data);
-    }
+//    private void showNews(List<News> data) {
+//        adapter.setData(data);
+//    }
 
     @Nullable
     @Override
@@ -107,12 +108,13 @@ public class HeadlinesFrag extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                viewModel.reloadNews();
+//                viewModel.reloadNews();
+                Log.d("<>", "onRefresh()");
             }
         });
     }
 
     private void initNews() {
-        viewModel.initNews();
+        adapter.submitList(viewModel.initNews());
     }
 }

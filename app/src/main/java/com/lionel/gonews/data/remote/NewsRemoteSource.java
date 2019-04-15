@@ -53,6 +53,7 @@ public class NewsRemoteSource extends PageKeyedDataSource<Integer, News> {
 
     @Override
     public void loadAfter(@NonNull LoadParams<Integer> params, @NonNull LoadCallback<Integer, News> callback) {
+        queryObject.page = ""+params.key;
         String url = NewsRemoteUrlParser.getUrl(queryObject);
         Request newsRequest = new Request(url, callback, params.key);
         Volley.newRequestQueue(context).add(newsRequest);
@@ -75,6 +76,7 @@ public class NewsRemoteSource extends PageKeyedDataSource<Integer, News> {
 
                                     // for DataSource of Paging Library
                                     if (page == initPage && callback instanceof LoadInitialCallback) {
+                                        Log.d("<>", "totalResults: " + totalResults);
                                         ((LoadInitialCallback) callback).onResult(newsList, 0, totalResults, null, page + 1);
                                     } else if (callback instanceof LoadCallback) {
                                         ((LoadCallback) callback).onResult(newsList, page + 1);
