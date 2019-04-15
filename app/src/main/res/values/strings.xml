@@ -9,6 +9,9 @@
     <string name="science">Science</string>
     <string name="sports">Sports</string>
     <string name="technology">Technology</string>
+    <string name="hour">h</string>
+    <string name="minute">m</string>
+    <string name="ago">ago</string>
 
     <string-array name="topics">
         <item>@string/general</item>
