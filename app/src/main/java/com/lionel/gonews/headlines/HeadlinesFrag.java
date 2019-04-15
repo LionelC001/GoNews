@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,10 +62,10 @@ public class HeadlinesFrag extends Fragment {
                 showNews(newsList);
             }
         });
-        viewModel.isLoading.observe(this, new Observer<Boolean>() {
+        viewModel.isInitLoading.observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable Boolean isLoading) {
-                if (isLoading != null && isLoading) {
+            public void onChanged(@Nullable Boolean isInitLoading) {
+                if (isInitLoading != null && isInitLoading) {
                     refreshLayout.setRefreshing(true);  //show loading anim
                 } else {
                     refreshLayout.setRefreshing(false); //stop loading anim
@@ -95,6 +96,16 @@ public class HeadlinesFrag extends Fragment {
         recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+                    viewModel.loadMoreNews();
+                }
+            }
+        });
     }
 
     private void initRefreshLayout() {

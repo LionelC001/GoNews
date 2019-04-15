@@ -7,7 +7,7 @@ import java.util.List;
 public interface INewsSource {
 
     interface LoadNewsCallback {
-        void onSuccess(int totalResults, List<News> newsList);
+        void onSuccess(int totalSize, List<News> newsList);
 
         void onFailed();
     }

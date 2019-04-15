@@ -29,8 +29,8 @@ public class TestQueryRemoteActivity extends AppCompatActivity {
         NewsRemoteSource newsRemoteSource = new NewsRemoteSource(this);
         INewsSource.LoadNewsCallback callback = new INewsSource.LoadNewsCallback() {
             @Override
-            public void onSuccess(int totalResults, List<News> newsList) {
-                Log.d("<>", "totalResults: " + totalResults + "\n");
+            public void onSuccess(int totalSize, List<News> newsList) {
+                Log.d("<>", "totalResults: " + totalSize + "\n");
                 for (int i = 0; i < newsList.size(); i++) {
                     News news = newsList.get(i);
                     Log.d("<>", news.source.id + "\t" + news.source.name

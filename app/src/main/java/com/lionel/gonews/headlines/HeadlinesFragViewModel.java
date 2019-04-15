@@ -19,21 +19,19 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
 
 
     public MutableLiveData<List<News>> newsData = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isInitLoading = new MutableLiveData<>();
+    public boolean isLastPage = false;
 
     private List<News> cachedNewsData = new ArrayList<>();
     private final String category;
     private final INewsSource newsRemoteSource;
-    private int page ;
+    private int page =1;
 
 
     public HeadlinesFragViewModel(Application application, String category) {
         super();
         this.category = category;
         newsRemoteSource = new NewsRemoteSource(application.getApplicationContext());
-        isLastPage.setValue(false);
-        page = 0;
     }
 
     public void initNews() {
@@ -45,40 +43,44 @@ public class HeadlinesFragViewModel extends ViewModel implements INewsSource.Loa
     }
 
     public void loadMoreNews() {
-        loadNews(++page);
+        page += 1;
+        loadNews(page);
     }
 
-    public void reloadNews(){
-        cachedNewsData  = new ArrayList<>();
+    public void reloadNews() {
+        cachedNewsData = new ArrayList<>();
         loadNews(1);
     }
 
     public void loadNews(int page) {
-        Log.d("<>", "loadnews: " + category );
-        isLoading.setValue(true);
-        newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
-    }
-
-    @Override
-    public void onSuccess(int totalResults, List<News> newsList) {
-        if (isLastPage.getValue() != null && !isLastPage.getValue()) {
-            newsData.setValue(newsList);
-            cachedNewsData.addAll(newsList);
-            isLoading.setValue(false);
-
-            checkIsLastPage(newsList.size());
+        Log.d("<>", "loadnews at " + page + ": " + category);
+        if (!isLastPage) {
+            isInitLoading.setValue(true);
+            newsRemoteSource.queryNews(new QueryNews.QueryHeadlinesNews(category, page), this);
         }
     }
 
+    @Override
+    public void onSuccess(int totalSize, List<News> newsList) {
+//        Log.d("<>", "totalResults " + category + ": " + totalSize);
+//        Log.d("<>", "newList size: " + newsList.size());
+        newsData.setValue(newsList);
+        cachedNewsData.addAll(newsList);
+        isInitLoading.setValue(false);
+        checkIsLastPage(newsList.size());
+    }
+
     private void checkIsLastPage(int currentSize) {
-        if (currentSize < Integer.valueOf(PAGESIZE)) {
-            isLastPage.setValue(true);
+        Log.d("<>", "currentSize: " + currentSize);
+        int pageSize = Integer.valueOf(PAGESIZE);
+        if (currentSize < pageSize) {
+            isLastPage = true;
         }
     }
 
     @Override
     public void onFailed() {
-        isLoading.setValue(false);
+        isInitLoading.setValue(false);
         Log.d("<>", "onFailed");
     }
 }
