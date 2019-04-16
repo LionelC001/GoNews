@@ -2,5 +2,7 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:src="@drawable/ic_error_dog_yellow" />
+    android:layout_marginBottom="@dimen/x96dp"
+    android:padding="@dimen/x8dp"
+    android:src="@drawable/ic_let_news_out" />
 
