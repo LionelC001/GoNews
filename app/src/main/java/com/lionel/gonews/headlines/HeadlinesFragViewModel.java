@@ -8,7 +8,6 @@ import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
@@ -29,7 +28,7 @@ public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
         return super.getIsLastPageLiveData();
     }
 
-    public MutableLiveData<Boolean> getIsErrorLiveData(){
+    public MutableLiveData<Boolean> getIsErrorLiveData() {
         return super.getIsErrorLiveData();
     }
 

@@ -35,5 +35,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="AnimDialog">
+        <item name="android:windowEnterAnimation">@anim/anim_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_dialog_out</item>
+    </style>
 
 </resources>

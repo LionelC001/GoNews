@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.lionel.gonews.R;
 import com.lionel.gonews.data.News;
+import com.lionel.gonews.util.DialogManager;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class HeadlinesFrag extends Fragment {
     private SwipeRefreshLayout refreshLayout;
     private boolean isShowRefreshing = true;
     private boolean isLoading = false;
+    private boolean isErroring = false;
 
     public HeadlinesFrag() {
 
@@ -76,8 +78,11 @@ public class HeadlinesFrag extends Fragment {
         });
         viewModel.getIsErrorLiveData().observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-
+            public void onChanged(@Nullable Boolean isError) {
+                if (isError) {
+                    DialogManager.showErrorDialog(getActivity());
+                }
+                isErroring = isError;
             }
         });
     }
@@ -118,7 +123,7 @@ public class HeadlinesFrag extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+                if (!isErroring && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
                     viewModel.loadMoreNews();
                 }
             }

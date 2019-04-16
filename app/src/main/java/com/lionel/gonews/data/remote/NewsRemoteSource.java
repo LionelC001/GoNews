@@ -3,7 +3,13 @@ package com.lionel.gonews.data.remote;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -21,7 +27,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.PAGESIZE;
 import static com.lionel.gonews.util.Constants.ENG;
 import static com.lionel.gonews.util.Constants.EVERYTHING_ENDPOINT;
 import static com.lionel.gonews.util.Constants.HEADLINES_ENDPOINT;
@@ -29,6 +34,7 @@ import static com.lionel.gonews.util.Constants.NEWS_API_KEY;
 import static com.lionel.gonews.util.Constants.NEWS_TYPE_HEADLINES;
 import static com.lionel.gonews.util.Constants.NODE_ARTICLES;
 import static com.lionel.gonews.util.Constants.NODE_TOTAL_RESULTS;
+import static com.lionel.gonews.util.Constants.PAGESIZE;
 import static com.lionel.gonews.util.Constants.QUERY_CATEGORY;
 import static com.lionel.gonews.util.Constants.QUERY_COUNTRY;
 import static com.lionel.gonews.util.Constants.QUERY_DATEFROM;
@@ -138,8 +144,21 @@ public class NewsRemoteSource implements INewsSource {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            if (error != null&&error.networkResponse!=null) {
+                            if (error != null && error.networkResponse != null) {
                                 Log.d("<>", new String(error.networkResponse.data));
+                            }
+                            if (error instanceof NoConnectionError) {
+                                Log.d("<>", "NoConnectionError");
+                            } else if (error instanceof TimeoutError) {
+                                Log.d("<>", "TimeoutError");
+                            } else if (error instanceof AuthFailureError) {
+                                Log.d("<>", "AuthFailureError");
+                            } else if (error instanceof ServerError) {
+                                Log.d("<>", "ServerError");
+                            } else if (error instanceof NetworkError) {
+                                Log.d("<>", "NetworkError");
+                            } else if (error instanceof ParseError) {
+                                Log.d("<>", "ParseError");
                             }
                             callback.onFailed();
                         }

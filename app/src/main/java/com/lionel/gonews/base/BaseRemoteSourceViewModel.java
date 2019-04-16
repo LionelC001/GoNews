@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
@@ -83,7 +82,6 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
                 currentPage = 1;
                 queryNews.setPage(currentPage);
                 isLastPage.setValue(false);
-                isError.setValue(false);
                 loadNews(queryNews);
             }
         }
@@ -114,6 +112,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         cachedNewsData.addAll(newsList);
         newsData.setValue(cachedNewsData);
         isLoading.setValue(false);
+        isError.setValue(false);
     }
 
     private void checkIsLastPage(int totalSize) {

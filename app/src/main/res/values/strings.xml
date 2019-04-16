@@ -12,6 +12,9 @@
     <string name="hour">h</string>
     <string name="minute">m</string>
     <string name="ago">ago</string>
+    <string name="ok">OK</string>
+    <string name="error_dialog_title">OOPS!\tSomething went wrong!</string>
+    <string name="error_dialog_content">Please check your network connection and try to refresh page.</string>
 
     <string-array name="topics">
         <item>@string/general</item>
