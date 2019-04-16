@@ -74,6 +74,12 @@ public class HeadlinesFrag extends Fragment {
                 adapter.setIsLastPage(isLastPage);
             }
         });
+        viewModel.getIsErrorLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+
+            }
+        });
     }
 
     private void showNews(List<News> data) {

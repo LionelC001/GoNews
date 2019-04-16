@@ -29,6 +29,10 @@ public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
         return super.getIsLastPageLiveData();
     }
 
+    public MutableLiveData<Boolean> getIsErrorLiveData(){
+        return super.getIsErrorLiveData();
+    }
+
     public void setQueryCondition(String category) {
         QueryNews.QueryHeadlinesNews queryNews = new QueryNews.QueryHeadlinesNews(category, 1);
         super.setQueryCondition(queryNews);

@@ -35,6 +35,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     private MutableLiveData<List<News>> newsData = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isError = new MutableLiveData<>();
 
     private QueryNews queryNews;
     private List<News> cachedNewsData = new ArrayList<>();
@@ -47,6 +48,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
 
         isLoading.setValue(false);
         isLastPage.setValue(false);
+        isError.setValue(false);
     }
 
     protected MutableLiveData<List<News>> getNewsData() {
@@ -59,6 +61,10 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
 
     protected MutableLiveData<Boolean> getIsLastPageLiveData() {
         return isLastPage;
+    }
+
+    protected MutableLiveData<Boolean> getIsErrorLiveData() {
+        return isError;
     }
 
     protected void setQueryCondition(QueryNews queryNews) {
@@ -77,6 +83,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
                 currentPage = 1;
                 queryNews.setPage(currentPage);
                 isLastPage.setValue(false);
+                isError.setValue(false);
                 loadNews(queryNews);
             }
         }
@@ -130,6 +137,6 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     @Override
     public void onFailed() {
         isLoading.setValue(false);
-        Log.d("<>", "onFailed");
+        isError.setValue(true);
     }
 }
