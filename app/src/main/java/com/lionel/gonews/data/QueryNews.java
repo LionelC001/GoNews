@@ -8,7 +8,7 @@ import static com.lionel.gonews.util.Constants.NEWS_TYPE_HEADLINES;
  */
 public abstract class QueryNews {
     public String type;
-    public String page;
+    public int page;
 
     public static class QueryHeadlinesNews extends QueryNews {
         public String category;
@@ -16,7 +16,7 @@ public abstract class QueryNews {
         public QueryHeadlinesNews(String category, int page) {
             this.type = NEWS_TYPE_HEADLINES;
             this.category = category;
-            this.page = String.valueOf(page);
+            this.page = page;
         }
     }
 
@@ -29,7 +29,7 @@ public abstract class QueryNews {
         public QueryEverythingNews(String queryWord, int page, String sortBy, String dateFrom, String dateTo) {
             this.type = NEWS_TYPE_EVERYTHING;
             this.queryWord = queryWord;
-            this.page = String.valueOf(page);
+            this.page = page;
             this.sortBy = sortBy;
             this.dateFrom = dateFrom;
             this.dateTo = dateTo;
