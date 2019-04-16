@@ -18,7 +18,7 @@ public class HeadlinesFragViewModelFactory implements ViewModelProvider.Factory 
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(HeadlinesFragViewModel.class)) {
-            return (T) new HeadlinesFragViewModel(application, category);
+            return (T) new HeadlinesFragViewModel(application);
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

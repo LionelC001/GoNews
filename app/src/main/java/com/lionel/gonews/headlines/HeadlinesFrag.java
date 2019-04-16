@@ -47,21 +47,20 @@ public class HeadlinesFrag extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ViewModelProvider.Factory factory = new HeadlinesFragViewModelFactory(getActivity().getApplication(), getArguments().getString(CATEGORY));
-        viewModel = ViewModelProviders.of(this, factory).get(HeadlinesFragViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(HeadlinesFragViewModel.class);
         adapter = new HeadlinesRecyclerViewAdapter();
 
         initObserve();
     }
 
     private void initObserve() {
-        viewModel.newsData.observe(this, new Observer<List<News>>() {
+        viewModel.getNewsData().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> newsList) {
                 showNews(newsList);
             }
         });
-        viewModel.isInitLoading.observe(this, new Observer<Boolean>() {
+        viewModel.getInitLoadingLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isInitLoading) {
                 if (isInitLoading != null && isInitLoading) {
@@ -71,7 +70,7 @@ public class HeadlinesFrag extends Fragment {
                 }
             }
         });
-        viewModel.isLastPage.observe(this, new Observer<Boolean>() {
+        viewModel.getLastPageLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLastPage) {
                 adapter.setIsLastPage(isLastPage);
@@ -129,6 +128,8 @@ public class HeadlinesFrag extends Fragment {
     }
 
     private void initNews() {
+        String category = getArguments().getString(CATEGORY);
+        viewModel.setQueryCondition(category);
         viewModel.initNews();
     }
 }

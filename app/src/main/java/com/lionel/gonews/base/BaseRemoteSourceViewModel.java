@@ -78,7 +78,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
             newsData.setValue(cachedNewsData);
         } else {
             if (queryNews != null) {
-                queryNews.page = 1;
+                queryNews.setPage(1);
                 loadNews(queryNews);
                 isInitLoading.setValue(true);
             }
@@ -87,7 +87,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
 
     public void loadMoreNews() {
         currentPage += 1;
-        queryNews.page = currentPage;
+        queryNews.setPage(currentPage);
         loadNews(queryNews);
         isMoreLoading.setValue(true);
     }
