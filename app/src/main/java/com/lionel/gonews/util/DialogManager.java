@@ -23,7 +23,7 @@ public class DialogManager {
                 }
             });
             AlertDialog dialog = builder.create();
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_search_box);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.frame_round_corner_white);
             dialog.getWindow().setWindowAnimations(R.style.AnimDialog);
             dialog.show();
         }
