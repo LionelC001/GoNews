@@ -20,23 +20,20 @@ import static com.lionel.gonews.util.Constants.PAGESIZE;
  * a bridge between View and NewsRemoteSource.
  *
  * <p>
- * you must call {@link #setQueryCondition(QueryNews)} before initNews() or reloadNews().
- * notice that, {@link #initNews()} should be called once at beginning,
- * after that, if u want query new result, u should use {@link #reloadNews()} instead.
+ * you must call {@link #setQueryCondition(QueryNews)} before initNews() or initNewsWithoutCache().
  * </p>
  *
  * <p>
  * you will need to observe the states via LiveData to control your view.
  * use these method to get LiveData..
- * {@link #getNewsData()},{@link #getInitLoadingLiveData()},{@link #getLastPageLiveData()}
+ * {@link #getNewsData()},{@link #getIsLoadingLiveData()},{@link #getIsLastPageLiveData()}.
  * </p>
  */
 public abstract class BaseRemoteSourceViewModel extends AndroidViewModel implements INewsSource.LoadNewsCallback {
     private final INewsSource newsRemoteSource;
 
     private MutableLiveData<List<News>> newsData = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isInitLoading = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isMoreLoading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
 
     private QueryNews queryNews;
@@ -44,78 +41,72 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     private int maxPage = 0;
     private int currentPage = 1;
 
-    public BaseRemoteSourceViewModel(@NonNull Application application) {
+    protected BaseRemoteSourceViewModel(@NonNull Application application) {
         super(application);
         newsRemoteSource = new NewsRemoteSource(application.getApplicationContext());
 
-        isInitLoading.setValue(false);
-        isMoreLoading.setValue(false);
+        isLoading.setValue(false);
         isLastPage.setValue(false);
     }
 
-    public MutableLiveData<List<News>> getNewsData() {
+    protected MutableLiveData<List<News>> getNewsData() {
         return newsData;
     }
 
-    public MutableLiveData<Boolean> getInitLoadingLiveData() {
-        return isInitLoading;
+    protected MutableLiveData<Boolean> getIsLoadingLiveData() {
+        return isLoading;
     }
 
-    public MutableLiveData<Boolean> getLastPageLiveData() {
+    protected MutableLiveData<Boolean> getIsLastPageLiveData() {
         return isLastPage;
     }
 
-    public void setQueryCondition(QueryNews queryNews) {
+    protected void setQueryCondition(QueryNews queryNews) {
         this.queryNews = queryNews;
     }
 
     /**
-     * start to query news
-     * notice: if you need a new result without any cache, call {@link #reloadNews()} instead.
+     * start to query news.
+     * notice: if you need a new result without any cache, call {@link #initNewsWithoutCache()} instead.
      */
-    public void initNews() {
+    protected void initNews() {
         if (cachedNewsData != null && cachedNewsData.size() > 0) {
             newsData.setValue(cachedNewsData);
         } else {
             if (queryNews != null) {
-                queryNews.setPage(1);
+                currentPage = 1;
+                queryNews.setPage(currentPage);
+                isLastPage.setValue(false);
                 loadNews(queryNews);
-                isInitLoading.setValue(true);
             }
         }
     }
 
-    public void loadMoreNews() {
-        currentPage += 1;
-        queryNews.setPage(currentPage);
-        loadNews(queryNews);
-        isMoreLoading.setValue(true);
-    }
-
-    public void reloadNews() {
+    protected void initNewsWithoutCache() {
         cachedNewsData = new ArrayList<>();
-        currentPage = 1;
-        isLastPage.setValue(false);
         initNews();
     }
 
-    private void loadNews(QueryNews queryNews) {
+    protected void loadMoreNews() {
         if (!isLastPage.getValue()) {
-            newsRemoteSource.queryNews(queryNews, this);
+            currentPage += 1;
+            queryNews.setPage(currentPage);
+            loadNews(queryNews);
         }
     }
 
-    public boolean getLoadingState() {
-        return isInitLoading.getValue() || isMoreLoading.getValue();
+    private void loadNews(QueryNews queryNews) {
+        isLoading.setValue(true);
+        newsRemoteSource.queryNews(queryNews, this);
     }
 
     @Override
     public void onSuccess(int totalSize, List<News> newsList) {
         checkIsLastPage(totalSize);  // this line must be called before newsData.setValue()
-        closeLoadingState();
 
         cachedNewsData.addAll(newsList);
         newsData.setValue(cachedNewsData);
+        isLoading.setValue(false);
     }
 
     private void checkIsLastPage(int totalSize) {
@@ -136,18 +127,9 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         }
     }
 
-    private void closeLoadingState() {
-        if (isInitLoading.getValue()) {
-            isInitLoading.setValue(false);
-        }
-        if (isMoreLoading.getValue()) {
-            isMoreLoading.setValue(false);
-        }
-    }
-
     @Override
     public void onFailed() {
-        closeLoadingState();
+        isLoading.setValue(false);
         Log.d("<>", "onFailed");
     }
 }

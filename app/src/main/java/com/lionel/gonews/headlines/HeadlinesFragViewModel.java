@@ -3,32 +3,15 @@ package com.lionel.gonews.headlines;
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
-import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
-import com.lionel.gonews.data.remote.NewsRemoteSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.PAGESIZE;
-
 public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
-
-
-    public MutableLiveData<List<News>> newsData = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isInitLoading = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isMoreLoading = new MutableLiveData<>();
-    public MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
-
-
-    private List<News> cachedNewsData = new ArrayList<>();
-    private int maxPage = 0;
-    private int currentPage = 1;
-
 
     public HeadlinesFragViewModel(@NonNull Application application) {
         super(application);
@@ -38,12 +21,12 @@ public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
         return super.getNewsData();
     }
 
-    public MutableLiveData<Boolean> getInitLoadingLiveData() {
-        return super.getInitLoadingLiveData();
+    public MutableLiveData<Boolean> getIsLoadingLiveData() {
+        return super.getIsLoadingLiveData();
     }
 
-    public MutableLiveData<Boolean> getLastPageLiveData() {
-        return super.getLastPageLiveData();
+    public MutableLiveData<Boolean> getIsLastPageLiveData() {
+        return super.getIsLastPageLiveData();
     }
 
     public void setQueryCondition(String category) {
@@ -55,15 +38,11 @@ public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
         super.initNews();
     }
 
+    public void initNewsWithoutCache() {
+        super.initNewsWithoutCache();
+    }
+
     public void loadMoreNews() {
         super.loadMoreNews();
-    }
-
-    public void reloadNews() {
-        super.reloadNews();
-    }
-
-    public boolean getLoadingState() {
-        return super.getLoadingState();
     }
 }

@@ -1,7 +1,6 @@
 package com.lionel.gonews.headlines;
 
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +29,8 @@ public class HeadlinesFrag extends Fragment {
     private HeadlinesRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
+    private boolean isShowRefreshing = true;
+    private boolean isLoading = false;
 
     public HeadlinesFrag() {
 
@@ -60,17 +61,14 @@ public class HeadlinesFrag extends Fragment {
                 showNews(newsList);
             }
         });
-        viewModel.getInitLoadingLiveData().observe(this, new Observer<Boolean>() {
+        viewModel.getIsLoadingLiveData().observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable Boolean isInitLoading) {
-                if (isInitLoading != null && isInitLoading) {
-                    refreshLayout.setRefreshing(true);  //show loading anim
-                } else {
-                    refreshLayout.setRefreshing(false); //stop loading anim
-                }
+            public void onChanged(@Nullable Boolean isLoading) {
+                HeadlinesFrag.this.isLoading = isLoading;
+                showOrCloseRefreshing(isLoading);  //show loading anim at beginning
             }
         });
-        viewModel.getLastPageLiveData().observe(this, new Observer<Boolean>() {
+        viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLastPage) {
                 adapter.setIsLastPage(isLastPage);
@@ -80,6 +78,15 @@ public class HeadlinesFrag extends Fragment {
 
     private void showNews(List<News> data) {
         adapter.setData(data);
+    }
+
+    private void showOrCloseRefreshing(boolean isLoading) {
+        if (isShowRefreshing && isLoading) {  //show refresh loading only once at new result
+            refreshLayout.setRefreshing(true);
+        } else {
+            refreshLayout.setRefreshing(false);
+            isShowRefreshing = false;
+        }
     }
 
     @Nullable
@@ -105,7 +112,7 @@ public class HeadlinesFrag extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!viewModel.getLoadingState() && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+                if (!isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
                     viewModel.loadMoreNews();
                 }
             }
@@ -122,7 +129,8 @@ public class HeadlinesFrag extends Fragment {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                viewModel.reloadNews();
+                isShowRefreshing = true;
+                viewModel.initNewsWithoutCache();
             }
         });
     }
