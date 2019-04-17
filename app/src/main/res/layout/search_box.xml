@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/frame_round_corner_white"
+    android:background="@drawable/round_corner_white"
     android:focusableInTouchMode="true"
     android:gravity="center_vertical"
     android:orientation="horizontal">
@@ -33,7 +33,7 @@
         android:inputType="text"
         android:nextFocusLeft="@id/edtSearchBox"
         android:nextFocusUp="@id/edtSearchBox"
-        android:popupBackground="@drawable/frame_round_corner_white"
+        android:popupBackground="@drawable/round_corner_white"
         android:textCursorDrawable="@drawable/cursor_input_gray"
         android:textSize="@dimen/x24sp"
         android:textStyle="bold"

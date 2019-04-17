@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_margin="@dimen/x8dp"
-            android:background="@drawable/frame_round_corner_white"
+            android:background="@drawable/round_corner_white"
             android:elevation="@dimen/x4dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
