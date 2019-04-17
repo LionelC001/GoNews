@@ -16,7 +16,7 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-        <activity android:name=".search.SearchAct"></activity>
+
         <activity android:name=".headlines.HeadlinesAct">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".search.SearchAct" />
+        <activity android:name=".content.ContentAct" />
         <activity android:name=".TestQueryRemoteActivity" />
     </application>
 

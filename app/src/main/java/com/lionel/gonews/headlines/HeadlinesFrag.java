@@ -2,6 +2,7 @@ package com.lionel.gonews.headlines;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lionel.gonews.R;
+import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.util.DialogManager;
 
@@ -21,8 +23,9 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.DISTANCE_TO_SYNC;
 import static com.lionel.gonews.util.Constants.END_POSITION;
+import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class HeadlinesFrag extends Fragment {
+public class HeadlinesFrag extends Fragment implements HeadlinesRecyclerViewAdapter.IItemNewsCallback {
 
     private static final String CATEGORY = "category";
 
@@ -51,7 +54,7 @@ public class HeadlinesFrag extends Fragment {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(HeadlinesFragViewModel.class);
-        adapter = new HeadlinesRecyclerViewAdapter();
+        adapter = new HeadlinesRecyclerViewAdapter(this);
 
         initObserve();
     }
@@ -150,5 +153,13 @@ public class HeadlinesFrag extends Fragment {
         String category = getArguments().getString(CATEGORY);
         viewModel.setQueryCondition(category);
         viewModel.initNews();
+    }
+
+    @Override
+    public void onIntentToNewsContent(News news) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), ContentAct.class);
+        intent.putExtra(NEWS_CONTENT, news);
+        startActivity(intent);
     }
 }

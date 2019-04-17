@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,16 @@ import static com.lionel.gonews.util.Constants.TYPE_NEWS;
 
 public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    public interface IItemNewsCallback {
+        void onIntentToNewsContent(News news);
+    }
+
+    private final IItemNewsCallback callback;
     private List<News> data = new ArrayList<>();
     private boolean isLastPage = false;
 
-    public HeadlinesRecyclerViewAdapter() {
+    public HeadlinesRecyclerViewAdapter(IItemNewsCallback callback) {
+        this.callback = callback;
         setHasStableIds(true);  // avoid blink after call notifyDataSetChanged()
     }
 
@@ -85,6 +92,7 @@ public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder newsHolder, int position) {
         if (getItemViewType(position) == TYPE_NEWS) {
             ((NewsHolder) newsHolder).getBinding().setVariable(BR.itemDataNews, data.get(position));
+            ((NewsHolder) newsHolder).getBinding().getRoot().setOnClickListener(new OnItemClickListener(callback, data.get(position)));
         } else if (getItemViewType(position) == TYPE_BACKGROUND) {
             // nothing to bind for background
         } else if (getItemViewType(position) == TYPE_BOTTOM) {
@@ -118,6 +126,23 @@ public class HeadlinesRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerV
             return data.get(position).title.hashCode();  // a unique id for call setHasStableIds()
         } else {
             return position;    // the last view, loading progress
+        }
+    }
+
+    private class OnItemClickListener implements View.OnClickListener {
+
+        private final IItemNewsCallback callback;
+        private final News item;
+
+        OnItemClickListener(IItemNewsCallback callback, News item) {
+            this.callback = callback;
+            this.item = item;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Log.d("<>", "onClick: " + item.source.name);
+            callback.onIntentToNewsContent(item);
         }
     }
 }

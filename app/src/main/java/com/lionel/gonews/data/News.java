@@ -1,9 +1,11 @@
 package com.lionel.gonews.data;
 
+import java.io.Serializable;
+
 /**
  * model class for news
  */
-public class News {
+public class News implements Serializable {
     public Source source;
     public String author;
     public String title;
@@ -24,7 +26,7 @@ public class News {
         this.content = content;
     }
 
-    public class Source {
+    public class Source implements Serializable{
         public String id;
         public String name;
 
