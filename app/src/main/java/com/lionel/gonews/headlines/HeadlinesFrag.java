@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lionel.gonews.R;
+import com.lionel.gonews.base.BaseRecyclerViewAdapter;
 import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.util.DialogManager;
@@ -25,7 +26,7 @@ import static com.lionel.gonews.util.Constants.DISTANCE_TO_SYNC;
 import static com.lionel.gonews.util.Constants.END_POSITION;
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class HeadlinesFrag extends Fragment implements HeadlinesRecyclerViewAdapter.IItemNewsCallback {
+public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.IItemNewsCallback {
 
     private static final String CATEGORY = "category";
 
