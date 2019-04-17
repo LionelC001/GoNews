@@ -43,8 +43,8 @@ public class SearchBox extends FrameLayout {
         this.context = context;
 
         initEdtSearchBox();
-        initBackBtn();
-        initCancelBtn();
+        initBtnBack();
+        initBtnCancel();
     }
 
     public void setCallback(ISearchBoxCallback callback) {
@@ -95,7 +95,7 @@ public class SearchBox extends FrameLayout {
         });
     }
 
-    private void initBackBtn() {
+    private void initBtnBack() {
         ImageButton btnBack = findViewById(R.id.imgBtnBack);
         btnBack.setOnClickListener(new OnClickListener() {
             @Override
@@ -107,7 +107,7 @@ public class SearchBox extends FrameLayout {
         });
     }
 
-    private void initCancelBtn() {
+    private void initBtnCancel() {
         ImageButton btnCancel = findViewById(R.id.imgBtnCancel);
         btnCancel.setOnClickListener(new OnClickListener() {
             @Override
