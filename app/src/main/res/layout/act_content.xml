@@ -18,11 +18,52 @@
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+                style="@style/Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="enterAlways|scroll" />
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_scrollFlags="enterAlways|scroll">
 
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imgBtnBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/x20dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_arrow_back_white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <CheckBox
+                        android:id="@+id/chkBoxFavorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/x16dp"
+                        android:background="@drawable/bg_chkbox_favorite"
+                        android:button="@drawable/ic_favorite_empty_white"
+                        app:layout_constraintEnd_toStartOf="@+id/imgBtnShare"
+                        app:layout_constraintTop_toTopOf="@+id/imgBtnShare" />
+
+                    <ImageButton
+                        android:id="@+id/imgBtnShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/x20dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_share_white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
@@ -48,7 +89,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:titleWithoutTail="@{contentActNews.title}" />
 
-
                 <TextView
                     style="@style/NewsContentFromAndDateText"
                     android:layout_width="wrap_content"
@@ -68,7 +108,6 @@
                     app:dateAndTime="@{contentActNews.publishedAt}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtTitle" />
-
 
                 <ImageView
                     android:id="@+id/imgPhoto"

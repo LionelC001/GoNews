@@ -5,6 +5,10 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.R;
@@ -21,7 +25,12 @@ public class ContentAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.act_content);
 
+        initToolbar();
         initNewsContent();
+    }
+
+    private void initToolbar() {
+
     }
 
     private void initNewsContent() {
@@ -30,4 +39,9 @@ public class ContentAct extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        Log.d("<>", "onDestory");
+        super.onDestroy();
+    }
 }

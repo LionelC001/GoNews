@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/x12dp"
                         android:layout_marginEnd="@dimen/x12dp"
-                        android:background="@null"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_menu"
                         tools:ignore="ContentDescription" />
 
@@ -51,6 +51,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:drawableEnd="@drawable/ic_search"
                         android:gravity="center_vertical"
                         android:hint="@string/go_news"

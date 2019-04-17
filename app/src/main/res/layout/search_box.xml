@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/x12dp"
         android:layout_marginEnd="@dimen/x12dp"
-        android:background="@null"
-        android:src="@drawable/ic_arrow_back"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_arrow_back_gray"
         tools:ignore="ContentDescription" />
 
     <android.support.v7.widget.AppCompatAutoCompleteTextView
@@ -31,8 +31,6 @@
         android:hint="@string/search"
         android:imeOptions="actionSearch"
         android:inputType="text"
-        android:nextFocusLeft="@id/edtSearchBox"
-        android:nextFocusUp="@id/edtSearchBox"
         android:popupBackground="@drawable/round_corner_white"
         android:textCursorDrawable="@drawable/cursor_input_gray"
         android:textSize="@dimen/x24sp"
@@ -44,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/x12dp"
-        android:background="@null"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_cancel"
         tools:ignore="ContentDescription" />
 </LinearLayout>
