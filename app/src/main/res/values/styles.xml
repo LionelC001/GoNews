@@ -19,6 +19,11 @@
         <item name="android:contentInsetEnd">0dp</item>
     </style>
 
+    <style name="AnimDialog">
+        <item name="android:windowEnterAnimation">@anim/anim_dialog_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_dialog_out</item>
+    </style>
+
     <style name="SearchBoxText">
         <item name="android:textColor">@color/colorDeepGray</item>
         <item name="android:textSize">@dimen/x24sp</item>
@@ -35,9 +40,20 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AnimDialog">
-        <item name="android:windowEnterAnimation">@anim/anim_dialog_in</item>
-        <item name="android:windowExitAnimation">@anim/anim_dialog_out</item>
+    <style name="NewsContentTitleText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/x28sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NewsContentFromAndDateText">
+        <item name="android:textSize">@dimen/x14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="NewsContentText">
+        <item name="android:textSize">@dimen/x20sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

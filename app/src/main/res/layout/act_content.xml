@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="contentActNews"
+            type="com.lionel.gonews.data.News" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -25,7 +28,7 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:paddingTop="@dimen/x8dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
@@ -35,21 +38,50 @@
                 android:orientation="vertical"
                 android:padding="@dimen/x8dp">
 
-                <View
+                <TextView
+                    style="@style/NewsContentTitleText"
                     android:layout_width="match_parent"
-                    android:layout_height="1000dp"
-                    android:background="@color/colorYellow" />
+                    android:layout_height="wrap_content"
+                    app:titleWithoutTail="@{contentActNews.title}" />
 
-                <View
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="1000dp"
-                    android:background="@color/colorLightBlue" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x8dp"
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/NewsContentFromAndDateText"
+                        android:background="@drawable/frame_round_corner_white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/x8dp"
+                        android:text="@{contentActNews.source.name}" />
+
+                    <TextView
+                        style="@style/NewsContentFromAndDateText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{contentActNews.publishedAt}" />
+
+                </LinearLayout>
+
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x16dp"
+                    android:scaleType="center"
+                    app:srcFromUrl="@{contentActNews.urlToImage}" />
+
+                <TextView
+                    style="@style/NewsContentText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/x16dp"
+                    android:text="@{(contentActNews.content!=null) ? contentActNews.content : contentActNews.description}" />
             </LinearLayout>
-
-
         </android.support.v4.widget.NestedScrollView>
-
     </android.support.design.widget.CoordinatorLayout>
-
 </layout>

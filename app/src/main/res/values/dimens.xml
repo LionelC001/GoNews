@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="x12sp">12sp</dimen>
+    <dimen name="x14sp">14sp</dimen>
     <dimen name="x16sp">16sp</dimen>
     <dimen name="x20sp">20sp</dimen>
     <dimen name="x24sp">24sp</dimen>
+    <dimen name="x28sp">28sp</dimen>
     <dimen name="x30sp">30sp</dimen>
+    <dimen name="x32sp">32sp</dimen>
 
 
     <dimen name="x2dp">2dp</dimen>
     <dimen name="x4dp">4dp</dimen>
     <dimen name="x8dp">8dp</dimen>
     <dimen name="x12dp">12dp</dimen>
+    <dimen name="x16dp">16dp</dimen>
     <dimen name="x48dp">48dp</dimen>
     <dimen name="x64dp">64dp</dimen>
     <dimen name="x96dp">96dp</dimen>

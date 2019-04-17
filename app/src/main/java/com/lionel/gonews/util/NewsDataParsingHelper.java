@@ -21,7 +21,7 @@ import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
 
 public class NewsDataParsingHelper {
 
-    @BindingAdapter("imageUrl")
+    @BindingAdapter("srcFromUrl")
     public static void setImageFromUrl(ImageView view, String url) {
         Context context = view.getContext();
 
@@ -41,7 +41,7 @@ public class NewsDataParsingHelper {
     }
 
     // cut off the tail of titles after "-"
-    @BindingAdapter("cleanTitle")
+    @BindingAdapter("titleWithoutTail")
     public static void cutOffTitleTail(TextView view, String oldTitle) {
         String cleanTitle;
         int endDash = oldTitle.lastIndexOf("-");
