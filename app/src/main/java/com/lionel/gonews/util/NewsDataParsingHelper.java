@@ -18,6 +18,7 @@ import java.util.TimeZone;
 
 import static com.lionel.gonews.util.Constants.DATE_ISO8601;
 import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
+import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD_HH_MM_SS;
 
 public class NewsDataParsingHelper {
 
@@ -67,7 +68,7 @@ public class NewsDataParsingHelper {
             long dayInMs = 24 * 60 * 60 * 1000;
             long passedTimeInMs = currentDateInMs - oldDateInMs;
             if (passedTimeInMs < dayInMs) {  // show passed time within 24hrs
-                String passedTime = parsePassedTime(view.getContext(), passedTimeInMs);
+                String passedTime = countPassedTime(view.getContext(), passedTimeInMs);
                 view.setText(passedTime);
             } else {  // otherwise, show "yyyy-MM-dd"
                 setShortDate(view, oldTime);
@@ -77,7 +78,7 @@ public class NewsDataParsingHelper {
         }
     }
 
-    private static String parsePassedTime(Context context, long passedTimeInMs) {
+    private static String countPassedTime(Context context, long passedTimeInMs) {
         int hour = (int) (passedTimeInMs / 1000 / 60 / 60 % 24);
         int minute = (int) (passedTimeInMs / 1000 / 60 % 60);
 
@@ -96,19 +97,36 @@ public class NewsDataParsingHelper {
         }
     }
 
-    @BindingAdapter("shortDate")
+    @BindingAdapter("date")
     public static void setShortDate(TextView view, String oldTime) {
+        String date = formatDate(DATE_YY_MM_DD, oldTime);
+        if (date != null) {
+            view.setText(date);
+        }
+    }
+
+    @BindingAdapter("dateAndTime")
+    public static void setDateAndTime(TextView view, String oldTime) {
+        String date = formatDate(DATE_YY_MM_DD_HH_MM_SS, oldTime);
+        if (date != null) {
+            view.setText(date);
+        }
+    }
+
+
+    private static String formatDate(String pattern, String oldTime) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Date oldDate = sdf.parse(oldTime);
             sdf.setTimeZone(TimeZone.getDefault());
-            sdf.applyPattern(DATE_YY_MM_DD);
+            sdf.applyPattern(pattern);
 
-            String shortDate = sdf.format(oldDate);
-            view.setText(shortDate);
+            String formattedDate = sdf.format(oldDate);
+            return formattedDate;
         } catch (ParseException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }

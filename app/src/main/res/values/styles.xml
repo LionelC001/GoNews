@@ -42,7 +42,7 @@
 
     <style name="NewsContentTitleText">
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">@dimen/x28sp</item>
+        <item name="android:textSize">@dimen/x24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -52,8 +52,8 @@
     </style>
 
     <style name="NewsContentText">
-        <item name="android:textSize">@dimen/x20sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/x18sp</item>
     </style>
 
 </resources>
