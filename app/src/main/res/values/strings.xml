@@ -16,7 +16,7 @@
     <string name="error_dialog_title">OOPS!\tSomething went wrong!</string>
     <string name="error_dialog_content">Please check your network connection and try to refresh page.</string>
     <string name="my_favorite_news">My Favorite News</string>
-    <string name="share_news">Share</string>
+    <string name="share">Share</string>
 
     <string-array name="topics">
         <item>@string/general</item>

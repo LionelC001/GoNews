@@ -1,14 +1,16 @@
 package com.lionel.gonews.content;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.R;
@@ -19,29 +21,63 @@ import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 public class ContentAct extends AppCompatActivity {
 
     private ViewDataBinding binding;
+    private CheckBox chkFavorite;
+    private News news;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.act_content);
 
-        initToolbar();
+        initBtnBack();
+        initChkBoxFavorite();
+        initBtnShare();
         initNewsContent();
     }
 
-    private void initToolbar() {
+    private void initBtnBack() {
+        ImageButton btnBack = findViewById(R.id.imgBtnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
 
+                //TODO  save favorite state
+            }
+        });
     }
+
+    private void initChkBoxFavorite() {
+        chkFavorite = findViewById(R.id.chkBoxFavorite);
+        chkFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("<>", "isCHeck: " + isChecked);
+            }
+        });
+    }
+
+    private void initBtnShare() {
+        ImageButton btnShare = findViewById(R.id.imgBtnShare);
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, news.url);
+
+                Intent chooser = Intent.createChooser(intent, getString(R.string.share));
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(chooser);
+                }
+            }
+        });
+    }
+
 
     private void initNewsContent() {
-        News news = getIntent().getParcelableExtra(NEWS_CONTENT);
+        news = getIntent().getParcelableExtra(NEWS_CONTENT);
         binding.setVariable(BR.contentActNews, news);
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        Log.d("<>", "onDestory");
-        super.onDestroy();
     }
 }
