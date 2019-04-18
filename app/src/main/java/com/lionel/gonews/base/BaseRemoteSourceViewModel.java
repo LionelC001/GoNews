@@ -24,14 +24,19 @@ import static com.lionel.gonews.util.Constants.PAGESIZE;
  *
  * <p>
  * you will need to observe the states via LiveData to control your view.
- * use these method to get LiveData..
- * {@link #getNewsData()},{@link #getIsLoadingLiveData()},{@link #getIsLastPageLiveData()}.
+ * use these method to get LiveData:
+ * {@link #getNewsDataLiveData()},
+ * {@link #getTotalSizeLiveData()},
+ * {@link #getIsLoadingLiveData()},
+ * {@link #getIsLastPageLiveData()},
+ * {@link #getIsErrorLiveData()}.
  * </p>
  */
 public abstract class BaseRemoteSourceViewModel extends AndroidViewModel implements INewsSource.LoadNewsCallback {
     private final INewsSource newsRemoteSource;
 
     private MutableLiveData<List<News>> newsData = new MutableLiveData<>();
+    private MutableLiveData<Integer> newsDataTotalSize = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
     private MutableLiveData<Boolean> isError = new MutableLiveData<>();
@@ -50,8 +55,12 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         isError.setValue(false);
     }
 
-    protected MutableLiveData<List<News>> getNewsData() {
+    protected MutableLiveData<List<News>> getNewsDataLiveData() {
         return newsData;
+    }
+
+    protected MutableLiveData<Integer> getTotalSizeLiveData() {
+        return newsDataTotalSize;
     }
 
     protected MutableLiveData<Boolean> getIsLoadingLiveData() {
@@ -87,6 +96,9 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         }
     }
 
+    /**
+     * for refresh and query
+     */
     protected void initNewsWithoutCache() {
         cachedNewsData = new ArrayList<>();
         initNews();
@@ -111,6 +123,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
 
         cachedNewsData.addAll(newsList);
         newsData.setValue(cachedNewsData);
+        newsDataTotalSize.setValue(totalSize);
         isLoading.setValue(false);
         isError.setValue(false);
     }

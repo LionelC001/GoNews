@@ -61,7 +61,7 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
     }
 
     private void initObserve() {
-        viewModel.getNewsData().observe(this, new Observer<List<News>>() {
+        viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> newsList) {
                 showNews(newsList);

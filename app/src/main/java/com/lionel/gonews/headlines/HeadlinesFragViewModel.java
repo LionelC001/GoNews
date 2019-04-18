@@ -12,12 +12,14 @@ import java.util.List;
 
 public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
 
+    private QueryNews.QueryHeadlinesNews queryNews;
+
     public HeadlinesFragViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public MutableLiveData<List<News>> getNewsData() {
-        return super.getNewsData();
+    public MutableLiveData<List<News>> getNewsDataLiveData() {
+        return super.getNewsDataLiveData();
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {
@@ -33,7 +35,10 @@ public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
     }
 
     public void setQueryCondition(String category) {
-        QueryNews.QueryHeadlinesNews queryNews = new QueryNews.QueryHeadlinesNews(category, 1);
+        if (queryNews == null) {
+            queryNews = new QueryNews.QueryHeadlinesNews(category);
+        }
+        queryNews.category = category;
         super.setQueryCondition(queryNews);
     }
 
