@@ -68,17 +68,19 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
                 showNews(newsList);
             }
         });
+
+        viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLastPage) {
+                adapter.setIsLastPage(isLastPage);
+            }
+        });
+
         viewModel.getIsLoadingLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
                 HeadlinesFrag.this.isLoading = isLoading;
                 showOrCloseRefreshing(isLoading);  //show loading anim at beginning
-            }
-        });
-        viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean isLastPage) {
-                adapter.setIsLastPage(isLastPage);
             }
         });
         viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {

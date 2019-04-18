@@ -7,9 +7,9 @@ import android.support.annotation.NonNull;
 
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.remote.QueryFilter;
 import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.data.remote.NewsRemoteSource;
+import com.lionel.gonews.data.remote.QueryFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +50,6 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     protected BaseRemoteSourceViewModel(@NonNull Application application) {
         super(application);
         newsRemoteSource = new NewsRemoteSource(application.getApplicationContext());
-
-        isLoading.setValue(false);
-        isLastPage.setValue(false);
-        errorInfo.setValue(new ErrorInfo(false, null));
     }
 
     protected MutableLiveData<List<News>> getNewsDataLiveData() {
@@ -126,7 +122,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         newsData.setValue(cachedNewsData);
         newsDataTotalSize.setValue(totalSize);
         isLoading.setValue(false);
-        errorInfo.setValue(handleErrorObj(false, null));
+        errorInfo.setValue(handleErrorInfo(false, null));
     }
 
     private void checkIsLastPage(int totalSize) {
@@ -150,13 +146,16 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     @Override
     public void onFailed(String msg) {
         isLoading.setValue(false);
-        errorInfo.setValue(handleErrorObj(true, msg));
+        errorInfo.setValue(handleErrorInfo(true, msg));
     }
 
-    private ErrorInfo handleErrorObj(boolean isError, String msg) {
-        ErrorInfo error = errorInfo.getValue();
-        error.isError = isError;
-        error.msg = msg;
-        return error;
+    private ErrorInfo handleErrorInfo(boolean isError, String msg) {
+        ErrorInfo info = errorInfo.getValue();
+        if (info == null) {
+            info = new ErrorInfo(false, null);
+        }
+        info.isError = isError;
+        info.msg = msg;
+        return info;
     }
 }
