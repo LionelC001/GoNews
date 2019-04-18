@@ -10,7 +10,6 @@
         android:id="@+id/layoutRootHeadlines"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         tools:context="com.lionel.gonews.headlines.HeadlinesAct">
 
         <android.support.design.widget.AppBarLayout
@@ -91,7 +90,6 @@
                     android:layout_marginTop="@dimen/x8dp" />
 
             </LinearLayout>
-
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
 
@@ -100,8 +98,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@android:color/white"
-        android:fitsSystemWindows="true" />
-
+        android:background="@android:color/white" />
 </android.support.v4.widget.DrawerLayout>
 
