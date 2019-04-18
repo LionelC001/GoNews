@@ -9,7 +9,7 @@ public interface INewsSource {
     interface LoadNewsCallback {
         void onSuccess(int totalSize, List<News> newsList);
 
-        void onFailed();
+        void onFailed(String msg);
     }
 
     void queryNews(@NonNull QueryNews queryObject, @NonNull LoadNewsCallback callback);

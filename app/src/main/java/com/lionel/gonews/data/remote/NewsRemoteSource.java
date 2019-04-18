@@ -15,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lionel.gonews.R;
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
@@ -147,20 +148,26 @@ public class NewsRemoteSource implements INewsSource {
                             if (error != null && error.networkResponse != null) {
                                 Log.d("<>", new String(error.networkResponse.data));
                             }
+
+                            String msg = "";
+
                             if (error instanceof NoConnectionError) {
                                 Log.d("<>", "NoConnectionError");
+                                msg = context.getString(R.string.no_connection_error);
                             } else if (error instanceof TimeoutError) {
                                 Log.d("<>", "TimeoutError");
+                                msg = context.getString(R.string.time_error);
                             } else if (error instanceof AuthFailureError) {
                                 Log.d("<>", "AuthFailureError");
                             } else if (error instanceof ServerError) {
                                 Log.d("<>", "ServerError");
+                                msg = context.getString(R.string.server_error);
                             } else if (error instanceof NetworkError) {
                                 Log.d("<>", "NetworkError");
                             } else if (error instanceof ParseError) {
                                 Log.d("<>", "ParseError");
                             }
-                            callback.onFailed();
+                            callback.onFailed(msg);
                         }
                     });
         }

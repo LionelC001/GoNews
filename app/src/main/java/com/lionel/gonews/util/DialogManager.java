@@ -9,11 +9,11 @@ import com.lionel.gonews.R;
 public class DialogManager {
     private static boolean isErrorDialogShowing = false;
 
-    public static void showErrorDialog(Context context) {
+    public static void showErrorDialog(Context context, String errorMsg) {
         if (!isErrorDialogShowing) {
             isErrorDialogShowing = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(R.string.error_dialog_title);
+            builder.setTitle(errorMsg);
             builder.setMessage(R.string.error_dialog_content);
             builder.setPositiveButtonIcon(context.getDrawable(R.drawable.ic_check_circle));
             builder.setOnDismissListener(new DialogInterface.OnDismissListener() {

@@ -18,6 +18,7 @@ import com.lionel.gonews.R;
 import com.lionel.gonews.base.BaseRecyclerViewAdapter;
 import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
+import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.util.DialogManager;
 
 import java.util.List;
@@ -80,13 +81,13 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
                 adapter.setIsLastPage(isLastPage);
             }
         });
-        viewModel.getIsErrorLiveData().observe(this, new Observer<Boolean>() {
+        viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {
             @Override
-            public void onChanged(@Nullable Boolean isError) {
-                if (isError) {
-                    DialogManager.showErrorDialog(getActivity());
+            public void onChanged(@Nullable ErrorInfo errorInfo) {
+                if (errorInfo.isError) {
+                    DialogManager.showErrorDialog(getActivity(), errorInfo.msg);
                 }
-                isErroring = isError;
+                isErroring = errorInfo.isError;
             }
         });
     }

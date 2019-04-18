@@ -17,6 +17,9 @@
     <string name="error_dialog_content">Please check your network connection and try to refresh page.</string>
     <string name="my_favorite_news">My Favorite News</string>
     <string name="share">Share</string>
+    <string name="no_connection_error">No Connection Error</string>
+    <string name="time_error">Time Error</string>
+    <string name="server_error">Server Error</string>
 
     <string-array name="topics">
         <item>@string/general</item>

@@ -1,4 +1,4 @@
-package com.lionel.gonews.headlines;
+package com.lionel.gonews.search;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
@@ -11,16 +11,20 @@ import com.lionel.gonews.data.remote.ErrorInfo;
 
 import java.util.List;
 
-public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
+public class SearchViewModel extends BaseRemoteSourceViewModel {
 
     private QueryNews.QueryHeadlinesNews queryNews;
 
-    public HeadlinesFragViewModel(@NonNull Application application) {
+    public SearchViewModel(@NonNull Application application) {
         super(application);
     }
 
     public MutableLiveData<List<News>> getNewsDataLiveData() {
         return super.getNewsDataLiveData();
+    }
+
+    public MutableLiveData<Integer> getTotalCountLiveData() {
+        return super.getTotalSizeLiveData();
     }
 
     public MutableLiveData<Boolean> getIsLoadingLiveData() {
@@ -35,18 +39,21 @@ public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
         return super.getErrorInfoLiveData();
     }
 
-    public void setQueryCondition(String category) {
-        if (queryNews == null) {
-            queryNews = new QueryNews.QueryHeadlinesNews(category);
-        }
-        queryNews.category = category;
-        super.setQueryCondition(queryNews);
-    }
+//    public void setQueryWord(String queryWord) {
+//        if (queryNews == null) {
+//            queryNews = new QueryNews.QueryEverythingNews(queryWord);
+//        }
+//        super.setQueryCondition(queryNews);
+//    }
 
-    public void initNews() {
-        super.initNews();
-    }
+//    public void setFilter(String ){
+//
+//    }
+    
 
+    /**
+     * every query do not need cache
+     */
     public void initNewsWithoutCache() {
         super.initNewsWithoutCache();
     }

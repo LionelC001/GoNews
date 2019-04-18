@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.QueryNews;
+import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.data.remote.NewsRemoteSource;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import static com.lionel.gonews.util.Constants.PAGESIZE;
  * {@link #getTotalSizeLiveData()},
  * {@link #getIsLoadingLiveData()},
  * {@link #getIsLastPageLiveData()},
- * {@link #getIsErrorLiveData()}.
+ * {@link #getErrorInfoLiveData()}.
  * </p>
  */
 public abstract class BaseRemoteSourceViewModel extends AndroidViewModel implements INewsSource.LoadNewsCallback {
@@ -39,7 +40,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     private MutableLiveData<Integer> newsDataTotalSize = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isError = new MutableLiveData<>();
+    private MutableLiveData<ErrorInfo> errorInfo = new MutableLiveData<>();
 
     private QueryNews queryNews;
     private List<News> cachedNewsData = new ArrayList<>();
@@ -52,7 +53,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
 
         isLoading.setValue(false);
         isLastPage.setValue(false);
-        isError.setValue(false);
+        errorInfo.setValue(new ErrorInfo(false, null));
     }
 
     protected MutableLiveData<List<News>> getNewsDataLiveData() {
@@ -71,8 +72,8 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         return isLastPage;
     }
 
-    protected MutableLiveData<Boolean> getIsErrorLiveData() {
-        return isError;
+    protected MutableLiveData<ErrorInfo> getErrorInfoLiveData() {
+        return errorInfo;
     }
 
     protected void setQueryCondition(QueryNews queryNews) {
@@ -125,7 +126,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         newsData.setValue(cachedNewsData);
         newsDataTotalSize.setValue(totalSize);
         isLoading.setValue(false);
-        isError.setValue(false);
+        errorInfo.setValue(handleErrorObj(false, null));
     }
 
     private void checkIsLastPage(int totalSize) {
@@ -147,8 +148,15 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     }
 
     @Override
-    public void onFailed() {
+    public void onFailed(String msg) {
         isLoading.setValue(false);
-        isError.setValue(true);
+        errorInfo.setValue(handleErrorObj(true, msg));
+    }
+
+    private ErrorInfo handleErrorObj(boolean isError, String msg) {
+        ErrorInfo error = errorInfo.getValue();
+        error.isError = isError;
+        error.msg = msg;
+        return error;
     }
 }

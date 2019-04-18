@@ -46,7 +46,7 @@ public class TestQueryRemoteActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailed() {
+            public void onFailed(String msg) {
                 Log.d("<>", "onFailed");
             }
         };
