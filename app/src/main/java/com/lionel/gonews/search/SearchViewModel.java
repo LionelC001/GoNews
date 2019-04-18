@@ -3,17 +3,18 @@ package com.lionel.gonews.search;
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.remote.QueryFilter;
 import com.lionel.gonews.data.remote.ErrorInfo;
+import com.lionel.gonews.data.remote.QueryFilter;
 
 import java.util.List;
 
 public class SearchViewModel extends BaseRemoteSourceViewModel {
 
-    private QueryFilter.QueryHeadlinesFilter queryNews;
+    private QueryFilter.QueryEverythingFilter queryEverythingFilter;
 
     public SearchViewModel(@NonNull Application application) {
         super(application);
@@ -39,20 +40,26 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
         return super.getErrorInfoLiveData();
     }
 
-//    public void setQueryWord(String queryWord) {
-//        if (queryNews == null) {
-//            queryNews = new QueryFilter.QueryEverythingFilter(queryWord);
-//        }
-//        super.setQueryFilter(queryNews);
-//    }
+    public void setQueryWord(String queryWord) {
+        if (queryEverythingFilter == null) {
+            queryEverythingFilter = new QueryFilter.QueryEverythingFilter(queryWord, null, null, null);
+        }
+        queryEverythingFilter.queryWord = queryWord;
+        super.setQueryFilter(queryEverythingFilter);
+    }
 
-//    public void setFilter(String ){
-//
-//    }
-    
+    public void setFilter(@Nullable String sortBy, @Nullable String dateFrom, @Nullable String dateTo) {
+        if (queryEverythingFilter != null) {
+            queryEverythingFilter.sortBy = sortBy;
+            queryEverythingFilter.dateFrom = dateFrom;
+            queryEverythingFilter.dateTo = dateTo;
+
+            super.setQueryFilter(queryEverythingFilter);
+        }
+    }
 
     /**
-     * every query do not need cache
+     * every query should without cache
      */
     public void initNewsWithoutCache() {
         super.initNewsWithoutCache();

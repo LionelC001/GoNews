@@ -7,7 +7,11 @@ import static com.lionel.gonews.util.Constants.NEWS_TYPE_EVERYTHING;
 import static com.lionel.gonews.util.Constants.NEWS_TYPE_HEADLINES;
 
 /**
- * Condition object for query news
+ * Filter object for query news
+ * <p>
+ * notice:
+ * {@link QueryEverythingFilter}'s {@param dateFrom} and {@param dateTo},
+ * should use ISO-8601 pattern "yyyy-MM-dd".
  */
 public abstract class QueryFilter {
     public String type;

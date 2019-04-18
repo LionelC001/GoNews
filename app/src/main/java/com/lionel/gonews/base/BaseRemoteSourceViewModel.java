@@ -98,7 +98,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     }
 
     /**
-     * for refresh and query
+     * for refresh and query-everying
      */
     protected void initNewsWithoutCache() {
         cachedNewsData = new ArrayList<>();
