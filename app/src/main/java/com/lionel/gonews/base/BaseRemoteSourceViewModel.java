@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.QueryNews;
+import com.lionel.gonews.data.remote.QueryFilter;
 import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.data.remote.NewsRemoteSource;
 
@@ -20,7 +20,7 @@ import static com.lionel.gonews.util.Constants.PAGESIZE;
  * a bridge between View and NewsRemoteSource.
  *
  * <p>
- * you must call {@link #setQueryCondition(QueryNews)} before initNews() or initNewsWithoutCache().
+ * you must call {@link #setQueryFilter(QueryFilter)} before initNews() or initNewsWithoutCache().
  * </p>
  *
  * <p>
@@ -33,7 +33,7 @@ import static com.lionel.gonews.util.Constants.PAGESIZE;
  * {@link #getErrorInfoLiveData()}.
  * </p>
  */
-public abstract class BaseRemoteSourceViewModel extends AndroidViewModel implements INewsSource.LoadNewsCallback {
+public abstract class BaseRemoteSourceViewModel extends AndroidViewModel implements INewsSource.IQueryNewsCallback {
     private final INewsSource newsRemoteSource;
 
     private MutableLiveData<List<News>> newsData = new MutableLiveData<>();
@@ -42,7 +42,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     private MutableLiveData<Boolean> isLastPage = new MutableLiveData<>();
     private MutableLiveData<ErrorInfo> errorInfo = new MutableLiveData<>();
 
-    private QueryNews queryNews;
+    private QueryFilter queryFilter;
     private List<News> cachedNewsData = new ArrayList<>();
     private int maxPage = 0;
     private int currentPage = 1;
@@ -76,8 +76,8 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         return errorInfo;
     }
 
-    protected void setQueryCondition(QueryNews queryNews) {
-        this.queryNews = queryNews;
+    protected void setQueryFilter(QueryFilter queryFilter) {
+        this.queryFilter = queryFilter;
     }
 
     /**
@@ -88,11 +88,11 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         if (cachedNewsData != null && cachedNewsData.size() > 0) {
             newsData.setValue(cachedNewsData);
         } else {
-            if (queryNews != null) {
+            if (queryFilter != null) {
                 currentPage = 1;
-                queryNews.setPage(currentPage);
+                queryFilter.setPage(currentPage);
                 isLastPage.setValue(false);
-                loadNews(queryNews);
+                loadNews(queryFilter);
             }
         }
     }
@@ -108,14 +108,14 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     protected void loadMoreNews() {
         if (!isLastPage.getValue()) {
             currentPage += 1;
-            queryNews.setPage(currentPage);
-            loadNews(queryNews);
+            queryFilter.setPage(currentPage);
+            loadNews(queryFilter);
         }
     }
 
-    private void loadNews(QueryNews queryNews) {
+    private void loadNews(QueryFilter queryFilter) {
         isLoading.setValue(true);
-        newsRemoteSource.queryNews(queryNews, this);
+        newsRemoteSource.queryNews(queryFilter, this);
     }
 
     @Override

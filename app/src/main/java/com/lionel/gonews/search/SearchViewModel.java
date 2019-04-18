@@ -6,14 +6,14 @@ import android.support.annotation.NonNull;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.QueryNews;
+import com.lionel.gonews.data.remote.QueryFilter;
 import com.lionel.gonews.data.remote.ErrorInfo;
 
 import java.util.List;
 
 public class SearchViewModel extends BaseRemoteSourceViewModel {
 
-    private QueryNews.QueryHeadlinesNews queryNews;
+    private QueryFilter.QueryHeadlinesFilter queryNews;
 
     public SearchViewModel(@NonNull Application application) {
         super(application);
@@ -41,9 +41,9 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
 
 //    public void setQueryWord(String queryWord) {
 //        if (queryNews == null) {
-//            queryNews = new QueryNews.QueryEverythingNews(queryWord);
+//            queryNews = new QueryFilter.QueryEverythingFilter(queryWord);
 //        }
-//        super.setQueryCondition(queryNews);
+//        super.setQueryFilter(queryNews);
 //    }
 
 //    public void setFilter(String ){

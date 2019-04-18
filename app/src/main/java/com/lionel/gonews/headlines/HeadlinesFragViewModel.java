@@ -6,14 +6,14 @@ import android.support.annotation.NonNull;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.QueryNews;
+import com.lionel.gonews.data.remote.QueryFilter;
 import com.lionel.gonews.data.remote.ErrorInfo;
 
 import java.util.List;
 
 public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
 
-    private QueryNews.QueryHeadlinesNews queryNews;
+    private QueryFilter.QueryHeadlinesFilter queryHeadlinesFilter;
 
     public HeadlinesFragViewModel(@NonNull Application application) {
         super(application);
@@ -35,12 +35,12 @@ public class HeadlinesFragViewModel extends BaseRemoteSourceViewModel {
         return super.getErrorInfoLiveData();
     }
 
-    public void setQueryCondition(String category) {
-        if (queryNews == null) {
-            queryNews = new QueryNews.QueryHeadlinesNews(category);
+    public void setQueryCategory(String category) {
+        if (queryHeadlinesFilter == null) {
+            queryHeadlinesFilter = new QueryFilter.QueryHeadlinesFilter(category);
         }
-        queryNews.category = category;
-        super.setQueryCondition(queryNews);
+        queryHeadlinesFilter.category = category;
+        super.setQueryFilter(queryHeadlinesFilter);
     }
 
     public void initNews() {

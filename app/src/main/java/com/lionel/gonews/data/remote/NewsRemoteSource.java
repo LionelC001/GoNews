@@ -1,6 +1,7 @@
 package com.lionel.gonews.data.remote;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -18,9 +19,8 @@ import com.google.gson.reflect.TypeToken;
 import com.lionel.gonews.R;
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.QueryNews;
-import com.lionel.gonews.data.QueryNews.QueryEverythingNews;
-import com.lionel.gonews.data.QueryNews.QueryHeadlinesNews;
+import com.lionel.gonews.data.remote.QueryFilter.QueryEverythingFilter;
+import com.lionel.gonews.data.remote.QueryFilter.QueryHeadlinesFilter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,18 +56,18 @@ public class NewsRemoteSource implements INewsSource {
     }
 
     @Override
-    public void queryNews(QueryNews queryObject, LoadNewsCallback callback) {
+    public void queryNews(@NonNull QueryFilter queryFilter,@NonNull IQueryNewsCallback callback) {
         String url;
-        if (queryObject.type.equals(NEWS_TYPE_HEADLINES)) {
-            url = getHeadlinesUrl((QueryHeadlinesNews) queryObject);
+        if (queryFilter.type.equals(NEWS_TYPE_HEADLINES)) {
+            url = getHeadlinesUrl((QueryHeadlinesFilter) queryFilter);
         } else {
-            url = getEverythingUrl((QueryEverythingNews) queryObject);
+            url = getEverythingUrl((QueryEverythingFilter) queryFilter);
         }
         NewsRequest newsRequest = new NewsRequest(url, callback);
         Volley.newRequestQueue(context).add(newsRequest);
     }
 
-    private String getHeadlinesUrl(QueryHeadlinesNews queryHeadlines) {
+    private String getHeadlinesUrl(QueryHeadlinesFilter queryHeadlines) {
         StringBuilder url = new StringBuilder();
 
         url.append(HEADLINES_ENDPOINT).append("?");
@@ -88,7 +88,7 @@ public class NewsRemoteSource implements INewsSource {
         return url.toString();
     }
 
-    private String getEverythingUrl(QueryEverythingNews queryEverything) {
+    private String getEverythingUrl(QueryEverythingFilter queryEverything) {
         StringBuilder url = new StringBuilder();
 
         url.append(EVERYTHING_ENDPOINT).append("?");
@@ -122,7 +122,7 @@ public class NewsRemoteSource implements INewsSource {
     }
 
     private class NewsRequest extends JsonObjectRequest {
-        NewsRequest(String url, final LoadNewsCallback callback) {
+        NewsRequest(String url, final IQueryNewsCallback callback) {
             super(url,
                     new Response.Listener<JSONObject>() {
                         @Override

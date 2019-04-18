@@ -153,7 +153,7 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
 
     private void initNews() {
         String category = getArguments().getString(CATEGORY);
-        viewModel.setQueryCondition(category);
+        viewModel.setQueryCategory(category);
         viewModel.initNews();
     }
 
