@@ -77,7 +77,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
                 newsListView.setIsLoading(isLoading);
-                newsListView.showOrCloseRefreshing(isLoading);
+                newsListView.showRefreshingAtBeginning(isLoading);
             }
         });
         viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {
@@ -124,6 +124,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
 
     @Override
     public void startQuery(String queryWord) {
+        newsListView.showRefreshingAgain();
         viewModel.setQueryWord(queryWord);
         viewModel.initNewsWithoutCache();
     }

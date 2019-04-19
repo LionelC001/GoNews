@@ -75,7 +75,7 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
                 newsListView.setIsLoading(isLoading);
-                newsListView.showOrCloseRefreshing(isLoading);
+                newsListView.showRefreshingAtBeginning(isLoading);
             }
         });
         viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {

@@ -23,5 +23,7 @@ public interface IDisplayNewsList {
 
     void showNews(List<News> data);
 
-    void showOrCloseRefreshing(boolean isShowing);
+    void showRefreshingAtBeginning(boolean isShowing);
+
+    void showRefreshingAgain();
 }
