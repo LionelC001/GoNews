@@ -1,53 +1,101 @@
 package com.lionel.gonews.search;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lionel.gonews.R;
+import com.lionel.gonews.base.IDisplayNewsList;
+import com.lionel.gonews.content.ContentAct;
+import com.lionel.gonews.data.News;
+import com.lionel.gonews.data.remote.ErrorInfo;
+import com.lionel.gonews.util.DialogManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback {
+import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
+public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback, IDisplayNewsList.IDisplayNewsListCallback {
+
+    private SearchViewModel viewModel;
     private SearchBox searchBox;
     private View layoutResult;
     private TextView txtResultCount;
     private ImageButton btnFilter;
     private DrawerLayout drawerLayout;
+    private IDisplayNewsList newsListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_search);
 
+        viewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
 
-        initSearchBox();
+        initObserve();
         initLayoutResult();
+        initSearchBox();
         initDrawerLayout();
 
-        testSearchBox();
     }
 
-    private void initDrawerLayout() {
-        drawerLayout = findViewById(R.id.drawerLayout);
-    }
+    private void initObserve() {
+        viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
+            @Override
+            public void onChanged(@Nullable List<News> newsList) {
+                if(layoutResult.getVisibility()!=View.VISIBLE) {
+                    layoutResult.setVisibility(View.VISIBLE);
+                }
+                newsListView.showNews(newsList);
+            }
+        });
 
+        viewModel.getTotalCountLiveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer count) {
+                setResultCount(count);
+            }
+        });
 
-    private void initSearchBox() {
-        searchBox = findViewById(R.id.searchBox);
-        searchBox.setCallback(this);
+        viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLastPage) {
+                newsListView.setIsLastPage(isLastPage);
+            }
+        });
+
+        viewModel.getIsLoadingLiveData().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isLoading) {
+                newsListView.setIsLoading(isLoading);
+                newsListView.showOrCloseRefreshing(isLoading);
+            }
+        });
+        viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {
+            @Override
+            public void onChanged(@Nullable ErrorInfo errorInfo) {
+                if (errorInfo.isError) {
+                    DialogManager.showErrorDialog(SearchAct.this, errorInfo.msg);
+                }
+                newsListView.setIsError(errorInfo.isError);
+            }
+        });
     }
 
     private void initLayoutResult() {
         layoutResult = findViewById(R.id.layoutResult);
+
         txtResultCount = findViewById(R.id.txtResultCount);
+
         btnFilter = findViewById(R.id.imbBtnFilter);
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,25 +103,51 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
                 drawerLayout.openDrawer(GravityCompat.END);
             }
         });
+
+        newsListView = findViewById(R.id.newsListView);
+        newsListView.setCallback(this);
     }
 
-    private void testSearchBox() {
+    private void setResultCount(int count) {
+        txtResultCount.setText(getString(R.string.search_result_count, count));
+    }
 
+    private void initSearchBox() {
+        searchBox = findViewById(R.id.searchBox);
+        searchBox.setCallback(this);
+        // searchBox.setSearchHistory(data);
+    }
 
-        List<String> data = new ArrayList<>();
-        for (int i = 0; i <= 10; i++) {
-            data.add("" + (i + 1));
-        }
-        searchBox.setSearchHistory(data);
+    private void initDrawerLayout() {
+        drawerLayout = findViewById(R.id.drawerLayout);
     }
 
     @Override
     public void startQuery(String queryWord) {
-        Log.d("<>", queryWord);
+        viewModel.setQueryWord(queryWord);
+        viewModel.initNewsWithoutCache();
     }
 
     @Override
     public void onBackBtnPressed() {
         finish();
+    }
+
+    @Override
+    public void onRefreshNews() {
+        viewModel.initNewsWithoutCache();
+    }
+
+    @Override
+    public void onLoadMoreNews() {
+        viewModel.loadMoreNews();
+    }
+
+    @Override
+    public void onIntentToNewsContent(News news) {
+        Intent intent = new Intent();
+        intent.setClass(this, ContentAct.class);
+        intent.putExtra(NEWS_CONTENT, news);
+        startActivity(intent);
     }
 }

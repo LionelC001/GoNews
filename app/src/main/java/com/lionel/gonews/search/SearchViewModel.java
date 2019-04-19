@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
@@ -41,11 +42,17 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
     }
 
     public void setQueryWord(String queryWord) {
+        String cleanWord = replaceAllSpaceWitchPlus(queryWord);
+        Log.d("<>", "cleanWord: " + cleanWord);
         if (queryEverythingFilter == null) {
-            queryEverythingFilter = new QueryFilter.QueryEverythingFilter(queryWord, null, null, null);
+            queryEverythingFilter = new QueryFilter.QueryEverythingFilter(cleanWord, null, null, null);
         }
-        queryEverythingFilter.queryWord = queryWord;
+        queryEverythingFilter.queryWord = cleanWord;
         super.setQueryFilter(queryEverythingFilter);
+    }
+
+    public String replaceAllSpaceWitchPlus(String queryWord) {
+        return queryWord.trim().replaceAll("\\s+", "+");
     }
 
     public void setFilter(@Nullable String sortBy, @Nullable String dateFrom, @Nullable String dateTo) {

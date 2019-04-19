@@ -20,6 +20,7 @@
     <string name="no_connection_error">No Connection Error</string>
     <string name="time_error">Time Error</string>
     <string name="server_error">Server Error</string>
+    <string name="search_result_count">Search Result: ( %1$d )</string>
 
     <string-array name="topics">
         <item>@string/general</item>
