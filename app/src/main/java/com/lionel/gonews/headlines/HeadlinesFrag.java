@@ -7,15 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lionel.gonews.R;
-import com.lionel.gonews.base.BaseRecyclerViewAdapter;
+import com.lionel.gonews.base.IDisplayNewsList;
 import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.remote.ErrorInfo;
@@ -23,21 +21,14 @@ import com.lionel.gonews.util.DialogManager;
 
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.DISTANCE_TO_SYNC;
-import static com.lionel.gonews.util.Constants.END_POSITION;
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.IItemNewsClickCallback {
+public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplayNewsListCallback {
 
     private static final String CATEGORY = "category";
 
     private HeadlinesFragViewModel viewModel;
-    private HeadlinesRecyclerViewAdapter adapter;
-    private RecyclerView recyclerView;
-    private SwipeRefreshLayout refreshLayout;
-    private boolean isShowRefreshing = true;
-    private boolean isLoading = false;
-    private boolean isErroring = false;
+    private IDisplayNewsList newsListView;
 
     public HeadlinesFrag() {
 
@@ -56,7 +47,6 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(HeadlinesFragViewModel.class);
-//        adapter = new HeadlinesRecyclerViewAdapter(this);
 
         initObserve();
     }
@@ -65,22 +55,23 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
         viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> newsList) {
-                showNews(newsList);
+                newsListView.showNews(newsList);
             }
         });
 
         viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLastPage) {
-                adapter.setIsLastPage(isLastPage);
+                newsListView.setIsLastPage(isLastPage);
             }
         });
 
         viewModel.getIsLoadingLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
-                HeadlinesFrag.this.isLoading = isLoading;
-                showOrCloseRefreshing(isLoading);  //show loading anim at beginning
+//                Log.d("<>", "getIsLoadingLiveData: " + isLoading);
+                newsListView.setIsLoading(isLoading);
+                newsListView.showOrCloseRefreshing(isLoading);
             }
         });
         viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {
@@ -89,22 +80,9 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
                 if (errorInfo.isError) {
                     DialogManager.showErrorDialog(getActivity(), errorInfo.msg);
                 }
-                isErroring = errorInfo.isError;
+                newsListView.setIsError(errorInfo.isError);
             }
         });
-    }
-
-    private void showNews(List<News> data) {
-        adapter.setData(data);
-    }
-
-    private void showOrCloseRefreshing(boolean isLoading) {
-        if (isShowRefreshing && isLoading) {  //show refresh loading only once at new result
-            refreshLayout.setRefreshing(true);
-        } else {
-            refreshLayout.setRefreshing(false);
-            isShowRefreshing = false;
-        }
     }
 
     @Nullable
@@ -116,42 +94,16 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initRecyclerView();
-        initRefreshLayout();
+
+        initNewsListView();
         initNews();
     }
 
-//    private void initRecyclerView() {
-//        recyclerView = getView().findViewById(R.id.recyclerView);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-//        recyclerView.setAdapter(adapter);
-//
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//                if (!isErroring && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
-//                    viewModel.loadMoreNews();
-//                }
-//            }
-//        });
-//    }
-//
-//    private void initRefreshLayout() {
-//        refreshLayout = getView().findViewById(R.id.refreshLayout);
-//        refreshLayout.setColorSchemeResources(R.color.colorDeepGray);
-//        refreshLayout.setDistanceToTriggerSync(DISTANCE_TO_SYNC);
-//        refreshLayout.setProgressViewEndTarget(false, END_POSITION);
-//        refreshLayout.setSize(SwipeRefreshLayout.LARGE);
-//
-//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                isShowRefreshing = true;
-//                viewModel.initNewsWithoutCache();
-//            }
-//        });
-//    }
+    private void initNewsListView() {
+//        Log.d("<>", "initNewsListView");
+        newsListView = getActivity().findViewById(R.id.newsListView);
+        newsListView.setCallback(this);
+    }
 
     private void initNews() {
         String category = getArguments().getString(CATEGORY);
@@ -160,7 +112,20 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
     }
 
     @Override
+    public void onRefreshNews() {
+        Log.d("<>", "onRefreshNews");
+        viewModel.initNewsWithoutCache();
+    }
+
+    @Override
+    public void onLoadMoreNews() {
+        Log.d("<>", "onLoadMoreNews");
+        viewModel.loadMoreNews();
+    }
+
+    @Override
     public void onIntentToNewsContent(News news) {
+        Log.d("<>", "onIntentToNewsContent");
         Intent intent = new Intent();
         intent.setClass(getActivity(), ContentAct.class);
         intent.putExtra(NEWS_CONTENT, news);

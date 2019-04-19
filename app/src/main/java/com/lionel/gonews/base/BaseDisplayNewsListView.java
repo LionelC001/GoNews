@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.lionel.gonews.R;
@@ -17,16 +18,18 @@ import java.util.List;
 import static com.lionel.gonews.util.Constants.DISTANCE_TO_SYNC;
 import static com.lionel.gonews.util.Constants.END_POSITION;
 
-
+/**
+ *
+ */
 public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNewsList {
     private final BaseRecyclerViewAdapter adapter;
     private final Context context;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private IDisplayNewsList.IDisplayNewsListCallback callback;
-    private boolean isLoading;
-    private boolean isLastPage;
-    private boolean isError;
+    private boolean isShowRefreshing = true;
+    private boolean isLoading = false;
+    private boolean isError = false;
 
     public BaseDisplayNewsListView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -48,7 +51,8 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!isErroring && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+                if (!isError && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+                    Log.d("<>", "onScroll callback is null?: " + (callback == null));
                     callback.onLoadMoreNews();
                 }
             }
@@ -67,14 +71,13 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
             public void onRefresh() {
                 isShowRefreshing = true;
                 callback.onRefreshNews();
-//                viewModel.initNewsWithoutCache();
             }
         });
     }
 
-
     @Override
     public void setCallback(IDisplayNewsList.IDisplayNewsListCallback callback) {
+        Log.d("<>", "setCallback is null?: " + (callback == null));
         this.callback = callback;
         adapter.setItemNewsClickCallback(callback);
     }
@@ -86,7 +89,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
 
     @Override
     public void setIsLastPage(boolean isLastPage) {
-        this.isLastPage = isLastPage;
+        adapter.setIsLastPage(isLastPage);
     }
 
     @Override
@@ -100,7 +103,12 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     }
 
     @Override
-    public void showOrCloseRefreshing(boolean isShowing) {
-
+    public void showOrCloseRefreshing(boolean isShow) {
+        if (isShowRefreshing && isShow) {  //show refresh loading only once at new result
+            refreshLayout.setRefreshing(true);
+        } else {
+            refreshLayout.setRefreshing(false);
+            isShowRefreshing = false;
+        }
     }
 }
