@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,12 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
+/**
+ * <p>
+ * note: in method {@link #initNewsListView()},
+ * we have to call getView() not getActivity()!!!
+ * if call getActivity(), the view objects will be the same one, then the others' (views) callback will be null.
+ */
 public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplayNewsListCallback {
 
     private static final String CATEGORY = "category";
@@ -69,7 +74,6 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
         viewModel.getIsLoadingLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
-//                Log.d("<>", "getIsLoadingLiveData: " + isLoading);
                 newsListView.setIsLoading(isLoading);
                 newsListView.showOrCloseRefreshing(isLoading);
             }
@@ -100,9 +104,8 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
     }
 
     private void initNewsListView() {
-//        Log.d("<>", "initNewsListView");
-        newsListView = getActivity().findViewById(R.id.newsListView);
-        newsListView.setCallback(this);
+        newsListView = getView().findViewById(R.id.newsListView);  // don't use getActivity().
+        newsListView.setCallback(HeadlinesFrag.this);
     }
 
     private void initNews() {
@@ -113,19 +116,16 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
 
     @Override
     public void onRefreshNews() {
-        Log.d("<>", "onRefreshNews");
         viewModel.initNewsWithoutCache();
     }
 
     @Override
     public void onLoadMoreNews() {
-        Log.d("<>", "onLoadMoreNews");
         viewModel.loadMoreNews();
     }
 
     @Override
     public void onIntentToNewsContent(News news) {
-        Log.d("<>", "onIntentToNewsContent");
         Intent intent = new Intent();
         intent.setClass(getActivity(), ContentAct.class);
         intent.putExtra(NEWS_CONTENT, news);

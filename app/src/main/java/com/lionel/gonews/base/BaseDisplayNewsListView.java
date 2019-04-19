@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.lionel.gonews.R;
@@ -52,7 +51,6 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (!isError && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
-                    Log.d("<>", "onScroll callback is null?: " + (callback == null));
                     callback.onLoadMoreNews();
                 }
             }
@@ -77,7 +75,6 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
 
     @Override
     public void setCallback(IDisplayNewsList.IDisplayNewsListCallback callback) {
-        Log.d("<>", "setCallback is null?: " + (callback == null));
         this.callback = callback;
         adapter.setItemNewsClickCallback(callback);
     }
