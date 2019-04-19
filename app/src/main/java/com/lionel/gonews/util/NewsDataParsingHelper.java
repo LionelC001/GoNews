@@ -37,7 +37,7 @@ public class NewsDataParsingHelper {
                 .placeholder(loadingDrawable)
                 .error(R.drawable.ic_error_cat_yellow_lean)
                 .transition(DrawableTransitionOptions.withCrossFade(500))
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                 .into(view);
     }
 
