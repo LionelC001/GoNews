@@ -23,6 +23,7 @@
     <dimen name="x96dp">96dp</dimen>
     <dimen name="x108dp">108dp</dimen>
     <dimen name="x120dp">120dp</dimen>
+    <dimen name="x200dp">200dp</dimen>
 
 
 </resources>
