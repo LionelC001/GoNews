@@ -50,11 +50,15 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!isError && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+                if (isRecyclerViewHasItems() && !isError && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
                     callback.onLoadMoreNews();
                 }
             }
         });
+    }
+
+    private boolean isRecyclerViewHasItems(){
+        return adapter.getItemCount() > 1;  // 1 means background view
     }
 
     private void initRefreshLayout() {
