@@ -19,19 +19,18 @@ import static com.lionel.gonews.util.Constants.TYPE_BACKGROUND;
 import static com.lionel.gonews.util.Constants.TYPE_BOTTOM;
 import static com.lionel.gonews.util.Constants.TYPE_NEWS;
 
-public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public interface IItemNewsCallback {
-        void onIntentToNewsContent(News news);
-    }
-
-    private final IItemNewsCallback callback;
+    private IDisplayNewsList.IDisplayNewsListCallback callback;
     private List<News> data = new ArrayList<>();
     private boolean isLastPage = false;
 
-    public BaseRecyclerViewAdapter(IItemNewsCallback callback) {
-        this.callback = callback;
+    public BaseRecyclerViewAdapter() {
         setHasStableIds(true);  // avoid blink after call notifyDataSetChanged()
+    }
+
+    public void setItemNewsClickCallback(IDisplayNewsList.IDisplayNewsListCallback callback) {
+        this.callback = callback;
     }
 
     public void setData(List<News> data) {
@@ -91,7 +90,7 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder newsHolder, int position) {
         if (getItemViewType(position) == TYPE_NEWS) {
             ((NewsHolder) newsHolder).getBinding().setVariable(BR.itemDataNews, data.get(position));
-            ((NewsHolder) newsHolder).getBinding().getRoot().setOnClickListener(new OnItemClickListener(callback, data.get(position)));
+            ((NewsHolder) newsHolder).getBinding().getRoot().setOnClickListener(new OnItemClickListener(data.get(position)));
         } else if (getItemViewType(position) == TYPE_BACKGROUND) {
             // nothing to bind for background
         } else if (getItemViewType(position) == TYPE_BOTTOM) {
@@ -130,17 +129,17 @@ public abstract class BaseRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 
     private class OnItemClickListener implements View.OnClickListener {
 
-        private final IItemNewsCallback callback;
         private final News item;
 
-        OnItemClickListener(IItemNewsCallback callback, News item) {
-            this.callback = callback;
+        OnItemClickListener(News item) {
             this.item = item;
         }
 
         @Override
         public void onClick(View v) {
-            callback.onIntentToNewsContent(item);
+            if (callback != null) {
+                callback.onIntentToNewsContent(item);
+            }
         }
     }
 }

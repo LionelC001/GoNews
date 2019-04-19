@@ -4,7 +4,7 @@ import com.lionel.gonews.base.BaseRecyclerViewAdapter;
 
 public class HeadlinesRecyclerViewAdapter extends BaseRecyclerViewAdapter {
 
-    public HeadlinesRecyclerViewAdapter(IItemNewsCallback callback) {
+    public HeadlinesRecyclerViewAdapter(IItemNewsClickCallback callback) {
         super(callback);
     }
 }

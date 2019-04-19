@@ -27,7 +27,7 @@ import static com.lionel.gonews.util.Constants.DISTANCE_TO_SYNC;
 import static com.lionel.gonews.util.Constants.END_POSITION;
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.IItemNewsCallback {
+public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.IItemNewsClickCallback {
 
     private static final String CATEGORY = "category";
 
@@ -56,7 +56,7 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(HeadlinesFragViewModel.class);
-        adapter = new HeadlinesRecyclerViewAdapter(this);
+//        adapter = new HeadlinesRecyclerViewAdapter(this);
 
         initObserve();
     }
@@ -121,37 +121,37 @@ public class HeadlinesFrag extends Fragment implements BaseRecyclerViewAdapter.I
         initNews();
     }
 
-    private void initRecyclerView() {
-        recyclerView = getView().findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!isErroring && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
-                    viewModel.loadMoreNews();
-                }
-            }
-        });
-    }
-
-    private void initRefreshLayout() {
-        refreshLayout = getView().findViewById(R.id.refreshLayout);
-        refreshLayout.setColorSchemeResources(R.color.colorDeepGray);
-        refreshLayout.setDistanceToTriggerSync(DISTANCE_TO_SYNC);
-        refreshLayout.setProgressViewEndTarget(false, END_POSITION);
-        refreshLayout.setSize(SwipeRefreshLayout.LARGE);
-
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                isShowRefreshing = true;
-                viewModel.initNewsWithoutCache();
-            }
-        });
-    }
+//    private void initRecyclerView() {
+//        recyclerView = getView().findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+//        recyclerView.setAdapter(adapter);
+//
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                if (!isErroring && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+//                    viewModel.loadMoreNews();
+//                }
+//            }
+//        });
+//    }
+//
+//    private void initRefreshLayout() {
+//        refreshLayout = getView().findViewById(R.id.refreshLayout);
+//        refreshLayout.setColorSchemeResources(R.color.colorDeepGray);
+//        refreshLayout.setDistanceToTriggerSync(DISTANCE_TO_SYNC);
+//        refreshLayout.setProgressViewEndTarget(false, END_POSITION);
+//        refreshLayout.setSize(SwipeRefreshLayout.LARGE);
+//
+//        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                isShowRefreshing = true;
+//                viewModel.initNewsWithoutCache();
+//            }
+//        });
+//    }
 
     private void initNews() {
         String category = getArguments().getString(CATEGORY);
