@@ -24,7 +24,6 @@ import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback, IDisplayNewsList.IDisplayNewsListCallback, SearchDateRangePopupWindow.IDateRangeCallback, SearchSortByPopupWindow.ISortByCallback {
 
     private SearchViewModel viewModel;
-    private View layoutResult;
     private TextView txtResultCount;
     private ImageButton btnSortByFilter, btnDateFilter;
     private IDisplayNewsList newsListView;
@@ -47,9 +46,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> newsList) {
-                if (layoutResult.getVisibility() != View.VISIBLE) {
-                    layoutResult.setVisibility(View.VISIBLE);
-                }
+                showFilter();
                 newsListView.showNews(newsList);
             }
         });
@@ -86,9 +83,15 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         });
     }
 
-    private void initLayoutResult() {
-        layoutResult = findViewById(R.id.layoutResult);
+    private void showFilter() {
+        if (btnSortByFilter.getVisibility() != View.VISIBLE ||
+                btnDateFilter.getVisibility() != View.VISIBLE) {
+            btnSortByFilter.setVisibility(View.VISIBLE);
+            btnDateFilter.setVisibility(View.VISIBLE);
+        }
+    }
 
+    private void initLayoutResult() {
         txtResultCount = findViewById(R.id.txtResultCount);
 
         btnSortByFilter = findViewById(R.id.imgBtnSortByFilter);

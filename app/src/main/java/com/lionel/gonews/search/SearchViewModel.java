@@ -55,8 +55,7 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
     }
 
     public void setSortBy(String sortBy) {
-        if (queryEverythingFilter != null
-                && (queryEverythingFilter.sortBy == null || !queryEverythingFilter.sortBy.equals(sortBy))) {
+        if (queryEverythingFilter != null) {
             queryEverythingFilter.sortBy = sortBy;
 
             super.setQueryFilter(queryEverythingFilter);
@@ -64,9 +63,7 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
     }
 
     public void setDateRange(String dateFrom, String dateTo) {
-        if (queryEverythingFilter != null &&
-                ((queryEverythingFilter.dateFrom == null || queryEverythingFilter.dateTo == null)
-                        || (!queryEverythingFilter.dateFrom.equals(dateFrom) || !queryEverythingFilter.dateTo.equals(dateTo)))) {
+        if (queryEverythingFilter != null) {
             queryEverythingFilter.dateFrom = dateFrom;
             queryEverythingFilter.dateTo = dateTo;
 
