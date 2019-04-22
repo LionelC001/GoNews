@@ -16,7 +16,8 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
     private final Context context;
     private final ISortByCallback callback;
     private View viewSortBy;
-    private String selectedOption = RELEVANCY;
+    private String value = RELEVANCY;
+    private String oldValue = RELEVANCY;
 
     public interface ISortByCallback {
         void onSortBySelected(String sortBy);
@@ -43,11 +44,11 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radRelevancy) {
-                    selectedOption = RELEVANCY;
+                    value = RELEVANCY;
                 } else if (checkedId == R.id.radPopularity) {
-                    selectedOption = POPULARITY;
+                    value = POPULARITY;
                 } else if (checkedId == R.id.radPublishAt) {
-                    selectedOption = PUBLISHEDAT;
+                    value = PUBLISHEDAT;
                 }
             }
         });
@@ -55,7 +56,17 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
 
     @Override
     public void dismiss() {
-        callback.onSortBySelected(selectedOption);
+        if (checkIsValueChanged()) {
+            callback.onSortBySelected(value);
+        }
         super.dismiss();
+    }
+
+    private boolean checkIsValueChanged() {
+        if (!oldValue.equals(value)) {
+            oldValue = value;
+            return true;
+        }
+        return false;
     }
 }

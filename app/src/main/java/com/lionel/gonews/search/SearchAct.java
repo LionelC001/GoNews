@@ -155,12 +155,14 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
 
     @Override
     public void onDateRangeSelected(String from, String to) {
+        newsListView.showRefreshingAgain();
         viewModel.setDateRange(from, to);
         viewModel.initNewsWithoutCache();
     }
 
     @Override
     public void onSortBySelected(String sortBy) {
+        newsListView.showRefreshingAgain();
         viewModel.setSortBy(sortBy);
         viewModel.initNewsWithoutCache();
     }
