@@ -2,6 +2,7 @@ package com.lionel.gonews.search;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
 
     private TextView txtDateRangeFrom;
     private TextView txtDateRangeTo;
+    private View viewPopupDate;
 
     public interface IDateRangeCallback {
         void onDateRangeSelected(String from, String to);
@@ -23,21 +25,28 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
     private final IDateRangeCallback callback;
     private final Context context;
 
-    public SearchDateRangePopupWindow(Context context, View layoutView, IDateRangeCallback callback) {
-        super(layoutView);
+    public SearchDateRangePopupWindow(Context context, IDateRangeCallback callback) {
+        super(context);
 
         this.context = context;
         this.callback = callback;
 
-        initDateTextView(layoutView);
+        initView();
+        initDateTextView();
     }
 
-    private void initDateTextView(View layoutView) {
-        txtDateRangeFrom = layoutView.findViewById(R.id.txtDateRangeFrom);
-        txtDateRangeTo = layoutView.findViewById(R.id.txtDateFromTo);
+    private void initView() {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        viewPopupDate = inflater.inflate(R.layout.layout_popup_date, null, false);
+        super.setView(viewPopupDate);
+    }
+
+    private void initDateTextView() {
+        txtDateRangeFrom = viewPopupDate.findViewById(R.id.txtDateRangeFrom);
+        txtDateRangeTo = viewPopupDate.findViewById(R.id.txtDateFromTo);
 
         txtDateRangeFrom.setOnClickListener(new DatePickerHandler(txtDateRangeFrom));
-        txtDateRangeFrom.setOnClickListener(new DatePickerHandler(txtDateRangeTo));
+        txtDateRangeTo.setOnClickListener(new DatePickerHandler(txtDateRangeTo));
     }
 
     @Override
@@ -62,7 +71,7 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
             datePickDialog = new DatePickerDialog(context,
                     this,
                     calendar.get(Calendar.YEAR),
-                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.MONTH)+1,
                     calendar.get(Calendar.DAY_OF_MONTH));
         }
 

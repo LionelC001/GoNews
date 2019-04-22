@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,15 +21,15 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback, IDisplayNewsList.IDisplayNewsListCallback, SearchDateRangePopupWindow.IDateRangeCallback {
+public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback, IDisplayNewsList.IDisplayNewsListCallback, SearchDateRangePopupWindow.IDateRangeCallback, SearchSortByPopupWindow.ISortByCallback {
 
     private SearchViewModel viewModel;
-    private SearchBox searchBox;
     private View layoutResult;
     private TextView txtResultCount;
-    private ImageButton btnDateFilter;
+    private ImageButton btnSortByFilter, btnDateFilter;
     private IDisplayNewsList newsListView;
-
+    private SearchDateRangePopupWindow datePopupWindow;
+    private SearchSortByPopupWindow sortByPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,6 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         initLayoutResult();
         initSearchBox();
     }
-
 
     private void initObserve() {
         viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
@@ -89,15 +87,21 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     private void initLayoutResult() {
-
         layoutResult = findViewById(R.id.layoutResult);
 
         txtResultCount = findViewById(R.id.txtResultCount);
 
-        LayoutInflater inflater = LayoutInflater.from(this);
-        btnDateFilter = findViewById(R.id.imbBtnFilter);
-        View viewPopupDate = inflater.inflate(R.layout.layout_popup_date,null, false);
-        final SearchDateRangePopupWindow datePopupWindow = new SearchDateRangePopupWindow(this, viewPopupDate, this);
+        btnSortByFilter = findViewById(R.id.imgBtnSortByFilter);
+        sortByPopupWindow = new SearchSortByPopupWindow(this, this);
+        btnSortByFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortByPopupWindow.showAsDropDown(btnSortByFilter);
+            }
+        });
+
+        btnDateFilter = findViewById(R.id.imgBtnDateRangeFilter);
+        datePopupWindow = new SearchDateRangePopupWindow(this, this);
         btnDateFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +118,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     private void initSearchBox() {
-        searchBox = findViewById(R.id.searchBox);
+        SearchBox searchBox = findViewById(R.id.searchBox);
         searchBox.setCallback(this);
         // searchBox.setSearchHistory(data);
     }
@@ -151,6 +155,13 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
 
     @Override
     public void onDateRangeSelected(String from, String to) {
+        viewModel.setDateRange(from, to);
+        viewModel.initNewsWithoutCache();
+    }
 
+    @Override
+    public void onSortBySelected(String sortBy) {
+        viewModel.setSortBy(sortBy);
+        viewModel.initNewsWithoutCache();
     }
 }

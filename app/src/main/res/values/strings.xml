@@ -23,6 +23,9 @@
     <string name="search_result_count">Search Result: ( %1$d )</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="relevancy">"Relevancy"</string>
+    <string name="popularity">Popularity</string>
+    <string name="publish_at">Publish At</string>
 
     <string-array name="topics">
         <item>@string/general</item>

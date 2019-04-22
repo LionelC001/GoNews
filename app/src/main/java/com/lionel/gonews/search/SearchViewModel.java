@@ -3,8 +3,6 @@ package com.lionel.gonews.search;
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
@@ -12,6 +10,8 @@ import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.data.remote.QueryFilter;
 
 import java.util.List;
+
+import static com.lionel.gonews.util.Constants.RELEVANCY;
 
 public class SearchViewModel extends BaseRemoteSourceViewModel {
 
@@ -43,9 +43,8 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
 
     public void setQueryWord(String queryWord) {
         String cleanWord = replaceAllSpaceWitchPlus(queryWord);
-        Log.d("<>", "cleanWord: " + cleanWord);
         if (queryEverythingFilter == null) {
-            queryEverythingFilter = new QueryFilter.QueryEverythingFilter(cleanWord, null, null, null);
+            queryEverythingFilter = new QueryFilter.QueryEverythingFilter(cleanWord, RELEVANCY, null, null);
         }
         queryEverythingFilter.queryWord = cleanWord;
         super.setQueryFilter(queryEverythingFilter);
@@ -55,15 +54,26 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
         return queryWord.trim().replaceAll("\\s+", "+");
     }
 
-    public void setFilter(@Nullable String sortBy, @Nullable String dateFrom, @Nullable String dateTo) {
-        if (queryEverythingFilter != null) {
+    public void setSortBy(String sortBy) {
+        if (queryEverythingFilter != null
+                && (queryEverythingFilter.sortBy == null || !queryEverythingFilter.sortBy.equals(sortBy))) {
             queryEverythingFilter.sortBy = sortBy;
+
+            super.setQueryFilter(queryEverythingFilter);
+        }
+    }
+
+    public void setDateRange(String dateFrom, String dateTo) {
+        if (queryEverythingFilter != null &&
+                ((queryEverythingFilter.dateFrom == null || queryEverythingFilter.dateTo == null)
+                        || (!queryEverythingFilter.dateFrom.equals(dateFrom) || !queryEverythingFilter.dateTo.equals(dateTo)))) {
             queryEverythingFilter.dateFrom = dateFrom;
             queryEverythingFilter.dateTo = dateTo;
 
             super.setQueryFilter(queryEverythingFilter);
         }
     }
+
 
     /**
      * every query should without cache
