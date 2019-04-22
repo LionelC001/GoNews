@@ -5,9 +5,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,14 +22,13 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback, IDisplayNewsList.IDisplayNewsListCallback {
+public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback, IDisplayNewsList.IDisplayNewsListCallback, SearchDateRangePopupWindow.IDateRangeCallback {
 
     private SearchViewModel viewModel;
     private SearchBox searchBox;
     private View layoutResult;
     private TextView txtResultCount;
-    private ImageButton btnFilter;
-    private DrawerLayout drawerLayout;
+    private ImageButton btnDateFilter;
     private IDisplayNewsList newsListView;
 
 
@@ -44,15 +42,14 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         initObserve();
         initLayoutResult();
         initSearchBox();
-        initDrawerLayout();
-
     }
+
 
     private void initObserve() {
         viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> newsList) {
-                if(layoutResult.getVisibility()!=View.VISIBLE) {
+                if (layoutResult.getVisibility() != View.VISIBLE) {
                     layoutResult.setVisibility(View.VISIBLE);
                 }
                 newsListView.showNews(newsList);
@@ -92,15 +89,19 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     private void initLayoutResult() {
+
         layoutResult = findViewById(R.id.layoutResult);
 
         txtResultCount = findViewById(R.id.txtResultCount);
 
-        btnFilter = findViewById(R.id.imbBtnFilter);
-        btnFilter.setOnClickListener(new View.OnClickListener() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        btnDateFilter = findViewById(R.id.imbBtnFilter);
+        View viewPopupDate = inflater.inflate(R.layout.layout_popup_date,null, false);
+        final SearchDateRangePopupWindow datePopupWindow = new SearchDateRangePopupWindow(this, viewPopupDate, this);
+        btnDateFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.END);
+                datePopupWindow.showAsDropDown(btnDateFilter);
             }
         });
 
@@ -116,10 +117,6 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         searchBox = findViewById(R.id.searchBox);
         searchBox.setCallback(this);
         // searchBox.setSearchHistory(data);
-    }
-
-    private void initDrawerLayout() {
-        drawerLayout = findViewById(R.id.drawerLayout);
     }
 
     @Override
@@ -150,5 +147,10 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         intent.setClass(this, ContentAct.class);
         intent.putExtra(NEWS_CONTENT, news);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDateRangeSelected(String from, String to) {
+
     }
 }

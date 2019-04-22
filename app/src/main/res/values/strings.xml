@@ -21,6 +21,8 @@
     <string name="time_error">Time Error</string>
     <string name="server_error">Server Error</string>
     <string name="search_result_count">Search Result: ( %1$d )</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
 
     <string-array name="topics">
         <item>@string/general</item>
