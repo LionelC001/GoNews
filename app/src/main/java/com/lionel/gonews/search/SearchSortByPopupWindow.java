@@ -50,6 +50,7 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
                 } else if (checkedId == R.id.radPublishAt) {
                     value = PUBLISHEDAT;
                 }
+                SearchSortByPopupWindow.this.dismiss();
             }
         });
     }
