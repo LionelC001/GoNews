@@ -55,6 +55,10 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
         });
     }
 
+    public void show(View anchor){
+        super.show(anchor);
+    }
+
     @Override
     public void dismiss() {
         if (checkIsValueChanged()) {

@@ -56,4 +56,10 @@
         <item name="android:textSize">@dimen/x18sp</item>
     </style>
 
+    <style name="PopupWindowText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textSize">@dimen/x18sp</item>
+    </style>
+
 </resources>

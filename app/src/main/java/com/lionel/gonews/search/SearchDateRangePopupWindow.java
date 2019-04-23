@@ -56,6 +56,10 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
         oldValueTo = txtDateRangeTo.getText().toString();
     }
 
+    public void show(View anchor){
+        super.show(anchor);
+    }
+
     @Override
     public void dismiss() {
         if (checkIsDateChanged()) {

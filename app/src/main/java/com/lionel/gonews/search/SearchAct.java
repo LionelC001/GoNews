@@ -99,7 +99,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnSortByFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortByPopupWindow.showAsDropDown(btnSortByFilter);
+                sortByPopupWindow.show(btnSortByFilter);
             }
         });
 
@@ -108,7 +108,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnDateFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                datePopupWindow.showAsDropDown(btnDateFilter);
+                datePopupWindow.show(btnDateFilter);
             }
         });
 
