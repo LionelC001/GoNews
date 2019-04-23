@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
@@ -86,6 +87,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
         } else {
             if (queryFilter != null) {
                 currentPage = 1;
+                maxPage = 0;
                 queryFilter.setPage(currentPage);
                 isLastPage.setValue(false);
                 loadNews(queryFilter);
