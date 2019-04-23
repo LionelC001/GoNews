@@ -3,11 +3,13 @@ package com.lionel.gonews.search;
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.data.remote.QueryFilter;
+import com.lionel.gonews.util.DateConvertManager;
 
 import java.util.List;
 
@@ -64,13 +66,12 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
 
     public void setDateRange(String dateFrom, String dateTo) {
         if (queryEverythingFilter != null) {
-            queryEverythingFilter.dateFrom = dateFrom;
-            queryEverythingFilter.dateTo = dateTo;
+            queryEverythingFilter.dateFrom = DateConvertManager.turnLocalToUTC(dateFrom);
+            queryEverythingFilter.dateTo = DateConvertManager.turnLocalToUTCAndPlus1Day(dateTo);
 
             super.setQueryFilter(queryEverythingFilter);
         }
     }
-
 
     /**
      * every query should without cache
