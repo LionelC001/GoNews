@@ -1,11 +1,9 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorYellow</item>
     </style>
 
     <style name="Toolbar">
@@ -47,6 +45,7 @@
     </style>
 
     <style name="NewsContentFromAndDateText">
+        <item name="android:textColor">@color/colorLightGray</item>
         <item name="android:textSize">@dimen/x14sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -57,9 +56,8 @@
     </style>
 
     <style name="PopupWindowText">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/colorDeepGray</item>
-        <item name="android:textSize">@dimen/x18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/x20sp</item>
     </style>
 
 </resources>

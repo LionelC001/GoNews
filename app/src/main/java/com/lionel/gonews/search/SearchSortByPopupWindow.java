@@ -1,6 +1,7 @@
 package com.lionel.gonews.search;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -55,8 +56,8 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
         });
     }
 
-    public void show(View anchor){
-        super.show(anchor);
+    public void show(View anchor) {
+        super.show(anchor, Gravity.START);
     }
 
     @Override

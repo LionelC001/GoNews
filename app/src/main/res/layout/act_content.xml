@@ -94,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/x8dp"
-                    android:background="@drawable/frame_round_corner_white"
+                    android:background="@drawable/frame_gray_round_corner_white"
                     android:text="@{contentActNews.source.name}"
                     app:layout_constraintEnd_toStartOf="@+id/txtDate"
                     app:layout_constraintTop_toTopOf="@+id/txtDate" />

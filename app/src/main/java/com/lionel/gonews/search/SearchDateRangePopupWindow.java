@@ -2,9 +2,11 @@ package com.lionel.gonews.search;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lionel.gonews.R;
@@ -33,7 +35,8 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
 
         initView();
         initDateTextView();
-        initValue();
+        initBtn();
+        initOldValue();
     }
 
     private void initView() {
@@ -44,20 +47,43 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
 
     private void initDateTextView() {
         txtDateRangeFrom = viewPopupDate.findViewById(R.id.txtDateRangeFrom);
-        txtDateRangeTo = viewPopupDate.findViewById(R.id.txtDateFromTo);
-        txtDateRangeTo.setText(DateConvertManager.getTodayInStr());
+        txtDateRangeTo = viewPopupDate.findViewById(R.id.txtDateRangeTo);
+        initRangeToText();
 
         txtDateRangeFrom.setOnClickListener(new DatePickerHandler(txtDateRangeFrom));
         txtDateRangeTo.setOnClickListener(new DatePickerHandler(txtDateRangeTo));
     }
 
-    private void initValue() {
+    private void initRangeToText() {
+        txtDateRangeTo.setText(DateConvertManager.getTodayInStr());
+    }
+
+    private void initBtn() {
+        ImageButton btnResetFrom = viewPopupDate.findViewById(R.id.imgBtnResetFrom);
+        ImageButton btnResetTo = viewPopupDate.findViewById(R.id.imgBtnResetTo);
+
+        btnResetFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtDateRangeFrom.setText("");
+            }
+        });
+
+        btnResetTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initRangeToText();
+            }
+        });
+    }
+
+    private void initOldValue() {
         oldValueFrom = txtDateRangeFrom.getText().toString();
         oldValueTo = txtDateRangeTo.getText().toString();
     }
 
-    public void show(View anchor){
-        super.show(anchor);
+    public void show(View anchor) {
+        super.show(anchor, Gravity.END);
     }
 
     @Override
@@ -86,7 +112,6 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
         return isValueChanged;
     }
 
-
     private class DatePickerHandler implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
         private final TextView targetView;
@@ -103,6 +128,7 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
             datePickDialog = new DatePickerDialog(context,
                     this,
                     today[0], today[1], today[2]);
+            datePickDialog.setTitle("");
         }
 
         @Override

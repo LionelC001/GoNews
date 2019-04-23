@@ -1,7 +1,6 @@
 package com.lionel.gonews.base;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -22,7 +21,7 @@ public class BasePopupWindow extends PopupWindow {
     private void initLayoutParams() {
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        setBackgroundDrawable(context.getDrawable(R.drawable.frame_round_corner_white));
+        setBackgroundDrawable(context.getDrawable(R.drawable.frame_gray_round_corner_white));
         setElevation(4f);
         setFocusable(true);
         setOutsideTouchable(true);
@@ -32,11 +31,10 @@ public class BasePopupWindow extends PopupWindow {
         setContentView(view);
     }
 
-    public void show(View anchor) {
+    public void show(View anchor, int gravity) {
         getContentView().measure(makeDropDownMeasureSpec(getWidth()), makeDropDownMeasureSpec(getHeight()));
         int offsetX = -getContentView().getMeasuredWidth();
-        showAsDropDown(anchor, offsetX, 20, Gravity.START);
-
+        showAsDropDown(anchor, offsetX, 20, gravity);
         dimBehind();
     }
 

@@ -31,10 +31,11 @@
     <TextView
         android:id="@+id/txtDateRangeFrom"
         style="@style/PopupWindowText"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/x12dp"
-        android:background="@drawable/frame_round_corner_white"
+        android:background="@drawable/frame_black_round_corner_white"
+        android:gravity="center"
         android:inputType="none"
         android:paddingStart="@dimen/x12dp"
         android:paddingEnd="@dimen/x12dp"
@@ -43,15 +44,38 @@
         app:layout_constraintTop_toTopOf="@+id/txtDateFrom" />
 
     <TextView
-        android:id="@+id/txtDateFromTo"
+        android:id="@+id/txtDateRangeTo"
         style="@style/PopupWindowText"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/frame_round_corner_white"
+        android:background="@drawable/frame_black_round_corner_white"
+        android:gravity="center"
         android:inputType="none"
         android:paddingStart="@dimen/x12dp"
         android:paddingEnd="@dimen/x12dp"
         app:layout_constraintBottom_toBottomOf="@+id/txtDateTo"
         app:layout_constraintStart_toStartOf="@+id/txtDateRangeFrom"
         app:layout_constraintTop_toTopOf="@+id/txtDateTo" />
+
+    <ImageButton
+        android:id="@+id/imgBtnResetFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_cancel"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDateRangeFrom"
+        app:layout_constraintStart_toEndOf="@+id/txtDateRangeFrom"
+        app:layout_constraintTop_toTopOf="@+id/txtDateRangeFrom" />
+
+    <ImageButton
+        android:id="@+id/imgBtnResetTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_cancel"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDateRangeTo"
+        app:layout_constraintStart_toEndOf="@+id/txtDateRangeTo"
+        app:layout_constraintTop_toTopOf="@+id/txtDateRangeTo" />
 </android.support.constraint.ConstraintLayout>
