@@ -38,13 +38,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ItemNewsSourceAndDateText">
+        <item name="android:textColor">@color/colorLightGray</item>
+        <item name="android:textSize">@dimen/x14sp</item>
+    </style>
+
     <style name="NewsContentTitleText">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/x24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="NewsContentFromAndDateText">
+    <style name="NewsContentSourceAndDateText">
         <item name="android:textColor">@color/colorLightGray</item>
         <item name="android:textSize">@dimen/x14sp</item>
         <item name="android:textStyle">bold</item>
@@ -58,6 +63,11 @@
     <style name="PopupWindowText">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">@dimen/x20sp</item>
+    </style>
+
+    <style name="SearchResultCountText">
+        <item name="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textSize">@dimen/x16sp</item>
     </style>
 
 </resources>

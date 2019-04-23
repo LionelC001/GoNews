@@ -45,6 +45,7 @@
 
             <TextView
                 android:id="@+id/txtResultCount"
+                style="@style/SearchResultCountText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/x8dp"

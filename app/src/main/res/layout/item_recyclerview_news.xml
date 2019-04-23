@@ -13,9 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/x8dp"
-        android:foreground="?android:attr/selectableItemBackground"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,12 +27,12 @@
                 android:layout_height="@dimen/x120dp"
                 android:padding="@dimen/x4dp"
                 android:scaleType="centerCrop"
-                app:srcFromUrl="@{itemDataNews.urlToImage}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.35" />
+                app:layout_constraintWidth_percent="0.35"
+                app:srcFromUrl="@{itemDataNews.urlToImage}" />
 
             <TextView
                 android:id="@+id/txtNewsTitle"
@@ -44,13 +44,14 @@
                 android:paddingStart="@dimen/x8dp"
                 android:paddingTop="@dimen/x8dp"
                 android:paddingEnd="@dimen/x4dp"
-                app:titleWithoutTail="@{itemDataNews.title}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imgNews"
                 app:layout_constraintTop_toTopOf="@+id/imgNews"
-                app:layout_constraintWidth_percent="0.65" />
+                app:layout_constraintWidth_percent="0.65"
+                app:titleWithoutTail="@{itemDataNews.title}" />
 
             <TextView
+                style="@style/ItemNewsSourceAndDateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -62,6 +63,7 @@
 
             <TextView
                 android:id="@+id/txtNewsData"
+                style="@style/ItemNewsSourceAndDateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"

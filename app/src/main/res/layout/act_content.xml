@@ -90,7 +90,7 @@
                     app:titleWithoutTail="@{contentActNews.title}" />
 
                 <TextView
-                    style="@style/NewsContentFromAndDateText"
+                    style="@style/NewsContentSourceAndDateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/x8dp"
@@ -101,7 +101,7 @@
 
                 <TextView
                     android:id="@+id/txtDate"
-                    style="@style/NewsContentFromAndDateText"
+                    style="@style/NewsContentSourceAndDateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/x12dp"
