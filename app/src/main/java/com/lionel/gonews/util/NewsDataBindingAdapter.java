@@ -20,7 +20,7 @@ import static com.lionel.gonews.util.Constants.DATE_ISO8601;
 import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
 import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD_HH_MM_SS;
 
-public class NewsDataParsingHelper {
+public class NewsDataBindingAdapter {
 
     @BindingAdapter("srcFromUrl")
     public static void setImageFromUrl(ImageView view, String url) {
@@ -97,8 +97,7 @@ public class NewsDataParsingHelper {
         }
     }
 
-    @BindingAdapter("date")
-    public static void setShortDate(TextView view, String oldTime) {
+    private static void setShortDate(TextView view, String oldTime) {
         String date = formatDate(DATE_YY_MM_DD, oldTime);
         if (date != null) {
             view.setText(date);
@@ -113,7 +112,9 @@ public class NewsDataParsingHelper {
         }
     }
 
-
+    /**
+     * turn UTC to local timezone
+     */
     private static String formatDate(String pattern, String oldTime) {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
