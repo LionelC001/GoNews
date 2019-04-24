@@ -1,15 +1,19 @@
 package com.lionel.gonews.data.local;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import java.util.List;
 
 import static android.arch.persistence.room.OnConflictStrategy.ABORT;
+import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 import static com.lionel.gonews.util.Constants.COLUMN_FAVORITE;
 import static com.lionel.gonews.util.Constants.COLUMN_HISTORY;
 import static com.lionel.gonews.util.Constants.COLUMN_TITLE;
@@ -23,15 +27,19 @@ public interface LocalNewsDao {
 
     @Query("SELECT COUNT(*) FROM " + TABLE_LOCAL_NEWS +
             " WHERE " + COLUMN_FAVORITE + " = 1 AND " + COLUMN_TITLE + " = :title")
-    public LiveData<Integer> checkIsFavoriteNews(String title);
+    public LiveData<Integer> checkIsFavoriteNewsExist(String title);
 
     @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " = 1")
     public LiveData<List<LocalNews>> getAllHistoryNews();
 
+    @Query("SELECT COUNT(*) FROM " + TABLE_LOCAL_NEWS +
+            " WHERE " + COLUMN_HISTORY + " = 1 AND " + COLUMN_TITLE + " = :title")
+    public LiveData<Integer> checkIsHistoryNewsExist(String title);
+
     @Update
     public void update(LocalNews localNews);
 
-    @Insert(onConflict = ABORT)
+    @Insert
     public void insert(LocalNews localNews);
 
     @Delete

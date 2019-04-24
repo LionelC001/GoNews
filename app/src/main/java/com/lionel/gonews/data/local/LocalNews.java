@@ -2,9 +2,9 @@ package com.lionel.gonews.data.local;
 
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -14,6 +14,7 @@ import static com.lionel.gonews.util.Constants.TABLE_LOCAL_NEWS;
 public class LocalNews implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
+    @NonNull
     @ColumnInfo(name = "_id")
     public int id;
 

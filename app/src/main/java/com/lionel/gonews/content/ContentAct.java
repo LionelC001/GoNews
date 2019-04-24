@@ -1,12 +1,16 @@
 package com.lionel.gonews.content;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -14,10 +18,13 @@ import android.widget.ImageButton;
 
 import com.lionel.gonews.R;
 import com.lionel.gonews.data.News;
+import com.lionel.gonews.data.local.LocalNews;
+
+import java.util.List;
 
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class ContentAct extends AppCompatActivity {
+public class ContentAct extends AppCompatActivity implements ImageCompletedCallbackView.IImageViewCompletedCallback {
 
     private ContentViewModel viewModel;
     private ViewDataBinding binding;
@@ -32,6 +39,7 @@ public class ContentAct extends AppCompatActivity {
         news = (News)getIntent().getSerializableExtra(NEWS_CONTENT);
 
         initViewModel();
+        initImgCompletedListener();
         initBtnBack();
         initChkBoxFavorite();
         initBtnShare();
@@ -43,6 +51,11 @@ public class ContentAct extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
         binding = DataBindingUtil.setContentView(this, R.layout.act_content);
         viewModel.setBinding(binding);
+    }
+
+    private void initImgCompletedListener() {
+        ImageCompletedCallbackView imgView = findViewById(R.id.imgPhoto);
+        imgView.setCallback(this);
     }
 
     private void initBtnBack() {
@@ -84,10 +97,16 @@ public class ContentAct extends AppCompatActivity {
     }
 
     private void initLocalNewsHistory() {
-        viewModel.setLocalNewsHistory(news);
+        viewModel.initLocalNewsHistory(news);
     }
 
     private void initNewsContent() {
         viewModel.setNewsContent(news);
+    }
+
+    @Override
+    public void onImageCompleted(Drawable drawable) {
+        // save this page content to local db, after Glide fetched the image from url
+        viewModel.startStoreLocalNewsHistory(drawable);
     }
 }

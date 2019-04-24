@@ -1,7 +1,10 @@
 package com.lionel.gonews.data.local;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.List;
 
@@ -17,13 +20,17 @@ public class LocalNewsSource {
         return localNewsDao.getAllFavoriteNews();
     }
 
-    public boolean checkIsFavoriteNews(String title) {
-        LiveData<Integer> results = localNewsDao.checkIsFavoriteNews(title);
+    public boolean checkIsFavoriteNewsExist(String title) {
+        LiveData<Integer> results = localNewsDao.checkIsFavoriteNewsExist(title);
         return results.getValue() != null && results.getValue() > 0;
     }
 
     public LiveData<List<LocalNews>> getAllHistoryNews() {
         return localNewsDao.getAllHistoryNews();
+    }
+
+    public LiveData<Integer> checkIsHistoryNewsExist(String title) {
+        return localNewsDao.checkIsHistoryNewsExist(title);
     }
 
     public void update(final LocalNews localNews) {
