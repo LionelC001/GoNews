@@ -78,6 +78,6 @@ public class ContentAct extends AppCompatActivity {
 
     private void initNewsContent() {
         news = getIntent().getParcelableExtra(NEWS_CONTENT);
-        binding.setVariable(BR.contentActNews, news);
+        binding.setVariable(BR.remoteNews, news);
     }
 }
