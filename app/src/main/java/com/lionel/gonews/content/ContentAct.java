@@ -1,18 +1,17 @@
 package com.lionel.gonews.content;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 
-import com.lionel.gonews.BR;
 import com.lionel.gonews.R;
 import com.lionel.gonews.data.News;
 
@@ -20,19 +19,30 @@ import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
 public class ContentAct extends AppCompatActivity {
 
+    private ContentViewModel viewModel;
     private ViewDataBinding binding;
     private CheckBox chkFavorite;
     private News news;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.act_content);
 
+        news = (News)getIntent().getSerializableExtra(NEWS_CONTENT);
+
+        initViewModel();
         initBtnBack();
         initChkBoxFavorite();
         initBtnShare();
+        initLocalNewsHistory();
         initNewsContent();
+    }
+
+    private void initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.act_content);
+        viewModel.setBinding(binding);
     }
 
     private void initBtnBack() {
@@ -41,8 +51,6 @@ public class ContentAct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-
-                //TODO  save favorite state
             }
         });
     }
@@ -52,7 +60,7 @@ public class ContentAct extends AppCompatActivity {
         chkFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("<>", "isCHeck: " + isChecked);
+              viewModel.updateFavorite(isChecked);
             }
         });
     }
@@ -75,9 +83,11 @@ public class ContentAct extends AppCompatActivity {
         });
     }
 
+    private void initLocalNewsHistory() {
+        viewModel.setLocalNewsHistory(news);
+    }
 
     private void initNewsContent() {
-        news = (News)getIntent().getSerializableExtra(NEWS_CONTENT);
-        binding.setVariable(BR.remoteNews, news);
+        viewModel.setNewsContent(news);
     }
 }

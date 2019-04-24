@@ -9,7 +9,7 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+import static android.arch.persistence.room.OnConflictStrategy.ABORT;
 import static com.lionel.gonews.util.Constants.COLUMN_FAVORITE;
 import static com.lionel.gonews.util.Constants.COLUMN_HISTORY;
 import static com.lionel.gonews.util.Constants.COLUMN_TITLE;
@@ -31,7 +31,7 @@ public interface LocalNewsDao {
     @Update
     public void update(LocalNews localNews);
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = ABORT)
     public void insert(LocalNews localNews);
 
     @Delete

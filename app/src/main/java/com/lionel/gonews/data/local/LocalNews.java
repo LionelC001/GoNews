@@ -34,14 +34,17 @@ public class LocalNews extends News implements Serializable {
     public String publishedAt;
     public String content;
 
-    @ColumnInfo(name = COLUMN_FAVORITE)
-    public boolean isFavorite;
-
     @ColumnInfo(name = COLUMN_HISTORY)
     public boolean isHistory;
 
+    @ColumnInfo(name = COLUMN_FAVORITE)
+    public boolean isFavorite;
 
-    public LocalNews(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
+
+    public LocalNews(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content, boolean isHistory, boolean isFavorite) {
         super(source, author, title, description, url, urlToImage, publishedAt, content);
+
+        this.isHistory = isHistory;
+        this.isFavorite = isFavorite;
     }
 }
