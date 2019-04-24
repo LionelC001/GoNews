@@ -47,11 +47,11 @@ import static com.lionel.gonews.util.Constants.QUERY_SORTBY;
 import static com.lionel.gonews.util.Constants.QUERY_WORD;
 import static com.lionel.gonews.util.Constants.US;
 
-public class NewsRemoteSource implements INewsSource {
+public class RemoteNewsSource implements INewsSource {
 
     private final Context context;
 
-    public NewsRemoteSource(Context context) {
+    public RemoteNewsSource(Context context) {
         this.context = context;
     }
 

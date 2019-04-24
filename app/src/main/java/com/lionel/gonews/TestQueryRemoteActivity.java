@@ -7,7 +7,7 @@ import android.util.Log;
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.remote.QueryFilter;
-import com.lionel.gonews.data.remote.NewsRemoteSource;
+import com.lionel.gonews.data.remote.RemoteNewsSource;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class TestQueryRemoteActivity extends AppCompatActivity {
 
     private void testGetNews() {
         Log.d("<>", "test: starting get news");
-        NewsRemoteSource newsRemoteSource = new NewsRemoteSource(this);
+        RemoteNewsSource remoteNewsSource = new RemoteNewsSource(this);
         INewsSource.IQueryNewsCallback callback = new INewsSource.IQueryNewsCallback() {
             @Override
             public void onSuccess(int totalSize, List<News> newsList) {
@@ -51,9 +51,9 @@ public class TestQueryRemoteActivity extends AppCompatActivity {
             }
         };
 
-//       newsRemoteSource.queryNews(new QueryFilter.QueryHeadlinesFilter(US, GENERAL), callback);
+//       remoteNewsSource.queryNews(new QueryFilter.QueryHeadlinesFilter(US, GENERAL), callback);
 
-        newsRemoteSource.queryNews(new QueryFilter.QueryEverythingFilter("apple",
+        remoteNewsSource.queryNews(new QueryFilter.QueryEverythingFilter("apple",
                         PUBLISHEDAT,
                         "2019-04-08",
                         "2019-04-09")

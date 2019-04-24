@@ -4,12 +4,11 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.remote.ErrorInfo;
-import com.lionel.gonews.data.remote.NewsRemoteSource;
+import com.lionel.gonews.data.remote.RemoteNewsSource;
 import com.lionel.gonews.data.remote.QueryFilter;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.List;
 import static com.lionel.gonews.util.Constants.PAGESIZE;
 
 /**
- * a bridge between View and NewsRemoteSource.
+ * a bridge between View and RemoteNewsSource.
  *
  * <p>
  * you must call {@link #setQueryFilter(QueryFilter)} before initNews() or initNewsWithoutCache().
@@ -50,7 +49,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
 
     protected BaseRemoteSourceViewModel(@NonNull Application application) {
         super(application);
-        newsRemoteSource = new NewsRemoteSource(application.getApplicationContext());
+        newsRemoteSource = new RemoteNewsSource(application.getApplicationContext());
     }
 
     protected MutableLiveData<List<News>> getNewsDataLiveData() {
