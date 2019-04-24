@@ -77,7 +77,7 @@ public class ContentAct extends AppCompatActivity {
 
 
     private void initNewsContent() {
-        news = getIntent().getParcelableExtra(NEWS_CONTENT);
+        news = (News)getIntent().getSerializableExtra(NEWS_CONTENT);
         binding.setVariable(BR.remoteNews, news);
     }
 }
