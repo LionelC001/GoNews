@@ -62,7 +62,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:padding="@dimen/x4dp"
-                android:text="@{remoteNews != null ? remoteNews.source.name : localNews.source.name}"
+                android:text="@{remoteNews != null ? remoteNews.source.name : localNews.sourceName}"
                 app:layout_constraintBottom_toBottomOf="@+id/txtNewsData"
                 app:layout_constraintEnd_toStartOf="@+id/txtNewsData" />
 

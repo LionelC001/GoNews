@@ -21,20 +21,21 @@ public class ContentViewModel extends AndroidViewModel {
         localNewsSource = new LocalNewsSource(application);
     }
 
-    public void setBinding(ViewDataBinding binding){
+    public void setBinding(ViewDataBinding binding) {
         this.binding = binding;
     }
 
-    public void setNewsContent(News news){
+    public void setNewsContent(News news) {
         binding.setVariable(BR.remoteNews, news);
     }
 
-    public void setLocalNewsHistory(News news){
-        localNews = new LocalNews(news.source, news.author, news.title, news.description, news.url, news.urlToImage, news.publishedAt, news.content, true, false);
+    public void setLocalNewsHistory(News news) {
+        String content = news.content != null ? news.content : news.description;
+        localNews = new LocalNews(news.source.name, news.title, news.url, news.urlToImage, news.publishedAt, content, true, false);
         localNewsSource.insert(localNews);
     }
 
-    public void updateFavorite(boolean isFavorite){
+    public void updateFavorite(boolean isFavorite) {
         localNews.isFavorite = isFavorite;
         localNewsSource.update(localNews);
     }

@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/x8dp"
                     android:background="@drawable/frame_gray_round_corner_white"
-                    android:text="@{remoteNews != null ? remoteNews.source.name : localNews.source.name}"
+                    android:text="@{remoteNews != null ? remoteNews.source.name : localNews.sourceName}"
                     app:layout_constraintEnd_toStartOf="@+id/txtDate"
                     app:layout_constraintTop_toTopOf="@+id/txtDate" />
 
@@ -130,7 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/x8dp"
-                    android:text="@{remoteNews != null ? (remoteNews.content!=null ? remoteNews.content : remoteNews.description) : (localNews.content!=null ? localNews.content : localNews.description)}"
+                    android:text="@{remoteNews != null ? (remoteNews.content!=null ? remoteNews.content : remoteNews.description) : localNews.content}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imgPhoto" />
