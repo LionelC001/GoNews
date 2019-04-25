@@ -2,21 +2,14 @@ package com.lionel.gonews.util;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.CircularProgressDrawable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.lionel.gonews.R;
-import com.lionel.gonews.content.ImageCompletedCallbackView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,8 +22,8 @@ import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD_HH_MM_SS;
 
 public class NewsDataBindingAdapter {
 
-    @BindingAdapter(value = {"srcFromUrl", "srcFromLocal"}, requireAll = false)
-    public static void setImageFromUrl(final ImageView view, final String srcFromUrl, String srcFromLocal) {
+    @BindingAdapter(value = {"srcFromUrl", "srcFromLocalBase64"}, requireAll = false)
+    public static void setImageFromUrl(final ImageView view, final String srcFromUrl, String srcFromLocalBase64) {
         Context context = view.getContext();
 
         CircularProgressDrawable loadingDrawable = new CircularProgressDrawable(view.getContext());
@@ -45,20 +38,6 @@ public class NewsDataBindingAdapter {
                 .error(R.drawable.ic_error_cat_yellow_lean)
                 .transition(DrawableTransitionOptions.withCrossFade(500))
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        if (view instanceof ImageCompletedCallbackView && srcFromUrl != null) {
-                            ((ImageCompletedCallbackView) view).onGlideImageComplete(resource);
-                        }
-                        return false;
-                    }
-                })
                 .into(view);
     }
 

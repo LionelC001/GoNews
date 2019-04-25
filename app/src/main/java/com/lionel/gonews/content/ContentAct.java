@@ -19,7 +19,7 @@ import com.lionel.gonews.data.News;
 
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
-public class ContentAct extends AppCompatActivity implements ImageCompletedCallbackView.IImageViewCompletedCallback {
+public class ContentAct extends AppCompatActivity {
 
     private ContentViewModel viewModel;
     private CheckBox chkFavorite;
@@ -33,7 +33,6 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
         news = (News) getIntent().getSerializableExtra(NEWS_CONTENT);
 
         initViewModel();
-        initImgCompletedListener();
         initBtnBack();
         initBtnShare();
         initChkBoxFavorite();
@@ -44,11 +43,6 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
         viewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.act_content);
         viewModel.setBindingNews(binding, news);
-    }
-
-    private void initImgCompletedListener() {
-        ImageCompletedCallbackView imgView = findViewById(R.id.imgPhoto);
-        imgView.setCallback(this);
     }
 
     private void initBtnBack() {
@@ -100,11 +94,5 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
 
     private void storeLocalNewsHistory() {
         viewModel.storeLocalNewsHistory();
-    }
-
-    @Override
-    public void onImageCompleted(Drawable drawable) {
-        // save this page content to local db, after Glide fetched the image from url
-        viewModel.onDrawableIsReady(drawable);
     }
 }
