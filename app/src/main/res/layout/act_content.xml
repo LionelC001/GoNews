@@ -129,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/x8dp"
-                    android:text="@{remoteNews != null ? (remoteNews.content!=null ? remoteNews.content : remoteNews.description) : favoriteNews.content}"
+                    android:text="@{remoteNews != null ? (remoteNews.content!=null ? remoteNews.content : remoteNews.description) : favoriteNews.localContent}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imgPhoto" />
