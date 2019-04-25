@@ -54,7 +54,7 @@ public abstract class LocalNewsDao {
     @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_FAVORITE + " = 0 WHERE " + COLUMN_TITLE + " = :title")
     abstract void updateNotFavorite(String title);
 
-    @Query("DELETE FROM " + TABLE_LOCAL_NEWS + " WHERE NOT (" + COLUMN_HISTORY + " = 1 AND " + COLUMN_FAVORITE + " = 1)")
+    @Query("DELETE FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " = 0 AND " + COLUMN_FAVORITE + " = 0")
     abstract void deleteAll();
 
     @Transaction
