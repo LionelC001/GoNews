@@ -7,7 +7,7 @@ import android.content.Context;
 
 import static com.lionel.gonews.util.Constants.DB_LOCAL_NEWS;
 
-@Database(entities = {LocalNews.class}, version = 1)
+@Database(entities = {FavoriteNews.class, HistoryNews.class}, version = 1)
 public abstract class LocalNewsDatabase extends RoomDatabase {
     private static LocalNewsDatabase INSTANCE;
     public static synchronized LocalNewsDatabase getDatabase(Context context) {
@@ -19,5 +19,7 @@ public abstract class LocalNewsDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract LocalNewsDao getLocalNewsDao();
+    public abstract FavoriteNewsDao getFavoriteNewsDao();
+
+    public abstract HistoryNewsDao getHistoryNewsDao();
 }

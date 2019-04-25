@@ -8,13 +8,12 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-import static com.lionel.gonews.util.Constants.TABLE_LOCAL_NEWS;
+import static com.lionel.gonews.util.Constants.TABLE_FAVORITE_NEWS;
 
-@Entity(tableName = TABLE_LOCAL_NEWS)
-public class LocalNews implements Serializable {
+@Entity(tableName = TABLE_FAVORITE_NEWS)
+public class FavoriteNews implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     @ColumnInfo(name = "_id")
     public int id;
 
@@ -24,17 +23,13 @@ public class LocalNews implements Serializable {
     public String localToImage;
     public String publishedAt;
     public String content;
-    public boolean isHistory;
-    public boolean isFavorite;
 
-    public LocalNews(String sourceName, String title, String url, String localToImage, String publishedAt, String content, boolean isHistory, boolean isFavorite) {
+    public FavoriteNews(String sourceName, String title, String url, String localToImage, String publishedAt, String content) {
         this.sourceName = sourceName;
         this.title = title;
         this.url = url;
         this.localToImage = localToImage;
         this.publishedAt = publishedAt;
         this.content = content;
-        this.isHistory = isHistory;
-        this.isFavorite = isFavorite;
     }
 }

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="localNews"
-            type="com.lionel.gonews.data.local.LocalNews" />
+            name="favoriteNews"
+            type="com.lionel.gonews.data.local.FavoriteNews" />
 
         <variable
             name="remoteNews"
@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.35"
                 app:srcFromUrl="@{remoteNews.urlToImage}"
-                app:srcFromLocal="@{localNews.localToImage}"/>
+                app:srcFromLocal="@{favoriteNews.localToImage}"/>
 
             <TextView
                 android:id="@+id/txtNewsTitle"
@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toEndOf="@+id/imgNews"
                 app:layout_constraintTop_toTopOf="@+id/imgNews"
                 app:layout_constraintWidth_percent="0.65"
-                app:titleWithoutTail="@{remoteNews != null ? remoteNews.title : localNews.title}" />
+                app:titleWithoutTail="@{remoteNews != null ? remoteNews.title : favoriteNews.title}" />
 
             <TextView
                 style="@style/ItemNewsSourceAndDateText"
@@ -62,7 +62,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:padding="@dimen/x4dp"
-                android:text="@{remoteNews != null ? remoteNews.source.name : localNews.sourceName}"
+                android:text="@{remoteNews != null ? remoteNews.source.name : favoriteNews.sourceName}"
                 app:layout_constraintBottom_toBottomOf="@+id/txtNewsData"
                 app:layout_constraintEnd_toStartOf="@+id/txtNewsData" />
 
@@ -77,7 +77,7 @@
                 app:layout_constraintEnd_toEndOf="@id/txtNewsTitle"
                 app:layout_constraintTop_toBottomOf="@id/txtNewsTitle"
                 app:layout_constraintVertical_bias="1.0"
-                app:passedTime="@{remoteNews != null ? remoteNews.publishedAt : localNews.publishedAt}" />
+                app:passedTime="@{remoteNews != null ? remoteNews.publishedAt : favoriteNews.publishedAt}" />
 
         </android.support.constraint.ConstraintLayout>
 

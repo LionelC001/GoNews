@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="localNews"
-            type="com.lionel.gonews.data.local.LocalNews" />
+            name="favoriteNews"
+            type="com.lionel.gonews.data.local.FavoriteNews" />
 
         <variable
             name="remoteNews"
@@ -52,7 +52,6 @@
                         android:layout_marginEnd="@dimen/x16dp"
                         android:background="@drawable/bg_chkbox_favorite"
                         android:button="@drawable/ic_favorite_empty_white"
-                        android:checked="@{localNews.isFavorite}"
                         app:layout_constraintEnd_toStartOf="@+id/imgBtnShare"
                         app:layout_constraintTop_toTopOf="@+id/imgBtnShare" />
 
@@ -92,7 +91,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:titleWithoutTail="@{remoteNews != null ? remoteNews.title : localNews.title}" />
+                    app:titleWithoutTail="@{remoteNews != null ? remoteNews.title : favoriteNews.title}" />
 
                 <TextView
                     style="@style/NewsContentSourceAndDateText"
@@ -100,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/x8dp"
                     android:background="@drawable/frame_gray_round_corner_white"
-                    android:text="@{remoteNews != null ? remoteNews.source.name : localNews.sourceName}"
+                    android:text="@{remoteNews != null ? remoteNews.source.name : favoriteNews.sourceName}"
                     app:layout_constraintEnd_toStartOf="@+id/txtDate"
                     app:layout_constraintTop_toTopOf="@+id/txtDate" />
 
@@ -110,7 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/x12dp"
-                    app:dateAndTime="@{remoteNews != null ? remoteNews.publishedAt : localNews.publishedAt}"
+                    app:dateAndTime="@{remoteNews != null ? remoteNews.publishedAt : favoriteNews.publishedAt}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtTitle" />
 
@@ -122,7 +121,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtDate"
-                    app:srcFromLocal="@{localNews.localToImage}"
+                    app:srcFromLocal="@{favoriteNews.localToImage}"
                     app:srcFromUrl="@{remoteNews.urlToImage}" />
 
                 <TextView
@@ -130,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/x8dp"
-                    android:text="@{remoteNews != null ? (remoteNews.content!=null ? remoteNews.content : remoteNews.description) : localNews.content}"
+                    android:text="@{remoteNews != null ? (remoteNews.content!=null ? remoteNews.content : remoteNews.description) : favoriteNews.content}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imgPhoto" />

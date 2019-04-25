@@ -1,11 +1,26 @@
 package com.lionel.gonews.data;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
+
+import static com.lionel.gonews.util.Constants.TABLE_HISTORY_NEWS;
 
 /**
  * model class for news
  */
+
+@Entity(tableName = TABLE_HISTORY_NEWS)
 public class News implements Serializable {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "_id")
+    public int id;
+
+    @Embedded
     public Source source;
     public String author;
     public String title;

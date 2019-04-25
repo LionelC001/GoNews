@@ -1,7 +1,5 @@
 package com.lionel.gonews.content;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -10,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -18,9 +15,6 @@ import android.widget.ImageButton;
 
 import com.lionel.gonews.R;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.local.LocalNews;
-
-import java.util.List;
 
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 
@@ -43,8 +37,8 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
         initBtnBack();
         initChkBoxFavorite();
         initBtnShare();
-        initLocalNewsHistory();
         initNewsContent();
+        storeLocalNewsHistory();
     }
 
     private void initViewModel() {
@@ -96,17 +90,16 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
         });
     }
 
-    private void initLocalNewsHistory() {
-        viewModel.initLocalNewsHistory(news);
-    }
-
     private void initNewsContent() {
         viewModel.setNewsContent(news);
+    }
+
+    private void storeLocalNewsHistory() {
+        viewModel.storeLocalNewsHistory(news);
     }
 
     @Override
     public void onImageCompleted(Drawable drawable) {
         // save this page content to local db, after Glide fetched the image from url
-        viewModel.startStoreLocalNewsHistory(drawable);
     }
 }
