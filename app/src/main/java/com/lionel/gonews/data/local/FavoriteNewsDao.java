@@ -2,7 +2,6 @@ package com.lionel.gonews.data.local;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -15,14 +14,14 @@ import static com.lionel.gonews.util.Constants.TABLE_FAVORITE_NEWS;
 public interface FavoriteNewsDao {
 
     @Query("SELECT * FROM " + TABLE_FAVORITE_NEWS)
-    public LiveData<List<FavoriteNews>> getAllFavoriteNews();
+    LiveData<List<FavoriteNews>> getAllFavoriteNews();
 
     @Query("SELECT COUNT(title) FROM " + TABLE_FAVORITE_NEWS + " WHERE title is :title ")
-    public LiveData<Integer> getFavoriteNewsCount(String title);
+    LiveData<Integer> getFavoriteNewsCount(String title);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insert(FavoriteNews favoriteNews);
+    void insert(FavoriteNews favoriteNews);
 
-    @Delete()
-    public void delete(FavoriteNews favoriteNews);
+    @Query("DELETE FROM " + TABLE_FAVORITE_NEWS + " WHERE  title is :title")
+    void delete(String title);
 }

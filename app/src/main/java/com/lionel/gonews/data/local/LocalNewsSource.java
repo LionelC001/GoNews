@@ -21,7 +21,7 @@ public class LocalNewsSource {
         return favoriteNewsDao.getAllFavoriteNews();
     }
 
-    public LiveData<Integer> getFavoriteNewsCount(String title){
+    public LiveData<Integer> getFavoriteNewsCount(String title) {
         return favoriteNewsDao.getFavoriteNewsCount(title);
     }
 
@@ -34,11 +34,11 @@ public class LocalNewsSource {
         }).start();
     }
 
-    public void deleteFavorite(final FavoriteNews news) {
+    public void deleteFavorite(final String title) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                favoriteNewsDao.delete(news);
+                favoriteNewsDao.delete(title);
             }
         }).start();
     }

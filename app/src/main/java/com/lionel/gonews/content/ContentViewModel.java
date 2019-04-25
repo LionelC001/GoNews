@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Base64;
-import android.util.Log;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
@@ -24,7 +23,7 @@ public class ContentViewModel extends AndroidViewModel {
     private News news;
     private FavoriteNews favoriteNews;
     private boolean isFavoriteNewsReady = false;
-    private boolean isFavoriteClicked = false;
+    private boolean isFavoriteFromObserve;
 
     public ContentViewModel(@NonNull Application application) {
         super(application);
@@ -42,21 +41,27 @@ public class ContentViewModel extends AndroidViewModel {
         return localNewsSource.getFavoriteNewsCount(title);
     }
 
+    // avoid the exist favorite news trigger imageToBase64FromUrl(), to waste data flow
+    public void setFavoriteClickedFromObserve() {
+        this.isFavoriteFromObserve = true;
+    }
+
     public void storeLocalNewsHistory() {
         localNewsSource.insertHistory(news);
     }
 
-    public void updateFavorite(boolean isFavorite) {
-        this.isFavoriteClicked = isFavorite;
-        if (favoriteNews == null) {
+    public void deleteFavorite() {
+        localNewsSource.deleteFavorite(news.title);
+    }
+
+    public void insertFavorite() {
+        if (favoriteNews == null && !isFavoriteFromObserve) {
             initFavoriteNews();
         }
-
-        if (isFavorite && isFavoriteNewsReady) {  // store favorite news have to wait until the one is ready
+        if (isFavoriteNewsReady) {  // store favorite news have to wait until the one is ready
             localNewsSource.insertFavorite(favoriteNews);
-        } else if (!isFavorite) {
-            localNewsSource.deleteFavorite(favoriteNews);
         }
+        isFavoriteFromObserve = false;
     }
 
     private void initFavoriteNews() {
@@ -66,17 +71,15 @@ public class ContentViewModel extends AndroidViewModel {
                 int id = news.title.hashCode();
                 String content = news.content != null ? news.content : news.description;
                 String base64Image = imageToBase64FromUrl();
-                Log.d("<>", "base64 DONE");
                 favoriteNews = new FavoriteNews(id, news.source.name, news.title, news.url, base64Image, news.publishedAt, content);
 
                 ContentViewModel.this.isFavoriteNewsReady = true;
-                updateFavorite(isFavoriteClicked);
+                insertFavorite();
             }
         }).start();
     }
 
     private String imageToBase64FromUrl() {
-        Log.d("<>", "default is no image");
         String base64Image = "default is no image";
         try {
             URL imageUrl = new URL(news.urlToImage);

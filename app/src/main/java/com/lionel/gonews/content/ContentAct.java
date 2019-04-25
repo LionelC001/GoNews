@@ -1,11 +1,11 @@
 package com.lionel.gonews.content;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +24,6 @@ public class ContentAct extends AppCompatActivity {
     private ContentViewModel viewModel;
     private CheckBox chkFavorite;
     private News news;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,18 +74,26 @@ public class ContentAct extends AppCompatActivity {
 
     private void initChkBoxFavorite() {
         chkFavorite = findViewById(R.id.chkBoxFavorite);
-        chkFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                viewModel.updateFavorite(isChecked);
-            }
-        });
 
-        viewModel.checkIsFavoriteNews(news.title).observe(this, new Observer<Integer>() {
+        final LiveData<Integer> favoriteNewsCount = viewModel.checkIsFavoriteNews(news.title);
+        favoriteNewsCount.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer count) {
                 if (count != null && count > 0) {
+                    viewModel.setFavoriteClickedFromObserve();
+                    favoriteNewsCount.removeObserver(this);
                     chkFavorite.setChecked(true);
+                }
+            }
+        });
+
+        chkFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    viewModel.insertFavorite();
+                } else {
+                    viewModel.deleteFavorite();
                 }
             }
         });
