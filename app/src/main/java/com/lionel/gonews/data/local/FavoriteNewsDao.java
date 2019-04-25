@@ -23,6 +23,6 @@ public interface FavoriteNewsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insert(FavoriteNews favoriteNews);
 
-    @Delete
+    @Delete()
     public void delete(FavoriteNews favoriteNews);
 }

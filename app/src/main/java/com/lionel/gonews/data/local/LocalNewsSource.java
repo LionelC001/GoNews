@@ -43,7 +43,6 @@ public class LocalNewsSource {
         }).start();
     }
 
-
     public LiveData<List<News>> getAllHistoryNews() {
         return historyNewsDao.getAllHistoryNews();
     }

@@ -72,8 +72,9 @@ public class ContentViewModel extends AndroidViewModel {
     public void updateFavorite(boolean isFavorite) {
         this.isFavoriteClicked = isFavorite;
         if (favoriteNews == null) {
+            int id = news.title.hashCode();
             String content = news.content != null ? news.content : news.description;
-            favoriteNews = new FavoriteNews(news.source.name, news.title, news.url, null, news.publishedAt, content);
+            favoriteNews = new FavoriteNews(id, news.source.name, news.title, news.url, null, news.publishedAt, content);
         }
 
         if (isDrawableReady && isFavorite) {  // store favorite news have to wait until the imageview drawable is ready
