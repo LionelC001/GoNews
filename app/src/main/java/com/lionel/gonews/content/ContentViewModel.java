@@ -8,20 +8,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.util.Log;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.local.FavoriteNews;
 import com.lionel.gonews.data.local.LocalNewsSource;
 
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
+;
+
 public class ContentViewModel extends AndroidViewModel {
     private ViewDataBinding binding;
     private final LocalNewsSource localNewsSource;
     private News news;
-    private FavoriteNews favoriteNews;
     private boolean isFavoriteNewsReady = false;
     private boolean isFavoriteFromObserve;
 
@@ -34,11 +35,11 @@ public class ContentViewModel extends AndroidViewModel {
     public void setBindingNews(ViewDataBinding binding, News news) {
         this.binding = binding;
         this.news = news;
-        binding.setVariable(BR.remoteNews, news);
+        binding.setVariable(BR.newsData, news);
     }
 
     public LiveData<Integer> checkIsFavoriteNews(String title) {
-        return localNewsSource.getFavoriteNewsCount(title);
+        return localNewsSource.checkIsFavorite(title);
     }
 
     // avoid the exist favorite news trigger imageToBase64FromUrl(), to waste data flow
@@ -46,20 +47,21 @@ public class ContentViewModel extends AndroidViewModel {
         this.isFavoriteFromObserve = true;
     }
 
-    public void storeLocalNewsHistory() {
-        localNewsSource.insertHistory(news);
+    public void storeNewsHistory() {
+        news.isHistory = true;
+        localNewsSource.insertOrUpdateHistory(news);
     }
 
     public void deleteFavorite() {
         localNewsSource.deleteFavorite(news.title);
     }
 
-    public void insertFavorite() {
-        if (favoriteNews == null && !isFavoriteFromObserve) {
+    public void updateFavorite() {
+        if (news.base64ToImage == null && !isFavoriteFromObserve) {
             initFavoriteNews();
         }
         if (isFavoriteNewsReady) {  // store favorite news have to wait until the one is ready
-            localNewsSource.insertFavorite(favoriteNews);
+            localNewsSource.updateIsFavorite(news);
         }
         isFavoriteFromObserve = false;
     }
@@ -68,19 +70,18 @@ public class ContentViewModel extends AndroidViewModel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int id = news.title.hashCode();
-                String content = news.content != null ? news.content : news.description;
-                String base64Image = imageToBase64FromUrl();
-                favoriteNews = new FavoriteNews(id, news.source.name, news.title, news.url, base64Image, news.publishedAt, content);
+                news.base64ToImage = imageToBase64FromUrl();
+                news.isFavorite = true;
 
                 ContentViewModel.this.isFavoriteNewsReady = true;
-                insertFavorite();
+                updateFavorite();
             }
         }).start();
     }
 
     private String imageToBase64FromUrl() {
         String base64Image = "default is no image";
+        Log.d("<>", base64Image);
         try {
             URL imageUrl = new URL(news.urlToImage);
             Bitmap bitmap = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
@@ -91,6 +92,7 @@ public class ContentViewModel extends AndroidViewModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Log.d("<>", "base64Image is DONE");
         return base64Image;
     }
 }

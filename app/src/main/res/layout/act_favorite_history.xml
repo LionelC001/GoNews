@@ -4,10 +4,6 @@
     <data>
 
         <variable
-            name="favoriteNews"
-            type="com.lionel.gonews.data.local.FavoriteNews" />
-
-        <variable
             name="remoteNews"
             type="com.lionel.gonews.data.News" />
     </data>

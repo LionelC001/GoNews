@@ -9,7 +9,6 @@ import com.lionel.gonews.base.BaseDisplayNewsListView;
 import com.lionel.gonews.base.IDisplayNewsList;
 import com.lionel.gonews.data.News;
 
-import static com.lionel.gonews.util.Constants.TYPE_NEWS_DATA;
 
 public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNewsList.IDisplayNewsListCallback {
 
@@ -22,7 +21,6 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_favorite_history);
 
-        typeData = getIntent().getStringExtra(TYPE_NEWS_DATA);
         viewModel = ViewModelProviders.of(this).get(FavoriteHistoryViewModel.class);
 
         initDisplayNews();

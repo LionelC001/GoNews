@@ -11,6 +11,7 @@ import com.lionel.gonews.data.remote.RemoteNewsSource;
 
 import java.util.List;
 
+import static com.lionel.gonews.util.Constants.GENERAL;
 import static com.lionel.gonews.util.Constants.PUBLISHEDAT;
 
 public class TestQueryRemoteActivity extends AppCompatActivity {
@@ -51,12 +52,12 @@ public class TestQueryRemoteActivity extends AppCompatActivity {
             }
         };
 
-//       remoteNewsSource.queryNews(new QueryFilter.QueryHeadlinesFilter(US, GENERAL), callback);
+      remoteNewsSource.queryNews(new QueryFilter.QueryHeadlinesFilter(GENERAL), callback);
 
-        remoteNewsSource.queryNews(new QueryFilter.QueryEverythingFilter("apple",
-                        PUBLISHEDAT,
-                        "2019-04-08",
-                        "2019-04-09")
-                , callback);
+//        remoteNewsSource.queryNews(new QueryFilter.QueryEverythingFilter("apple",
+//                        PUBLISHEDAT,
+//                        "2019-04-08",
+//                        "2019-04-09")
+//                , callback);
     }
 }

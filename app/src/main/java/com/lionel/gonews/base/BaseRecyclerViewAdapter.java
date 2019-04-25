@@ -89,7 +89,7 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder newsHolder, int position) {
         if (getItemViewType(position) == TYPE_NEWS) {
-            ((NewsHolder) newsHolder).getBinding().setVariable(BR.remoteNews, data.get(position));
+            ((NewsHolder) newsHolder).getBinding().setVariable(BR.newsData, data.get(position));
             ((NewsHolder) newsHolder).getBinding().getRoot().setOnClickListener(new OnItemClickListener(data.get(position)));
         } else if (getItemViewType(position) == TYPE_BACKGROUND) {
             // nothing to bind for background

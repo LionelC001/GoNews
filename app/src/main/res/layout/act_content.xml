@@ -5,11 +5,7 @@
     <data>
 
         <variable
-            name="favoriteNews"
-            type="com.lionel.gonews.data.local.FavoriteNews" />
-
-        <variable
-            name="remoteNews"
+            name="newsData"
             type="com.lionel.gonews.data.News" />
     </data>
 
@@ -91,7 +87,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:titleWithoutTail="@{remoteNews != null ? remoteNews.title : favoriteNews.title}" />
+                    app:titleWithoutTail="@{newsData.title}" />
 
                 <TextView
                     style="@style/NewsContentSourceAndDateText"
@@ -99,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/x8dp"
                     android:background="@drawable/frame_gray_round_corner_white"
-                    android:text="@{remoteNews != null ? remoteNews.source.name : favoriteNews.sourceName}"
+                    android:text="@{newsData.source.name}"
                     app:layout_constraintEnd_toStartOf="@+id/txtDate"
                     app:layout_constraintTop_toTopOf="@+id/txtDate" />
 
@@ -109,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/x12dp"
-                    app:dateAndTime="@{remoteNews != null ? remoteNews.publishedAt : favoriteNews.publishedAt}"
+                    app:dateAndTime="@{newsData.publishedAt}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtTitle" />
 
@@ -121,15 +117,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/txtDate"
-                    app:srcFromLocalBase64="@{favoriteNews.base64Image}"
-                    app:srcFromUrl="@{remoteNews.urlToImage}" />
+                    app:srcFromLocalBase64="@{newsData.base64ToImage}"
+                    app:srcFromUrl="@{newsData.urlToImage}" />
 
                 <TextView
                     style="@style/NewsContentText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/x8dp"
-                    android:text="@{remoteNews != null ? (remoteNews.content!=null ? remoteNews.content : remoteNews.description) : favoriteNews.localContent}"
+                    android:text="@{newsData.content!=null ? newsData.content : newsData.description}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/imgPhoto" />

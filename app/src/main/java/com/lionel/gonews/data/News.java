@@ -1,6 +1,5 @@
 package com.lionel.gonews.data;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
@@ -8,14 +7,14 @@ import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
-import static com.lionel.gonews.util.Constants.TABLE_HISTORY_NEWS;
+import static com.lionel.gonews.util.Constants.TABLE_LOCAL_NEWS;
 
 /**
  * represent model class for news
- * and entity for historyNews
+ * and entity for localNews
  */
 
-@Entity(tableName = TABLE_HISTORY_NEWS, indices = @Index(value = {"title"}, unique = true))
+@Entity(tableName = TABLE_LOCAL_NEWS, indices = @Index(value = {"title"}, unique = true))
 public class News implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
@@ -31,9 +30,12 @@ public class News implements Serializable {
     public String publishedAt;
     public String content;
 
+    public String base64ToImage;
+    public boolean isHistory;
+    public boolean isFavorite;
 
-    public News(int id, Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
-        this.id = id;
+
+    public News(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {
         this.source = source;
         this.author = author;
         this.title = title;

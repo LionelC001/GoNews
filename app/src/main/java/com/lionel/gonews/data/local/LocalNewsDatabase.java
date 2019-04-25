@@ -9,9 +9,10 @@ import com.lionel.gonews.data.News;
 
 import static com.lionel.gonews.util.Constants.DB_LOCAL_NEWS;
 
-@Database(entities = {FavoriteNews.class, News.class}, version = 1, exportSchema = false)
+@Database(entities = {News.class}, version = 1, exportSchema = false)
 public abstract class LocalNewsDatabase extends RoomDatabase {
     private static LocalNewsDatabase INSTANCE;
+
     public static synchronized LocalNewsDatabase getDatabase(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room
@@ -21,7 +22,5 @@ public abstract class LocalNewsDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract FavoriteNewsDao getFavoriteNewsDao();
-
-    public abstract HistoryNewsDao getHistoryNewsDao();
+    public abstract LocalNewsDao getLocalNewsDao();
 }

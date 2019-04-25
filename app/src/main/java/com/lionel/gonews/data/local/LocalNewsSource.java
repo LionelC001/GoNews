@@ -8,50 +8,40 @@ import com.lionel.gonews.data.News;
 import java.util.List;
 
 public class LocalNewsSource {
-    private HistoryNewsDao historyNewsDao;
-    private FavoriteNewsDao favoriteNewsDao;
+    private LocalNewsDao localNewsDao;
 
     public LocalNewsSource(Context context) {
         LocalNewsDatabase db = LocalNewsDatabase.getDatabase(context);
-        favoriteNewsDao = db.getFavoriteNewsDao();
-        historyNewsDao = db.getHistoryNewsDao();
-    }
-
-    public LiveData<List<FavoriteNews>> getAllFavoriteNews() {
-        return favoriteNewsDao.getAllFavoriteNews();
-    }
-
-    public LiveData<Integer> getFavoriteNewsCount(String title) {
-        return favoriteNewsDao.getFavoriteNewsCount(title);
-    }
-
-    public void insertFavorite(final FavoriteNews favoriteNews) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                favoriteNewsDao.insert(favoriteNews);
-            }
-        }).start();
-    }
-
-    public void deleteFavorite(final String title) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                favoriteNewsDao.delete(title);
-            }
-        }).start();
+        localNewsDao = db.getLocalNewsDao();
     }
 
     public LiveData<List<News>> getAllHistoryNews() {
-        return historyNewsDao.getAllHistoryNews();
+        return localNewsDao.getAllHistoryNews();
     }
 
-    public void insertHistory(final News historyNews) {
+    public LiveData<List<News>> getAllFavoriteNews() {
+        return localNewsDao.getAllFavoriteNews();
+    }
+
+    public LiveData<Integer> checkIsFavorite(String title) {
+        return localNewsDao.checkIsFavorite(title);
+    }
+
+
+    public void insertOrUpdateHistory(final News localNews) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                historyNewsDao.insert(historyNews);
+                localNewsDao.insertOrUpdateHistory(localNews);
+            }
+        }).start();
+    }
+
+    public void updateIsFavorite(final News news) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                localNewsDao.updateIsFavorite(news.title, news.base64ToImage);
             }
         }).start();
     }
@@ -60,9 +50,17 @@ public class LocalNewsSource {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                historyNewsDao.delete();
+                localNewsDao.deleteAllHistory();
             }
         }).start();
     }
 
+    public void deleteFavorite(final String title) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                localNewsDao.deleteFavorite(title);
+            }
+        }).start();
+    }
 }
