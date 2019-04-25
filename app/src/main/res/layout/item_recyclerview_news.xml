@@ -37,7 +37,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.35"
                 app:srcFromUrl="@{remoteNews.urlToImage}"
-                app:srcFromLocal="@{favoriteNews.localToImage}"/>
+                app:srcFromLocal="@{favoriteNews.base64Image}"/>
 
             <TextView
                 android:id="@+id/txtNewsTitle"

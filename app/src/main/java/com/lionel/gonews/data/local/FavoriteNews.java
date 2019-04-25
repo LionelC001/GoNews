@@ -20,15 +20,15 @@ public class FavoriteNews implements Serializable {
     public String sourceName;
     public String title;
     public String url;
-    public String localToImage;
+    public String base64Image;
     public String publishedAt;
     public String content;
 
-    public FavoriteNews(String sourceName, String title, String url, String localToImage, String publishedAt, String content) {
+    public FavoriteNews(String sourceName, String title, String url, String base64Image, String publishedAt, String content) {
         this.sourceName = sourceName;
         this.title = title;
         this.url = url;
-        this.localToImage = localToImage;
+        this.base64Image = base64Image;
         this.publishedAt = publishedAt;
         this.content = content;
     }

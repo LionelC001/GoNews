@@ -21,7 +21,6 @@ import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 public class ContentAct extends AppCompatActivity implements ImageCompletedCallbackView.IImageViewCompletedCallback {
 
     private ContentViewModel viewModel;
-    private ViewDataBinding binding;
     private CheckBox chkFavorite;
     private News news;
 
@@ -35,16 +34,15 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
         initViewModel();
         initImgCompletedListener();
         initBtnBack();
-        initChkBoxFavorite();
         initBtnShare();
-        initNewsContent();
+        initChkBoxFavorite();
         storeLocalNewsHistory();
     }
 
     private void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
-        binding = DataBindingUtil.setContentView(this, R.layout.act_content);
-        viewModel.setBinding(binding);
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.act_content);
+        viewModel.setBindingNews(binding, news);
     }
 
     private void initImgCompletedListener() {
@@ -58,16 +56,6 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-    }
-
-    private void initChkBoxFavorite() {
-        chkFavorite = findViewById(R.id.chkBoxFavorite);
-        chkFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-              viewModel.updateFavorite(isChecked);
             }
         });
     }
@@ -90,16 +78,23 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
         });
     }
 
-    private void initNewsContent() {
-        viewModel.setNewsContent(news);
+    private void initChkBoxFavorite() {
+        chkFavorite = findViewById(R.id.chkBoxFavorite);
+        chkFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                viewModel.updateFavorite(isChecked);
+            }
+        });
     }
 
     private void storeLocalNewsHistory() {
-        viewModel.storeLocalNewsHistory(news);
+        viewModel.storeLocalNewsHistory();
     }
 
     @Override
     public void onImageCompleted(Drawable drawable) {
         // save this page content to local db, after Glide fetched the image from url
+        viewModel.onDrawableIsReady(drawable);
     }
 }
