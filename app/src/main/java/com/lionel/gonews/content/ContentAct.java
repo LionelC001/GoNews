@@ -9,7 +9,6 @@ import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -81,7 +80,6 @@ public class ContentAct extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Integer count) {
                 if (count != null && count > 0) {
-                    Log.d("<>", "observe");
                     viewModel.setFavoriteClickedFromObserve();
                     favoriteNewsCount.removeObserver(this);
                     chkFavorite.setChecked(true);

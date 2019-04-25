@@ -41,7 +41,16 @@ public class LocalNewsSource {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                localNewsDao.updateIsFavorite(news.title, news.base64ToImage);
+                localNewsDao.updateIsFavorite(news.title);
+            }
+        }).start();
+    }
+
+    public void updateBase64(final News news) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                localNewsDao.updateBase64(news.title, news.base64ToImage);
             }
         }).start();
     }

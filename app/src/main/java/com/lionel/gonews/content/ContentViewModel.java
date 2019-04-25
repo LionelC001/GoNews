@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Base64;
-import android.util.Log;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
@@ -17,14 +16,11 @@ import com.lionel.gonews.data.local.LocalNewsSource;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
-;
-
 public class ContentViewModel extends AndroidViewModel {
     private ViewDataBinding binding;
     private final LocalNewsSource localNewsSource;
     private News news;
-    private boolean isFavoriteNewsReady = false;
-    private boolean isFavoriteFromObserve;
+    private boolean isFavoriteExist = false;
 
     public ContentViewModel(@NonNull Application application) {
         super(application);
@@ -44,7 +40,7 @@ public class ContentViewModel extends AndroidViewModel {
 
     // avoid the exist favorite news trigger imageToBase64FromUrl(), to waste data flow
     public void setFavoriteClickedFromObserve() {
-        this.isFavoriteFromObserve = true;
+        this.isFavoriteExist = true;
     }
 
     public void storeNewsHistory() {
@@ -54,45 +50,41 @@ public class ContentViewModel extends AndroidViewModel {
 
     public void deleteFavorite() {
         localNewsSource.deleteFavorite(news.title);
+        isFavoriteExist = false;
     }
 
     public void updateFavorite() {
-        if (news.base64ToImage == null && !isFavoriteFromObserve) {
-            initFavoriteNews();
+        if (news.base64ToImage == null && !isFavoriteExist) {
+            initImageBase64();
         }
-        if (isFavoriteNewsReady) {  // store favorite news have to wait until the one is ready
+        if (!isFavoriteExist) {
+            news.isFavorite = true;
             localNewsSource.updateIsFavorite(news);
         }
-        isFavoriteFromObserve = false;
     }
 
-    private void initFavoriteNews() {
+    private void initImageBase64() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 news.base64ToImage = imageToBase64FromUrl();
-                news.isFavorite = true;
-
-                ContentViewModel.this.isFavoriteNewsReady = true;
-                updateFavorite();
+                localNewsSource.updateBase64(news);
             }
         }).start();
     }
 
     private String imageToBase64FromUrl() {
         String base64Image = "default is no image";
-        Log.d("<>", base64Image);
         try {
             URL imageUrl = new URL(news.urlToImage);
             Bitmap bitmap = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 20, baos);
             byte[] bytes = baos.toByteArray();
             base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d("<>", "base64Image is DONE");
         return base64Image;
     }
 }
