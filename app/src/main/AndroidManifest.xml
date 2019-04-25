@@ -13,6 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".favorite_history.FavoriteHistoryAct"></activity>
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
