@@ -10,7 +10,8 @@ import java.io.Serializable;
 import static com.lionel.gonews.util.Constants.TABLE_HISTORY_NEWS;
 
 /**
- * model class for news
+ * represent model class for news
+ * and entity for historyNews
  */
 
 @Entity(tableName = TABLE_HISTORY_NEWS)

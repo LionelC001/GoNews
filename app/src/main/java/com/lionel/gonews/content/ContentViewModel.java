@@ -31,7 +31,7 @@ public class ContentViewModel extends AndroidViewModel {
     }
 
     public void storeLocalNewsHistory(News news) {
-
+        localNewsSource.insertHistory(news);
     }
 
     public void updateFavorite(boolean isFavorite) {

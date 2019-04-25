@@ -3,14 +3,14 @@ package com.lionel.gonews.data.local;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
 import static com.lionel.gonews.util.Constants.TABLE_FAVORITE_NEWS;
 
-@Entity(tableName = TABLE_FAVORITE_NEWS)
+@Entity(tableName = TABLE_FAVORITE_NEWS, indices = @Index(value = {"title"}, unique = true))
 public class FavoriteNews implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
