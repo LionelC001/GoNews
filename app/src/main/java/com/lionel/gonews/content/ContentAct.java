@@ -1,5 +1,6 @@
 package com.lionel.gonews.content;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -29,7 +30,7 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        news = (News)getIntent().getSerializableExtra(NEWS_CONTENT);
+        news = (News) getIntent().getSerializableExtra(NEWS_CONTENT);
 
         initViewModel();
         initImgCompletedListener();
@@ -84,6 +85,15 @@ public class ContentAct extends AppCompatActivity implements ImageCompletedCallb
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 viewModel.updateFavorite(isChecked);
+            }
+        });
+
+        viewModel.checkIsFavoriteNews(news.title).observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer count) {
+                if (count != null && count > 0) {
+                    chkFavorite.setChecked(true);
+                }
             }
         });
     }

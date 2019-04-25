@@ -2,13 +2,13 @@ package com.lionel.gonews.content;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.Base64;
-import android.util.Log;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
@@ -20,10 +20,10 @@ import java.io.ByteArrayOutputStream;
 public class ContentViewModel extends AndroidViewModel {
     private ViewDataBinding binding;
     private final LocalNewsSource localNewsSource;
-    private FavoriteNews favoriteNews;
     private News news;
+    private FavoriteNews favoriteNews;
     private boolean isDrawableReady = false;
-    private boolean isFavorite = false;
+    private boolean isFavoriteClicked = false;
     private String base64Drawable;
 
     public ContentViewModel(@NonNull Application application) {
@@ -36,6 +36,10 @@ public class ContentViewModel extends AndroidViewModel {
         this.binding = binding;
         this.news = news;
         binding.setVariable(BR.remoteNews, news);
+    }
+
+    public LiveData<Integer> checkIsFavoriteNews(String title) {
+        return localNewsSource.getFavoriteNewsCount(title);
     }
 
     public void storeLocalNewsHistory() {
@@ -58,7 +62,7 @@ public class ContentViewModel extends AndroidViewModel {
                 ContentViewModel.this.isDrawableReady = true;
 
 
-                if (isFavorite) { // maybe the favorite checkbox is clicked early
+                if (isFavoriteClicked) { // maybe the favorite checkbox is clicked early
                     storeLocalFavoriteNews();
                 }
             }
@@ -66,7 +70,7 @@ public class ContentViewModel extends AndroidViewModel {
     }
 
     public void updateFavorite(boolean isFavorite) {
-        this.isFavorite = isFavorite;
+        this.isFavoriteClicked = isFavorite;
         if (favoriteNews == null) {
             String content = news.content != null ? news.content : news.description;
             favoriteNews = new FavoriteNews(news.source.name, news.title, news.url, null, news.publishedAt, content);

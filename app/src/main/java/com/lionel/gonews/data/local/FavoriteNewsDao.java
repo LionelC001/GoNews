@@ -17,6 +17,9 @@ public interface FavoriteNewsDao {
     @Query("SELECT * FROM " + TABLE_FAVORITE_NEWS)
     public LiveData<List<FavoriteNews>> getAllFavoriteNews();
 
+    @Query("SELECT COUNT(title) FROM " + TABLE_FAVORITE_NEWS + " WHERE title is :title ")
+    public LiveData<Integer> getFavoriteNewsCount(String title);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void insert(FavoriteNews favoriteNews);
 

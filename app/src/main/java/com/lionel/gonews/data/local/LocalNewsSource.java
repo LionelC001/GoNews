@@ -21,6 +21,10 @@ public class LocalNewsSource {
         return favoriteNewsDao.getAllFavoriteNews();
     }
 
+    public LiveData<Integer> getFavoriteNewsCount(String title){
+        return favoriteNewsDao.getFavoriteNewsCount(title);
+    }
+
     public void insertFavorite(final FavoriteNews favoriteNews) {
         new Thread(new Runnable() {
             @Override
