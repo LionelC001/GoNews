@@ -127,7 +127,7 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
             int[] today = DateConvertManager.getTodayIntArray();
             datePickDialog = new DatePickerDialog(context,
                     this,
-                    today[0], today[1], today[2]);
+                    today[0], today[1] - 1, today[2]);
             datePickDialog.setTitle("");
         }
 
@@ -141,7 +141,7 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
             if (targetView.getText() != null && !targetView.getText().toString().equals("")) {
                 String txtDate = targetView.getText().toString();
                 int[] dateIntArray = DateConvertManager.turnYYMMDDToIntArray(txtDate);
-                datePickDialog.updateDate(dateIntArray[0], dateIntArray[1], dateIntArray[2]);
+                datePickDialog.updateDate(dateIntArray[0], dateIntArray[1] - 1, dateIntArray[2]);
             }
         }
 

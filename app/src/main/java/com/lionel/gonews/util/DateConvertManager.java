@@ -16,22 +16,24 @@ import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
 public class DateConvertManager {
 
     /**
-     * ints to "yy-MM-dd"
+     * from calendar picker, ints to "yy-MM-dd"
      */
     public static String turnIntsToYYMMDD(int year, int month, int day) {
-        return year + "-" + month + "-" + day;
+        return year + "-" + (month + 1) + "-" + day;
     }
 
     /**
      * "yy-MM-dd" to int[]
      * 0=yy, 1=mm, 2=dd
      */
-    public static int[] turnYYMMDDToIntArray(String yymmdd) {
-        String[] dateStrArray = yymmdd.split("-");
+    public static int[] turnYYMMDDToIntArray(String time) {
+        Date date = parseStringToDate(time, DATE_YY_MM_DD, TimeZone.getDefault());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
         int[] dateIntArray = new int[3];
-        dateIntArray[0] = Integer.parseInt(dateStrArray[0]);
-        dateIntArray[1] = Integer.parseInt(dateStrArray[1]);
-        dateIntArray[2] = Integer.parseInt(dateStrArray[2]);
+        dateIntArray[0] = calendar.get(Calendar.YEAR);
+        dateIntArray[1] = calendar.get(Calendar.MONTH) + 1;
+        dateIntArray[2] = calendar.get(Calendar.DAY_OF_MONTH);
         return dateIntArray;
     }
 
@@ -39,12 +41,8 @@ public class DateConvertManager {
      * 0=yy, 1=mm, 2=dd
      */
     public static int[] getTodayIntArray() {
-        int[] today = new int[3];
-        Calendar calendar = Calendar.getInstance();
-        today[0] = calendar.get(Calendar.YEAR);
-        today[1] = calendar.get(Calendar.MONTH) + 1;
-        today[2] = calendar.get(Calendar.DAY_OF_MONTH);
-        return today;
+        String today = formatDateToString(new Date(), DATE_YY_MM_DD, TimeZone.getDefault());
+        return turnYYMMDDToIntArray(today);
     }
 
     /**
@@ -156,7 +154,7 @@ public class DateConvertManager {
     }
 
     private static String formatDateToString(Date date, String pattern, TimeZone timeZone) {
-        if(date != null) {
+        if (date != null) {
             SimpleDateFormat sdf = new SimpleDateFormat();
             sdf.applyPattern(pattern);
             sdf.setTimeZone(timeZone);

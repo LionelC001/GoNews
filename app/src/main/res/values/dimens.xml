@@ -23,9 +23,10 @@
     <dimen name="x96dp">96dp</dimen>
     <dimen name="x108dp">108dp</dimen>
     <dimen name="x120dp">120dp</dimen>
+    <dimen name="x130dp">130dp</dimen>
     <dimen name="x200dp">200dp</dimen>
 
     <dimen name="design_navigation_icon_size" tools:override="true">32dp</dimen>
-    <dimen name="design_navigation_separator_vertical_padding" tools:override="true" >8dp</dimen>
+    <dimen name="design_navigation_separator_vertical_padding" tools:override="true">8dp</dimen>
 
 </resources>
