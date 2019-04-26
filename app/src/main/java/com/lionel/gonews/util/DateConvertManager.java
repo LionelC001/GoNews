@@ -82,8 +82,8 @@ public class DateConvertManager {
         sdf.setTimeZone(TimeZone.getDefault());
         try {
             Date date = sdf.parse(oldTime);
-            sdf.applyPattern(DATE_ISO8601);
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            sdf.applyPattern(DATE_ISO8601);
             return sdf.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -156,5 +156,13 @@ public class DateConvertManager {
 
             return passedTime;
         }
+    }
+
+    public static String getCurrentLocalYYMMDD() {
+        Calendar calendar = Calendar.getInstance();
+        Date date = calendar.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_YY_MM_DD);
+        sdf.setTimeZone(TimeZone.getDefault());
+        return sdf.format(date);
     }
 }

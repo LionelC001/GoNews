@@ -10,6 +10,8 @@ import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.local.LocalNewsSource;
 
+import static com.lionel.gonews.util.DateConvertManager.getCurrentLocalYYMMDD;
+
 public class ContentViewModel extends AndroidViewModel {
     private final LocalNewsSource localNewsSource;
     private News news;
@@ -36,6 +38,7 @@ public class ContentViewModel extends AndroidViewModel {
 
     public void storeNewsHistory() {
         news.isHistory = true;
+        news.historyDate = getCurrentLocalYYMMDD();
         localNewsSource.insertOrUpdateHistory(news);
     }
 
