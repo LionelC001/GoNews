@@ -3,8 +3,6 @@ package com.lionel.gonews.util;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v4.widget.CircularProgressDrawable;
-import android.util.Base64;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,8 +22,8 @@ import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD_HH_MM_SS;
 
 public class NewsDataBindingAdapter {
 
-    @BindingAdapter(value = {"srcFromUrl", "srcFromLocalBase64"}, requireAll = false)
-    public static void setImageFromUrl(final ImageView view, final String srcFromUrl, String srcFromLocalBase64) {
+    @BindingAdapter(value = {"srcFromUrl"})
+    public static void setImageFromUrl(final ImageView view, final String srcFromUrl) {
         Context context = view.getContext();
 
         CircularProgressDrawable loadingDrawable = new CircularProgressDrawable(view.getContext());
@@ -34,23 +32,13 @@ public class NewsDataBindingAdapter {
         loadingDrawable.setCenterRadius(45f);
         loadingDrawable.start();
 
-        if(srcFromLocalBase64!=null){
-            Glide.with(context)
-                    .load(Base64.decode(srcFromLocalBase64, Base64.DEFAULT))
-                    .placeholder(loadingDrawable)
-                    .error(R.drawable.ic_error_cat_yellow_lean)
-                    .transition(DrawableTransitionOptions.withCrossFade(500))
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .into(view);
-        } else {
-            Glide.with(context)
-                    .load(srcFromUrl)
-                    .placeholder(loadingDrawable)
-                    .error(R.drawable.ic_error_cat_yellow_lean)
-                    .transition(DrawableTransitionOptions.withCrossFade(500))
-                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .into(view);
-        }
+        Glide.with(context)
+                .load(srcFromUrl)
+                .placeholder(loadingDrawable)
+                .error(R.drawable.ic_error_cat_yellow_lean)
+                .transition(DrawableTransitionOptions.withCrossFade(500))
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .into(view);
     }
 
     // cut off the tail of titles after "-"

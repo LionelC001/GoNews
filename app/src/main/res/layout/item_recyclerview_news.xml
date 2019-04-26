@@ -32,7 +32,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.35"
-                app:srcFromLocalBase64="@{newsData.base64ToImage}"
                 app:srcFromUrl="@{newsData.urlToImage}" />
 
             <TextView

@@ -46,15 +46,6 @@ public class LocalNewsSource {
         }).start();
     }
 
-    public void updateBase64(final News news) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                localNewsDao.updateBase64(news.title, news.base64ToImage);
-            }
-        }).start();
-    }
-
     public void deleteAllHistory() {
         new Thread(new Runnable() {
             @Override

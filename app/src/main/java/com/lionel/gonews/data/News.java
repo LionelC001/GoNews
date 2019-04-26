@@ -30,7 +30,6 @@ public class News implements Serializable {
     public String publishedAt;
     public String content;
 
-    public String base64ToImage;
     public boolean isHistory;
     public boolean isFavorite;
 

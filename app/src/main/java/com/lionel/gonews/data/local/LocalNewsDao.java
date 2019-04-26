@@ -11,7 +11,6 @@ import com.lionel.gonews.data.News;
 
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.COLUMN_BASE64_TO_IMAGE;
 import static com.lionel.gonews.util.Constants.COLUMN_FAVORITE;
 import static com.lionel.gonews.util.Constants.COLUMN_HISTORY;
 import static com.lionel.gonews.util.Constants.COLUMN_TITLE;
@@ -29,7 +28,7 @@ public abstract class LocalNewsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract long insertHistory(News localNews);
 
-    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_HISTORY + " = 1 WHERE " + COLUMN_TITLE + " = :title")
+    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_HISTORY + " = 1 WHERE " + COLUMN_TITLE + " = :title AND " + COLUMN_HISTORY + " = 0")
     abstract void updateISHistory(String title);
 
     @Transaction
@@ -39,11 +38,8 @@ public abstract class LocalNewsDao {
         }
     }
 
-    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_FAVORITE + " = 1  WHERE " + COLUMN_TITLE + " = :title")
+    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_FAVORITE + " = 1  WHERE " + COLUMN_TITLE + " = :title AND " + COLUMN_FAVORITE + " = 0")
     public abstract void updateIsFavorite(String title);
-
-    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_BASE64_TO_IMAGE + " = :base64 WHERE " + COLUMN_TITLE + " = :title")
-    public abstract void updateBase64(String title, String base64);
 
     @Query("SELECT COUNT(" + COLUMN_TITLE + ") FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_TITLE + " = :title  AND " + COLUMN_FAVORITE + " = 1")
     public abstract LiveData<Integer> checkIsFavorite(String title);
