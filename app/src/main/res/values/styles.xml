@@ -70,4 +70,10 @@
         <item name="android:textSize">@dimen/x16sp</item>
     </style>
 
+    <style name="NavigationText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/x18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 </resources>

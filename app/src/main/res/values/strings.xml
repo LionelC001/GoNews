@@ -26,6 +26,8 @@
     <string name="relevancy">"Relevancy"</string>
     <string name="popularity">Popularity</string>
     <string name="publish_at">Publish At</string>
+    <string name="favorite">Favorite</string>
+    <string name="history">history</string>
 
     <string-array name="topics">
         <item>@string/general</item>
