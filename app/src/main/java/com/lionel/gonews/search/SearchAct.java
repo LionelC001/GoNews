@@ -61,15 +61,15 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLastPage) {
-                newsListView.setIsLastPage(isLastPage);
+                newsListView.setIsShowLoadingNextPageAnim(isLastPage);
             }
         });
 
         viewModel.getIsLoadingLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
-                newsListView.setIsLoading(isLoading);
-                newsListView.showRefreshingAtBeginning(isLoading);
+                newsListView.setIsLoadingState(isLoading);
+                newsListView.setIsShowLoadingAnimAtBeginning(isLoading);
             }
         });
         viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {
@@ -78,7 +78,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
                 if (errorInfo.isError) {
                     DialogManager.showErrorDialog(SearchAct.this, errorInfo.msg);
                 }
-                newsListView.setIsError(errorInfo.isError);
+                newsListView.setIsErrorState(errorInfo.isError);
             }
         });
     }
@@ -128,7 +128,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
 
     @Override
     public void startQuery(String queryWord) {
-        newsListView.showRefreshingAgain();
+        newsListView.showLoadingAnimAgain();
         viewModel.setQueryWord(queryWord);
         viewModel.initNewsWithoutCache();
     }
@@ -158,14 +158,14 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
 
     @Override
     public void onDateRangeSelected(String from, String to) {
-        newsListView.showRefreshingAgain();
+        newsListView.showLoadingAnimAgain();
         viewModel.setDateRange(from, to);
         viewModel.initNewsWithoutCache();
     }
 
     @Override
     public void onSortBySelected(String sortBy) {
-        newsListView.showRefreshingAgain();
+        newsListView.showLoadingAnimAgain();
         viewModel.setSortBy(sortBy);
         viewModel.initNewsWithoutCache();
     }

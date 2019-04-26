@@ -18,17 +18,18 @@ import static com.lionel.gonews.util.Constants.DISTANCE_TO_SYNC;
 import static com.lionel.gonews.util.Constants.END_POSITION;
 
 /**
- *
+ * A RecyclerView can show news items, with loadingAnim and loadingNextPageAnim.
+ * go with {@link BaseRecyclerViewAdapter} and {@link IDisplayNewsList}
+ * will call callback when these actions: refresh, need load more data, intent to another place.
  */
 public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNewsList {
     private final BaseRecyclerViewAdapter adapter;
     private final Context context;
-    private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private IDisplayNewsList.IDisplayNewsListCallback callback;
-    private boolean isShowRefreshing = true;
-    private boolean isLoading = false;
-    private boolean isError = false;
+    private boolean isShowLoadingAnim = true;
+    private boolean isLoadingState = false;
+    private boolean isErrorState = false;
 
     public BaseDisplayNewsListView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -42,7 +43,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     }
 
     private void initRecyclerView() {
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
@@ -50,14 +51,14 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (isRecyclerViewHasItems() && !isError && !isLoading && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
+                if (isRecyclerViewHasItems() && !isErrorState && !isLoadingState && !recyclerView.canScrollVertically(1)) {  // 1 means down, btw -1 means up
                     callback.onLoadMoreNews();
                 }
             }
         });
     }
 
-    private boolean isRecyclerViewHasItems(){
+    private boolean isRecyclerViewHasItems() {
         return adapter.getItemCount() > 1;  // 1 means background view
     }
 
@@ -71,7 +72,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                isShowRefreshing = true;
+                isShowLoadingAnim = true;
                 callback.onRefreshNews();
             }
         });
@@ -84,37 +85,37 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     }
 
     @Override
-    public void setIsLoading(boolean isLoading) {
-        this.isLoading = isLoading;
-    }
-
-    @Override
-    public void setIsLastPage(boolean isLastPage) {
-        adapter.setIsLastPage(isLastPage);
-    }
-
-    @Override
-    public void setIsError(boolean isError) {
-        this.isError = isError;
-    }
-
-    @Override
     public void showNews(List<News> data) {
         adapter.setData(data);
     }
 
     @Override
-    public void showRefreshingAtBeginning(boolean isShow) {
-        if (isShowRefreshing && isShow) {  //show refresh loading only once at new result
+    public void setIsShowLoadingAnimAtBeginning(boolean isShow) {
+        if (isShowLoadingAnim && isShow) {  //show refresh loading only once at new result
             refreshLayout.setRefreshing(true);
         } else {
             refreshLayout.setRefreshing(false);
-            isShowRefreshing = false;
+            isShowLoadingAnim = false;
         }
     }
 
     @Override
-    public void showRefreshingAgain() {
-        isShowRefreshing = true;
+    public void showLoadingAnimAgain() {
+        isShowLoadingAnim = true;
+    }
+
+    @Override
+    public void setIsShowLoadingNextPageAnim(boolean isShow) {
+        adapter.setIsShowLoadingNextPageAnim(isShow);
+    }
+
+    @Override
+    public void setIsLoadingState(boolean isLoadingState) {
+        this.isLoadingState = isLoadingState;
+    }
+
+    @Override
+    public void setIsErrorState(boolean isErrorState) {
+        this.isErrorState = isErrorState;
     }
 }

@@ -15,15 +15,15 @@ public interface IDisplayNewsList {
 
     void setCallback(IDisplayNewsListCallback callback);
 
-    void setIsLoading(boolean isLoading);
-
-    void setIsLastPage(boolean isLastPage);
-
-    void setIsError(boolean isError);
-
     void showNews(List<News> data);
 
-    void showRefreshingAtBeginning(boolean isShowing);
+    void setIsShowLoadingAnimAtBeginning(boolean isShowing);
 
-    void showRefreshingAgain();
-}
+    void showLoadingAnimAgain();
+
+    void setIsShowLoadingNextPageAnim(boolean isLastPage);
+
+    void setIsLoadingState(boolean isLoading);
+
+    void setIsErrorState(boolean isError);
+    }

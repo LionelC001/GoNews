@@ -67,15 +67,15 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
         viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLastPage) {
-                newsListView.setIsLastPage(isLastPage);
+                newsListView.setIsShowLoadingNextPageAnim(isLastPage);
             }
         });
 
         viewModel.getIsLoadingLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLoading) {
-                newsListView.setIsLoading(isLoading);
-                newsListView.showRefreshingAtBeginning(isLoading);
+                newsListView.setIsLoadingState(isLoading);
+                newsListView.setIsShowLoadingAnimAtBeginning(isLoading);
             }
         });
         viewModel.getErrorInfoLiveData().observe(this, new Observer<ErrorInfo>() {
@@ -84,7 +84,7 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
                 if (errorInfo.isError) {
                     DialogManager.showErrorDialog(getActivity(), errorInfo.msg);
                 }
-                newsListView.setIsError(errorInfo.isError);
+                newsListView.setIsErrorState(errorInfo.isError);
             }
         });
     }

@@ -19,11 +19,18 @@ import static com.lionel.gonews.util.Constants.TYPE_BACKGROUND;
 import static com.lionel.gonews.util.Constants.TYPE_BOTTOM;
 import static com.lionel.gonews.util.Constants.TYPE_NEWS;
 
+/**
+ * An adapter for {@link BaseDisplayNewsListView}.
+ * manage tasks like:
+ * (1) show background wallpaper when there is no items.
+ * (2) show/hide loading next page animation.
+ * (3) call callback as items be clicked.
+ */
 public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private IDisplayNewsList.IDisplayNewsListCallback callback;
     private List<News> data = new ArrayList<>();
-    private boolean isLastPage = false;
+    private boolean isShowLoadingNextPageAnim = false;
 
     public BaseRecyclerViewAdapter() {
         setHasStableIds(true);  // avoid blink after call notifyDataSetChanged()
@@ -38,8 +45,8 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    public void setIsLastPage(boolean isLastPage) {
-        this.isLastPage = isLastPage;
+    public void setIsShowLoadingNextPageAnim(boolean isShow) {
+        this.isShowLoadingNextPageAnim = isShow;
     }
 
     private class NewsHolder extends RecyclerView.ViewHolder {
@@ -103,7 +110,7 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (data.size() == 0) {
             return 1;  //  for background view
         }
-        return (!isLastPage && data.size() != 0) ? data.size() + 1 : data.size();  // +1 for show loading progress
+        return (!isShowLoadingNextPageAnim && data.size() != 0) ? data.size() + 1 : data.size();  // +1 for show loading progress
     }
 
     @Override
