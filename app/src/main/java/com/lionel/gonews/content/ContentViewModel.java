@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.util.Log;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
@@ -79,9 +80,10 @@ public class ContentViewModel extends AndroidViewModel {
             URL imageUrl = new URL(news.urlToImage);
             Bitmap bitmap = BitmapFactory.decodeStream(imageUrl.openConnection().getInputStream());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 20, baos);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
             byte[] bytes = baos.toByteArray();
             base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+            Log.d("<>", base64Image.getBytes().length+"");
         } catch (Exception e) {
             e.printStackTrace();
         }

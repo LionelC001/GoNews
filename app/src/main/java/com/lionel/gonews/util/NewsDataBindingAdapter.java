@@ -3,6 +3,8 @@ package com.lionel.gonews.util;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.support.v4.widget.CircularProgressDrawable;
+import android.util.Base64;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,13 +34,23 @@ public class NewsDataBindingAdapter {
         loadingDrawable.setCenterRadius(45f);
         loadingDrawable.start();
 
-        Glide.with(context)
-                .load(srcFromUrl)
-                .placeholder(loadingDrawable)
-                .error(R.drawable.ic_error_cat_yellow_lean)
-                .transition(DrawableTransitionOptions.withCrossFade(500))
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                .into(view);
+        if(srcFromLocalBase64!=null){
+            Glide.with(context)
+                    .load(Base64.decode(srcFromLocalBase64, Base64.DEFAULT))
+                    .placeholder(loadingDrawable)
+                    .error(R.drawable.ic_error_cat_yellow_lean)
+                    .transition(DrawableTransitionOptions.withCrossFade(500))
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .into(view);
+        } else {
+            Glide.with(context)
+                    .load(srcFromUrl)
+                    .placeholder(loadingDrawable)
+                    .error(R.drawable.ic_error_cat_yellow_lean)
+                    .transition(DrawableTransitionOptions.withCrossFade(500))
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .into(view);
+        }
     }
 
     // cut off the tail of titles after "-"

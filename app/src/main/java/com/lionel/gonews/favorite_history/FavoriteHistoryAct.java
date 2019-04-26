@@ -96,7 +96,6 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
 
     @Override
     public void onIntentToNewsContent(News news) {
-        Log.d("<>", news.title);
         Intent intent = new Intent();
         intent.setClass(this, ContentAct.class);
         intent.putExtra(NEWS_CONTENT, news);
