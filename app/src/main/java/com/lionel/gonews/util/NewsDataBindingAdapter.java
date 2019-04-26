@@ -11,14 +11,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.lionel.gonews.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-
-import static com.lionel.gonews.util.Constants.DATE_ISO8601;
-import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
 import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD_HH_MM_SS;
+import static com.lionel.gonews.util.DateConvertManager.turnUTCToLocalSpecificPattern;
+import static com.lionel.gonews.util.DateConvertManager.turnUTCToLocalYYMMDDOrPastTime;
 
 public class NewsDataBindingAdapter {
 
@@ -56,78 +51,14 @@ public class NewsDataBindingAdapter {
 
     @BindingAdapter("passedTime")
     public static void setPassedTimeOrShortDate(TextView view, String oldTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-            Date oldDate = sdf.parse(oldTime);
-            sdf.setTimeZone(TimeZone.getDefault());  // locale timezone
-
-            long oldDateInMs = sdf.parse(sdf.format(oldDate)).getTime();
-            long currentDateInMs = sdf.parse(sdf.format(new Date())).getTime();
-
-            long dayInMs = 24 * 60 * 60 * 1000;
-            long passedTimeInMs = currentDateInMs - oldDateInMs;
-            if (passedTimeInMs < dayInMs) {  // show passed time within 24hrs
-                String passedTime = countPassedTime(view.getContext(), passedTimeInMs);
-                view.setText(passedTime);
-            } else {  // otherwise, show "yyyy-MM-dd"
-                setShortDate(view, oldTime);
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static String countPassedTime(Context context, long passedTimeInMs) {
-        int hour = (int) (passedTimeInMs / 1000 / 60 / 60 % 24);
-        int minute = (int) (passedTimeInMs / 1000 / 60 % 60);
-
-        String passedTime;
-        long hourInMs = 60 * 60 * 1000;
-        if (passedTimeInMs > hourInMs) {
-            passedTime = hour + context.getString(R.string.hour)
-                    + " " + context.getString(R.string.ago);
-
-            return passedTime;
-        } else {
-            passedTime = minute + context.getString(R.string.minute)
-                    + " " + context.getString(R.string.ago);
-
-            return passedTime;
-        }
-    }
-
-    private static void setShortDate(TextView view, String oldTime) {
-        String date = formatDate(DATE_YY_MM_DD, oldTime);
-        if (date != null) {
-            view.setText(date);
-        }
+        view.setText(turnUTCToLocalYYMMDDOrPastTime(view.getContext(), oldTime));
     }
 
     @BindingAdapter("dateAndTime")
     public static void setDateAndTime(TextView view, String oldTime) {
-        String date = formatDate(DATE_YY_MM_DD_HH_MM_SS, oldTime);
+        String date = turnUTCToLocalSpecificPattern(oldTime, DATE_YY_MM_DD_HH_MM_SS);
         if (date != null) {
             view.setText(date);
-        }
-    }
-
-    /**
-     * turn UTC to local timezone
-     */
-    private static String formatDate(String pattern, String oldTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-            Date oldDate = sdf.parse(oldTime);
-            sdf.setTimeZone(TimeZone.getDefault());
-            sdf.applyPattern(pattern);
-
-            String formattedDate = sdf.format(oldDate);
-            return formattedDate;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
         }
     }
 }
