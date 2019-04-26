@@ -78,46 +78,25 @@ public class DateConvertManager {
      * turn "yyyy-MM-dd"(local) to "yyyy-MM-dd'T'HH:mm:ss"(UTC)
      */
     public static String turnLocalToUTC(String oldTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_YY_MM_DD);
-        sdf.setTimeZone(TimeZone.getDefault());
-        try {
-            Date date = sdf.parse(oldTime);
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-            sdf.applyPattern(DATE_ISO8601);
-            return sdf.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+        Date date = parseStringToDate(oldTime, DATE_YY_MM_DD, TimeZone.getDefault());
+        return formatDateToString(date, DATE_ISO8601, TimeZone.getTimeZone("UTC"));
     }
 
     /**
      * turn  "yyyy-MM-dd'T'HH:mm:ss"(UTC) to Specific Pattern(local)
      */
-    public static String turnUTCToLocalSpecificPattern(String oldTime, String datePattern) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-            Date oldDate = sdf.parse(oldTime);
-            sdf.setTimeZone(TimeZone.getDefault());
-            sdf.applyPattern(datePattern);
-
-            String formattedDate = sdf.format(oldDate);
-            return formattedDate;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
+    public static String turnUTCToLocalSpecificPattern(String oldTime, String pattern) {
+        Date date = parseStringToDate(oldTime, DATE_ISO8601, TimeZone.getTimeZone("UTC"));
+        return formatDateToString(date, pattern, TimeZone.getDefault());
     }
 
     /**
      * turn "yyyy-MM-dd'T'HH:mm:ss"(UTC) to ""yy-MM-dd" or "H ago" / "mm ago"(local)(within 1 day)
      */
     public static String turnUTCToLocalYYMMDDOrPastTime(Context context, String oldTime) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
-            Date oldDate = sdf.parse(oldTime);
+            Date oldDate = parseStringToDate(oldTime, DATE_ISO8601, TimeZone.getTimeZone("UTC"));
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
             sdf.setTimeZone(TimeZone.getDefault());  // locale timezone
 
             long oldDateInMs = sdf.parse(sdf.format(oldDate)).getTime();
@@ -161,8 +140,29 @@ public class DateConvertManager {
     public static String getCurrentLocalYYMMDD() {
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_YY_MM_DD);
-        sdf.setTimeZone(TimeZone.getDefault());
-        return sdf.format(date);
+        return formatDateToString(date, DATE_YY_MM_DD, TimeZone.getDefault());
+    }
+
+    private static Date parseStringToDate(String time, String pattern, TimeZone timeZone) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyPattern(pattern);
+            sdf.setTimeZone(timeZone);
+            return sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static String formatDateToString(Date date, String pattern, TimeZone timeZone) {
+        if(date != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat();
+            sdf.applyPattern(pattern);
+            sdf.setTimeZone(timeZone);
+            return sdf.format(date);
+        } else {
+            return "";
+        }
     }
 }
