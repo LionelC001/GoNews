@@ -48,7 +48,6 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         newsListView = findViewById(R.id.newsListView);
         newsListView.setCallback(this);
         newsListView.setIsShowLoadingNextPageAnim(false);
-        newsListView.setIsShowDateGroup(true);
     }
 
     private void initObserve() {
@@ -82,6 +81,7 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
 
     private void initHistoryContent() {
         imgBackground.setBackgroundResource(R.drawable.ic_history);
+        newsListView.setIsShowDateGroup(true);
 
         viewModel.getHistoryNews().observe(this, new Observer<List<News>>() {
             @Override

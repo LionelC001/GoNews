@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.lionel.gonews.R;
@@ -39,26 +40,24 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-
-
-        outRect.top = paddingTop;
+        int position = parent.getChildLayoutPosition(view);
+        if (isDrawingDateGroup(position)) {
+            Log.d("<>", "position: " + position);
+            outRect.set(0, paddingTop, 0, 0);
+        } else {
+            outRect.set(0, 0, 0, 0);
+        }
     }
 
     @Override
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-        final int childCount = parent.getChildCount();
-
-        for (int i = 0; i < childCount; i++) {
+        final int current = parent.getChildCount();
+        for (int i = 0; i < current; i++) {
             View child = parent.getChildAt(i);
-            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-
-            int left = child.getLeft();
-            int right = child.getRight();
-            int bottom = child.getTop() - params.topMargin;
-            int baseline = child.getTop() - params.topMargin - paddingTop / 4;
-            c.drawText("THIS IS TEST", left, baseline, paint);
-            c.drawLine(left, bottom, right, bottom, paint);
-
+            int position = parent.getChildLayoutPosition(child);
+            if (isDrawingDateGroup(position)) {
+                drawGroupDate(c, child);
+            }
         }
     }
 
@@ -70,10 +69,26 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
     }
 
 
-    private boolean isDrawingDateGroup(int index) {
-        if (data.get(index).historyDate.equals(data.get(index - 1).historyDate)) {
+    private boolean isDrawingDateGroup(int position) {
+        Log.d("<>", "data != null: " + (data != null));
+
+        if (data != null && position == 0) {
+            return true;
+        }
+        if (data != null && !data.get(position).historyDate.equals(data.get(position - 1).historyDate)) {
             return true;
         }
         return false;
+
+    }
+
+    private void drawGroupDate(Canvas canvas, View child) {
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        int left = child.getLeft();
+        int right = child.getRight();
+        int bottom = child.getTop() - params.topMargin;
+        int baseline = child.getTop() - params.topMargin - paddingTop / 4;
+        canvas.drawText("THIS IS TEST", left, baseline, paint);
+        canvas.drawLine(left, bottom, right, bottom, paint);
     }
 }
