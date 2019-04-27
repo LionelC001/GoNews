@@ -30,6 +30,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     private boolean isShowLoadingAnim = true;
     private boolean isLoadingState = false;
     private boolean isErrorState = false;
+    private RecyclerView recyclerView;
 
     public BaseDisplayNewsListView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -44,7 +45,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     }
 
     private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
@@ -57,6 +58,8 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
                 }
             }
         });
+
+        recyclerView.addItemDecoration(new BaseDateItemDecoration());
     }
 
     private boolean isRecyclerViewHasItems() {
@@ -87,6 +90,13 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     @Override
     public void showNews(List<News> data) {
         adapter.setData(data);
+    }
+
+    @Override
+    public void setIsShowDateGroup(boolean isShowing) {
+        if(isShowing) {
+            recyclerView.addItemDecoration(new BaseDateItemDecoration());
+        }
     }
 
     @Override
