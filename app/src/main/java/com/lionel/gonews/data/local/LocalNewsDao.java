@@ -6,6 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
+import android.util.Log;
 
 import com.lionel.gonews.data.News;
 
@@ -29,13 +30,14 @@ public abstract class LocalNewsDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract long insertHistory(News localNews);
 
-    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_HISTORY + " = 1 WHERE " + COLUMN_TITLE + " = :title AND " + COLUMN_HISTORY + " = 0")
-    abstract void updateISHistory(String title);
+    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_HISTORY + " = 1, " + COLUMN_HISTORY_DATE + " = :historyDate  WHERE " + COLUMN_TITLE + " = :title ")
+    abstract void updateISHistory(String title, String historyDate);
 
     @Transaction
     public void insertOrUpdateHistory(News localNews) {
         if (insertHistory(localNews) == -1) {
-            updateISHistory(localNews.title);
+            updateISHistory(localNews.title, localNews.historyDate);
+            Log.d("<>", localNews.historyDate);
         }
     }
 
