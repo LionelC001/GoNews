@@ -1,63 +1,79 @@
 package com.lionel.gonews.base.recyclerview;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+
+import com.lionel.gonews.R;
+import com.lionel.gonews.data.News;
+
+import java.util.List;
 
 public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
 
-    private static final int PADDING_TOP = 100;
+    private int paddingTop;
+    private List<News> data;
+    private Paint paint;
 
-    public BaseDateItemDecoration() {
+    public BaseDateItemDecoration(Context context, List<News> data, int txtSizeRes) {
+        this.data = data;
 
+        initPaintAndParams(context, txtSizeRes);
+    }
+
+    private void initPaintAndParams(Context context, int txtSizeRes) {
+        paint = new Paint();
+        paint.setColor(context.getResources().getColor(R.color.colorDeepGray));
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        float textSize = context.getResources().getDimension(txtSizeRes);
+        paint.setTextSize(textSize);
+        paddingTop = (int) (1.2 * textSize);
+
+        paint.setStrokeWidth(5);
     }
 
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
 
-        outRect.top = PADDING_TOP;
+
+        outRect.top = paddingTop;
     }
 
-
     @Override
-    public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-
-
+    public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         final int childCount = parent.getChildCount();
-        Log.d("<>", "childCount: " + childCount);
-        Paint paint = new Paint();
-//        paint.setColor(Color.GREEN);
-        paint.setTextSize(100);
+
         for (int i = 0; i < childCount; i++) {
             View child = parent.getChildAt(i);
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            paint.setColor(Color.GREEN);
+
             int left = child.getLeft();
             int right = child.getRight();
-            int down = child.getTop();
-            int top = child.getTop() - params.topMargin;
+            int bottom = child.getTop() - params.topMargin;
+            int baseline = child.getTop() - params.topMargin - paddingTop / 4;
+            c.drawText("THIS IS TEST", left, baseline, paint);
+            c.drawLine(left, bottom, right, bottom, paint);
 
-//            c.drawText("THIS IS TEST", left, top, paint);
-            c.drawRect(left, top, right, down, paint);
-
-
-            paint.setColor(Color.BLUE);
-             down = child.getTop() - params.topMargin;
-            top = child.getTop() - params.topMargin -PADDING_TOP;
-            c.drawRect(left, top, right, down, paint);
-
-            paint.setColor(Color.RED);
-            down = child.getTop() - params.topMargin -PADDING_TOP;
-            top = child.getTop() - params.topMargin -PADDING_TOP - params.bottomMargin;
-            c.drawRect(left, top, right, down, paint);
-
-            Log.d("<>", "" + params.bottomMargin);
         }
+    }
 
+    @Override
+    public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView
+            parent, @NonNull RecyclerView.State state) {
+
+
+    }
+
+
+    private boolean isDrawingDateGroup(int index) {
+        if (data.get(index).historyDate.equals(data.get(index - 1).historyDate)) {
+            return true;
+        }
+        return false;
     }
 }

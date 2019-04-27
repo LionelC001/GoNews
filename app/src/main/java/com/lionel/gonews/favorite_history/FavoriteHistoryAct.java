@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import com.lionel.gonews.R;
@@ -49,7 +48,7 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         newsListView = findViewById(R.id.newsListView);
         newsListView.setCallback(this);
         newsListView.setIsShowLoadingNextPageAnim(false);
-//        newsListView.setIsShowDateGroup(true);
+        newsListView.setIsShowDateGroup(true);
     }
 
     private void initObserve() {
@@ -92,8 +91,8 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         });
     }
 
-    private void setIsShowBackground(boolean isShowing){
-        if(!isShowing){
+    private void setIsShowBackground(boolean isShowing) {
+        if (!isShowing) {
             imgBackground.setVisibility(View.GONE);
         }
     }
