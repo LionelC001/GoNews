@@ -22,7 +22,7 @@ import static com.lionel.gonews.util.Constants.END_POSITION;
  * go with {@link BaseRecyclerViewAdapter} and {@link IDisplayNewsList}
  * will call callback when these actions: refresh, need load more data, intent to another place.
  */
-public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNewsList {
+public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNewsList, BaseRecyclerViewAdapter.IRecyclerViewAdapterCallback {
     private final BaseRecyclerViewAdapter adapter;
     private final Context context;
     private SwipeRefreshLayout refreshLayout;
@@ -37,6 +37,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
 
         this.context = context;
         adapter = new BaseRecyclerViewAdapter();
+        adapter.setCallback(this);
 
         initRecyclerView();
         initRefreshLayout();
@@ -81,7 +82,6 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     @Override
     public void setCallback(IDisplayNewsList.IDisplayNewsListCallback callback) {
         this.callback = callback;
-        adapter.setItemNewsClickCallback(callback);
     }
 
     @Override
@@ -117,5 +117,10 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     @Override
     public void setIsErrorState(boolean isErrorState) {
         this.isErrorState = isErrorState;
+    }
+
+    @Override
+    public void onItemClick(News news) {
+        callback.onIntentToNewsContent(news);
     }
 }

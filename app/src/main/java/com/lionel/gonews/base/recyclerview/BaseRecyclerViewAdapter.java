@@ -28,7 +28,11 @@ import static com.lionel.gonews.util.Constants.TYPE_NEWS;
  */
 public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private IDisplayNewsList.IDisplayNewsListCallback callback;
+    public interface IRecyclerViewAdapterCallback {
+        void onItemClick(News news);
+    }
+
+    private IRecyclerViewAdapterCallback callback;
     private List<News> data = new ArrayList<>();
     private boolean isShowLoadingNextPageAnim = false;
 
@@ -36,7 +40,7 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         setHasStableIds(true);  // avoid blink after call notifyDataSetChanged()
     }
 
-    public void setItemNewsClickCallback(IDisplayNewsList.IDisplayNewsListCallback callback) {
+    public void setCallback(IRecyclerViewAdapterCallback callback) {
         this.callback = callback;
     }
 
@@ -145,7 +149,7 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         @Override
         public void onClick(View v) {
             if (callback != null) {
-                callback.onIntentToNewsContent(item);
+                callback.onItemClick(item);
             }
         }
     }
