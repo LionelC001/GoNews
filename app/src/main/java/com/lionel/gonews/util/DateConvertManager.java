@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import static com.lionel.gonews.util.Constants.DATE_ISO8601;
-import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
+import static com.lionel.gonews.util.Constants.DATE_YYYY_MM_DD;
 
 public class DateConvertManager {
 
@@ -24,7 +24,7 @@ public class DateConvertManager {
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
         Date date = calendar.getTime();
-        return formatDateToString(date, DATE_YY_MM_DD, TimeZone.getDefault());
+        return formatDateToString(date, DATE_YYYY_MM_DD, TimeZone.getDefault());
     }
 
     /**
@@ -32,7 +32,7 @@ public class DateConvertManager {
      * 0=yy, 1=mm, 2=dd
      */
     public static int[] turnYYMMDDToIntArray(String time) {
-        Date date = parseStringToDate(time, DATE_YY_MM_DD, TimeZone.getDefault());
+        Date date = parseStringToDate(time, DATE_YYYY_MM_DD, TimeZone.getDefault());
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int[] dateIntArray = new int[3];
@@ -46,14 +46,14 @@ public class DateConvertManager {
      * 0=yy, 1=mm, 2=dd
      */
     public static int[] getTodayIntArray() {
-        String today = formatDateToString(new Date(), DATE_YY_MM_DD, TimeZone.getDefault());
+        String today = formatDateToString(new Date(), DATE_YYYY_MM_DD, TimeZone.getDefault());
         return turnYYMMDDToIntArray(today);
     }
 
     public static String getCurrentLocalYYMMDD() {
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        return formatDateToString(date, DATE_YY_MM_DD, TimeZone.getDefault());
+        return formatDateToString(date, DATE_YYYY_MM_DD, TimeZone.getDefault());
     }
 
     public static String turnToSpecificPatternAndTimeZone(String time, String fromPattern, TimeZone fromTimeZone, String toPattern, TimeZone toTimeZone) {
@@ -89,7 +89,7 @@ public class DateConvertManager {
             if (passedTimeInMs < dayInMs) {  // show passed time within 1 day
                 return formatPassedTime(context, passedTimeInMs);
             } else {  // otherwise, show "yyyy-MM-dd"
-                return turnToSpecificPatternAndTimeZone(oldTime, DATE_ISO8601, TimeZone.getTimeZone("UTC"), DATE_YY_MM_DD, TimeZone.getDefault());
+                return turnToSpecificPatternAndTimeZone(oldTime, DATE_ISO8601, TimeZone.getTimeZone("UTC"), DATE_YYYY_MM_DD, TimeZone.getDefault());
             }
         } catch (ParseException e) {
             e.printStackTrace();

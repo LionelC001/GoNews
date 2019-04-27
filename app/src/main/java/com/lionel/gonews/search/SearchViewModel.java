@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.lionel.gonews.util.Constants.DATE_ISO8601;
-import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD;
+import static com.lionel.gonews.util.Constants.DATE_YYYY_MM_DD;
 import static com.lionel.gonews.util.Constants.RELEVANCY;
 
 public class SearchViewModel extends BaseRemoteSourceViewModel {
@@ -69,12 +69,12 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
     public void setDateRange(String dateFrom, String dateTo) {
         if (queryEverythingFilter != null) {
             queryEverythingFilter.dateFrom =
-                    DateConvertManager.turnToSpecificPatternAndTimeZone(dateFrom, DATE_YY_MM_DD, TimeZone.getDefault(), DATE_ISO8601, TimeZone.getTimeZone("UTC"));
+                    DateConvertManager.turnToSpecificPatternAndTimeZone(dateFrom, DATE_YYYY_MM_DD, TimeZone.getDefault(), DATE_ISO8601, TimeZone.getTimeZone("UTC"));
 
             //when query from remote source, the date range should end at (dateFrom+1d)
             //ex. 2019-4-23(local) should be 2019-4-23 16:00:00 (UTC)
             queryEverythingFilter.dateTo =
-                    DateConvertManager.turnToSpecificPatternAndTimeZoneAndPlusDays(dateTo, DATE_YY_MM_DD, TimeZone.getDefault(), DATE_ISO8601, TimeZone.getTimeZone("UTC"), 1);
+                    DateConvertManager.turnToSpecificPatternAndTimeZoneAndPlusDays(dateTo, DATE_YYYY_MM_DD, TimeZone.getDefault(), DATE_ISO8601, TimeZone.getTimeZone("UTC"), 1);
 
             super.setQueryFilter(queryEverythingFilter);
         }
