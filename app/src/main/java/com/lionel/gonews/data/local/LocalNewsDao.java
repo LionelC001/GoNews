@@ -6,38 +6,36 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
-import android.util.Log;
 
 import com.lionel.gonews.data.News;
 
 import java.util.List;
 
+import static com.lionel.gonews.util.Constants.COLUMN_BROWSE_DATE;
 import static com.lionel.gonews.util.Constants.COLUMN_FAVORITE;
 import static com.lionel.gonews.util.Constants.COLUMN_HISTORY;
-import static com.lionel.gonews.util.Constants.COLUMN_HISTORY_DATE;
 import static com.lionel.gonews.util.Constants.COLUMN_TITLE;
 import static com.lionel.gonews.util.Constants.TABLE_LOCAL_NEWS;
 
 @Dao
 public abstract class LocalNewsDao {
 
-    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " IS 1 ORDER BY " + COLUMN_HISTORY_DATE + " DESC ")
+    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " IS 1 ORDER BY " + COLUMN_BROWSE_DATE + " DESC ")
     public abstract LiveData<List<News>> getAllHistoryNews();
 
-    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_FAVORITE + " IS 1 ORDER BY " + COLUMN_HISTORY_DATE + " DESC ")
+    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_FAVORITE + " IS 1 ORDER BY " + COLUMN_BROWSE_DATE + " DESC ")
     public abstract LiveData<List<News>> getAllFavoriteNews();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract long insertHistory(News localNews);
 
-    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_HISTORY + " = 1, " + COLUMN_HISTORY_DATE + " = :historyDate  WHERE " + COLUMN_TITLE + " = :title ")
-    abstract void updateISHistory(String title, String historyDate);
+    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_HISTORY + " = 1, " + COLUMN_BROWSE_DATE + " = :browseDate  WHERE " + COLUMN_TITLE + " = :title ")
+    abstract void updateISHistory(String title, String browseDate);
 
     @Transaction
     public void insertOrUpdateHistory(News localNews) {
         if (insertHistory(localNews) == -1) {
-            updateISHistory(localNews.title, localNews.historyDate);
-            Log.d("<>", localNews.historyDate);
+            updateISHistory(localNews.title, localNews.browseDate);
         }
     }
 

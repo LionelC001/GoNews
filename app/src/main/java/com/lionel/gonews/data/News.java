@@ -32,7 +32,7 @@ public class News implements Serializable {
 
     public boolean isHistory;
     public boolean isFavorite;
-    public String historyDate;
+    public String browseDate;
 
 
     public News(Source source, String author, String title, String description, String url, String urlToImage, String publishedAt, String content) {

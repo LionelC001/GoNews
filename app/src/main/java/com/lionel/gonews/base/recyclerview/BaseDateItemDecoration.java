@@ -76,7 +76,7 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
         if (data != null && position == 0) {
             return true;
         }
-        return data != null && !data.get(position).historyDate.equals(data.get(position - 1).historyDate);
+        return data != null && !data.get(position).browseDate.equals(data.get(position - 1).browseDate);
     }
 
     private void drawGroupDate(Canvas canvas, View child, int position) {
@@ -90,7 +90,7 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     private String getDateText(int position) {
-        String time = data.get(position).historyDate;
+        String time = data.get(position).browseDate;
         return DateConvertManager.turnToSpecificPatternAndTimeZone(time, DATE_YYYY_MM_DD, TimeZone.getDefault(), DATE_EEEE_MMMM_DD_YY, TimeZone.getDefault());
     }
 }

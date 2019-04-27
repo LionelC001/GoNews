@@ -38,7 +38,7 @@ public class ContentViewModel extends AndroidViewModel {
 
     public void storeNewsHistory() {
         news.isHistory = true;
-        news.historyDate = getCurrentLocalYYMMDD();
+        news.browseDate = getCurrentLocalYYMMDD();
         localNewsSource.insertOrUpdateHistory(news);
     }
 
