@@ -58,7 +58,6 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
                 }
             }
         });
-
         recyclerView.addItemDecoration(new BaseDateItemDecoration());
     }
 
@@ -94,7 +93,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
 
     @Override
     public void setIsShowDateGroup(boolean isShowing) {
-        if(isShowing) {
+        if (isShowing) {
             recyclerView.addItemDecoration(new BaseDateItemDecoration());
         }
     }

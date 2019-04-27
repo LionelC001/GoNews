@@ -66,7 +66,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLastPage) {
-                newsListView.setIsShowLoadingNextPageAnim(isLastPage);
+                newsListView.setIsShowLoadingNextPageAnim(!isLastPage);
             }
         });
 

@@ -68,7 +68,7 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
         viewModel.getIsLastPageLiveData().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isLastPage) {
-                newsListView.setIsShowLoadingNextPageAnim(isLastPage);
+                newsListView.setIsShowLoadingNextPageAnim(!isLastPage);
             }
         });
 

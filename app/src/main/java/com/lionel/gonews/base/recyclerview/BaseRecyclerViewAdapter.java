@@ -33,7 +33,7 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private IRecyclerViewAdapterCallback callback;
     private List<News> data = new ArrayList<>();
-    private boolean isShowLoadingNextPageAnim = false;
+    private boolean isShowLoadingNextPageAnim = true;
 
     public BaseRecyclerViewAdapter() {
         setHasStableIds(true);  // avoid blink after call notifyDataSetChanged()
@@ -98,7 +98,7 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemCount() {
-        return (!isShowLoadingNextPageAnim && data.size() != 0) ? data.size() + 1 : data.size();  // +1 for show loading progress
+        return (isShowLoadingNextPageAnim && data.size() != 0) ? data.size() + 1 : data.size();  // +1 for show loading progress
     }
 
     @Override

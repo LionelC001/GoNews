@@ -48,7 +48,8 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
     private void initDisplayNews() {
         newsListView = findViewById(R.id.newsListView);
         newsListView.setCallback(this);
-        newsListView.setIsShowDateGroup(true);
+        newsListView.setIsShowLoadingNextPageAnim(false);
+//        newsListView.setIsShowDateGroup(true);
     }
 
     private void initObserve() {
