@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.lionel.gonews.R;
 import com.lionel.gonews.base.recyclerview.IDisplayNewsList;
@@ -25,6 +26,7 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
 
     private FavoriteHistoryViewModel viewModel;
     private IDisplayNewsList newsListView;
+    private View imgBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,21 +35,26 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
 
         viewModel = ViewModelProviders.of(this).get(FavoriteHistoryViewModel.class);
 
+        initBackground();
         initDisplayNews();
         initObserve();
         initContent();
     }
 
+    private void initBackground() {
+        imgBackground = findViewById(R.id.imgBackground);
+    }
+
     private void initDisplayNews() {
         newsListView = findViewById(R.id.newsListView);
         newsListView.setCallback(this);
+        newsListView.setIsShowDateGroup(true);
     }
 
     private void initObserve() {
         viewModel.getNewsData().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> news) {
-                Log.d("<>", "new: " + news.size());
                 newsListView.showNews(news);
             }
         });
@@ -63,25 +70,31 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
     }
 
     private void initFavoriteContent() {
+        imgBackground.setBackgroundResource(R.drawable.ic_favorite_full_gray);
 
         viewModel.getFavoriteNews().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> news) {
-                Log.d("<>", "new: " + news.size());
                 newsListView.showNews(news);
             }
         });
     }
 
     private void initHistoryContent() {
+        imgBackground.setBackgroundResource(R.drawable.ic_history);
 
         viewModel.getHistoryNews().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> news) {
-                Log.d("<>", "new: " + news.size());
                 newsListView.showNews(news);
             }
         });
+    }
+
+    private void setIsShowBackground(boolean isShowing){
+        if(!isShowing){
+            imgBackground.setVisibility(View.GONE);
+        }
     }
 
     @Override

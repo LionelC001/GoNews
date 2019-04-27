@@ -29,6 +29,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     private IDisplayNewsList newsListView;
     private SearchDateRangePopupWindow datePopupWindow;
     private SearchSortByPopupWindow sortByPopupWindow;
+    private View imgBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
             @Override
             public void onChanged(@Nullable List<News> newsList) {
                 showFilter();
+                setIsShowBackground(false);
                 newsListView.showNews(newsList);
             }
         });
@@ -55,6 +57,9 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
             @Override
             public void onChanged(@Nullable Integer count) {
                 setResultCount(count);
+                if (count == 0) {
+                    setIsShowBackground(true);
+                }
             }
         });
 
@@ -92,6 +97,8 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     private void initLayoutResult() {
+        imgBackground = findViewById(R.id.imgBackground);
+
         txtResultCount = findViewById(R.id.txtResultCount);
 
         btnSortByFilter = findViewById(R.id.imgBtnSortByFilter);
@@ -124,6 +131,14 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         SearchBox searchBox = findViewById(R.id.searchBox);
         searchBox.setCallback(this);
         // searchBox.setSearchHistory(data);
+    }
+
+    private void setIsShowBackground(boolean isShowing) {
+        if (isShowing) {
+            imgBackground.setVisibility(View.VISIBLE);
+        } else {
+            imgBackground.setVisibility(View.GONE);
+        }
     }
 
     @Override

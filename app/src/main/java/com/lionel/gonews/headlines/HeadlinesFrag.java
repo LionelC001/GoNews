@@ -61,6 +61,7 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
             @Override
             public void onChanged(@Nullable List<News> newsList) {
                 newsListView.showNews(newsList);
+                setIsShowBackground(false);
             }
         });
 
@@ -112,6 +113,12 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
         String category = getArguments().getString(CATEGORY);
         viewModel.setQueryCategory(category);
         viewModel.initNews();
+    }
+
+    private void setIsShowBackground(boolean isShowing){
+        if(!isShowing){
+            getView().findViewById(R.id.imgBackground).setVisibility(View.GONE);
+        }
     }
 
     @Override
