@@ -19,7 +19,12 @@ public class DateConvertManager {
      * from calendar picker, ints to "yy-MM-dd"
      */
     public static String turnIntsToYYMMDD(int year, int month, int day) {
-        return year + "-" + (month + 1) + "-" + day;
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        Date date = calendar.getTime();
+        return formatDateToString(date, DATE_YY_MM_DD, TimeZone.getDefault());
     }
 
     /**
@@ -45,47 +50,26 @@ public class DateConvertManager {
         return turnYYMMDDToIntArray(today);
     }
 
-    /**
-     * pattern "yy-MM-dd"
-     */
-    public static String getTodayYYMMDD() {
-        int[] today = getTodayIntArray();
-        return today[0] + "-" + today[1] + "-" + today[2];
-    }
-
-    /**
-     * when query from remote source, the date range should end at (dateFrom+1d)
-     * ex. 2019-4-23(local) should be 2019-4-23 16:00:00 (UTC)
-     */
-    public static String turnLocalToUTCAndPlus1Day(String oldTime) {
-        String newTimezone = turnLocalToUTC(oldTime);
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_ISO8601);
+    public static String getCurrentLocalYYMMDD() {
         Calendar calendar = Calendar.getInstance();
-        try {
-            calendar.setTime(sdf.parse(newTimezone));
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-            Date newDate = calendar.getTime();
-            return sdf.format(newDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+        Date date = calendar.getTime();
+        return formatDateToString(date, DATE_YY_MM_DD, TimeZone.getDefault());
     }
 
-    /**
-     * turn "yyyy-MM-dd"(local) to "yyyy-MM-dd'T'HH:mm:ss"(UTC)
-     */
-    public static String turnLocalToUTC(String oldTime) {
-        Date date = parseStringToDate(oldTime, DATE_YY_MM_DD, TimeZone.getDefault());
-        return formatDateToString(date, DATE_ISO8601, TimeZone.getTimeZone("UTC"));
+    public static String turnToSpecificPatternAndTimeZone(String time, String fromPattern, TimeZone fromTimeZone, String toPattern, TimeZone toTimeZone) {
+        Date date = parseStringToDate(time, fromPattern, fromTimeZone);
+        return formatDateToString(date, toPattern, toTimeZone);
     }
 
-    /**
-     * turn  "yyyy-MM-dd'T'HH:mm:ss"(UTC) to Specific Pattern(local)
-     */
-    public static String turnUTCToLocalSpecificPattern(String oldTime, String pattern) {
-        Date date = parseStringToDate(oldTime, DATE_ISO8601, TimeZone.getTimeZone("UTC"));
-        return formatDateToString(date, pattern, TimeZone.getDefault());
+    public static String turnToSpecificPatternAndTimeZoneAndPlusDays(String time, String fromPattern, TimeZone fromTimeZone, String toPattern, TimeZone toTimeZone, int addDays) {
+        String strDate = turnToSpecificPatternAndTimeZone(time, fromPattern, fromTimeZone, toPattern, toTimeZone);
+        Date date = parseStringToDate(strDate, toPattern, toTimeZone);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_MONTH, addDays);
+        Date newDate = calendar.getTime();
+        return formatDateToString(newDate, toPattern, toTimeZone);
     }
 
     /**
@@ -105,7 +89,7 @@ public class DateConvertManager {
             if (passedTimeInMs < dayInMs) {  // show passed time within 1 day
                 return formatPassedTime(context, passedTimeInMs);
             } else {  // otherwise, show "yyyy-MM-dd"
-                return turnUTCToLocalSpecificPattern(oldTime, DATE_YY_MM_DD);
+                return turnToSpecificPatternAndTimeZone(oldTime, DATE_ISO8601, TimeZone.getTimeZone("UTC"), DATE_YY_MM_DD, TimeZone.getDefault());
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -133,12 +117,6 @@ public class DateConvertManager {
 
             return passedTime;
         }
-    }
-
-    public static String getCurrentLocalYYMMDD() {
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-        return formatDateToString(date, DATE_YY_MM_DD, TimeZone.getDefault());
     }
 
     private static Date parseStringToDate(String time, String pattern, TimeZone timeZone) {

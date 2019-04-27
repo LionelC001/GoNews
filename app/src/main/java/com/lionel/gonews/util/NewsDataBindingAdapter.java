@@ -11,8 +11,11 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.lionel.gonews.R;
 
+import java.util.TimeZone;
+
+import static com.lionel.gonews.util.Constants.DATE_ISO8601;
 import static com.lionel.gonews.util.Constants.DATE_YY_MM_DD_HH_MM_SS;
-import static com.lionel.gonews.util.DateConvertManager.turnUTCToLocalSpecificPattern;
+import static com.lionel.gonews.util.DateConvertManager.turnToSpecificPatternAndTimeZone;
 import static com.lionel.gonews.util.DateConvertManager.turnUTCToLocalYYMMDDOrPastTime;
 
 public class NewsDataBindingAdapter {
@@ -56,7 +59,7 @@ public class NewsDataBindingAdapter {
 
     @BindingAdapter("dateAndTime")
     public static void setDateAndTime(TextView view, String oldTime) {
-        String date = turnUTCToLocalSpecificPattern(oldTime, DATE_YY_MM_DD_HH_MM_SS);
+        String date = turnToSpecificPatternAndTimeZone(oldTime, DATE_ISO8601, TimeZone.getTimeZone("UTC"), DATE_YY_MM_DD_HH_MM_SS, TimeZone.getDefault());
         if (date != null) {
             view.setText(date);
         }
