@@ -81,12 +81,11 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
 
     private void initHistoryContent() {
         imgBackground.setBackgroundResource(R.drawable.ic_history);
-        newsListView.setIsShowDateGroup(true);
 
         viewModel.getHistoryNews().observe(this, new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> news) {
-                newsListView.showNews(news);
+                newsListView.showNewsWithDateGroup(news);
             }
         });
     }

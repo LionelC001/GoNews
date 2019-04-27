@@ -17,7 +17,10 @@ public interface IDisplayNewsList {
 
     void showNews(List<News> data);
 
-    void setIsShowDateGroup(boolean isShowing);
+    /**
+     * for History
+     */
+    void showNewsWithDateGroup(List<News> data);
 
     void setIsShowLoadingAnimAtBeginning(boolean isShowing);
 

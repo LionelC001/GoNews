@@ -31,8 +31,6 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     private boolean isLoadingState = false;
     private boolean isErrorState = false;
     private RecyclerView recyclerView;
-    private List<News> data;
-    private boolean isShowingDate;
 
     public BaseDisplayNewsListView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -89,20 +87,13 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
 
     @Override
     public void showNews(List<News> data) {
-        this.data = data;
         adapter.setData(data);
-
-        if (isShowingDate) {
-            recyclerView.addItemDecoration(new BaseDateItemDecoration(context, data, R.dimen.x32sp));
-        }
     }
 
     @Override
-    public void setIsShowDateGroup(boolean isShowing) {
-        this.isShowingDate = isShowing;
-        if (isShowing) {
-            recyclerView.addItemDecoration(new BaseDateItemDecoration(context, data, R.dimen.x32sp));
-        }
+    public void showNewsWithDateGroup(List<News> data) {
+        showNews(data);
+        recyclerView.addItemDecoration(new BaseDateItemDecoration(context, data, R.dimen.x32sp));
     }
 
     @Override
