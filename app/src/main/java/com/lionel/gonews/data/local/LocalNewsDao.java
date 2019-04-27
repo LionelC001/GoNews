@@ -13,16 +13,17 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.COLUMN_FAVORITE;
 import static com.lionel.gonews.util.Constants.COLUMN_HISTORY;
+import static com.lionel.gonews.util.Constants.COLUMN_ID;
 import static com.lionel.gonews.util.Constants.COLUMN_TITLE;
 import static com.lionel.gonews.util.Constants.TABLE_LOCAL_NEWS;
 
 @Dao
 public abstract class LocalNewsDao {
 
-    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " IS 1")
+    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " IS 1 ORDER BY " + COLUMN_ID + " DESC ")
     public abstract LiveData<List<News>> getAllHistoryNews();
 
-    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_FAVORITE + " IS 1")
+    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_FAVORITE + " IS 1 ORDER BY " + COLUMN_ID + " DESC ")
     public abstract LiveData<List<News>> getAllFavoriteNews();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
