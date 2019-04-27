@@ -1,4 +1,4 @@
-package com.lionel.gonews.base;
+package com.lionel.gonews.base.recyclerview;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;

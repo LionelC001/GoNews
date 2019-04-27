@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lionel.gonews.R;
-import com.lionel.gonews.base.IDisplayNewsList;
+import com.lionel.gonews.base.recyclerview.IDisplayNewsList;
 import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.remote.ErrorInfo;

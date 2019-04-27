@@ -1,4 +1,4 @@
-package com.lionel.gonews.base;
+package com.lionel.gonews.base.recyclerview;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

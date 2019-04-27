@@ -1,4 +1,4 @@
-package com.lionel.gonews.base;
+package com.lionel.gonews.base.recyclerview;
 
 import com.lionel.gonews.data.News;
 

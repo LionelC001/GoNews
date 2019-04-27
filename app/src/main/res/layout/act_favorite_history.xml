@@ -31,7 +31,7 @@
             android:paddingTop="@dimen/x8dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <com.lionel.gonews.base.BaseDisplayNewsListView
+            <com.lionel.gonews.base.recyclerview.BaseDisplayNewsListView
                 android:id="@+id/newsListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

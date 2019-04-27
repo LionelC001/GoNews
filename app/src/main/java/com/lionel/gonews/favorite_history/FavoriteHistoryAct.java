@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.lionel.gonews.R;
-import com.lionel.gonews.base.IDisplayNewsList;
+import com.lionel.gonews.base.recyclerview.IDisplayNewsList;
 import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
 
