@@ -38,7 +38,8 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         actType = getIntent().getStringExtra(TYPE_ACT);
 
         initToolbar();
-        initViews();
+        initNewsListView();
+        initBackground();
         initContent();
     }
 
@@ -61,13 +62,15 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         });
     }
 
-    private void initViews() {
-        imgBackground = findViewById(R.id.imgBackground);
-
+    private void initNewsListView() {
         newsListView = findViewById(R.id.newsListView);
         newsListView.setCallback(this);
         newsListView.setIsShowLoadingNextPageAnim(false);
-        newsListView.setIsShowLoadingAnimAtBeginning(true);
+        newsListView.setIsEnableRefreshLayout(false);
+    }
+
+    private void initBackground() {
+        imgBackground = findViewById(R.id.imgBackground);
     }
 
     private void setIsShowBackground(boolean isShow) {
@@ -117,7 +120,6 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         @Override
         public void onChanged(@Nullable List<News> newsList) {
             setIsShowBackground(newsList.size() <= 0);
-            newsListView.setIsShowLoadingAnimAtBeginning(false);
             if (checkIsActTypeFavorite()) {
                 newsListView.showNews(newsList);
             } else {

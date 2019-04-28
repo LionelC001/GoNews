@@ -22,6 +22,8 @@ public interface IDisplayNewsList {
      */
     void showNewsWithDateGroup(List<News> data);
 
+    void setIsEnableRefreshLayout(boolean isEnable);
+
     void setIsShowLoadingAnimAtBeginning(boolean isShowing);
 
     void showLoadingAnimAgain();

@@ -104,6 +104,13 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     }
 
     @Override
+    public void setIsEnableRefreshLayout(boolean isEnable) {
+        if (!isEnable) {
+            refreshLayout.setEnabled(false);
+        }
+    }
+
+    @Override
     public void setIsShowLoadingAnimAtBeginning(boolean isShow) {
         if (isShowLoadingAnim && isShow) {  //show refresh loading only once at new result
             refreshLayout.setRefreshing(true);
