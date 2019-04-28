@@ -76,4 +76,15 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="HistoryActTitleText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/x24sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="HistoryActClearText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/x18sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

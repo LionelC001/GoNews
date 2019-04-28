@@ -50,7 +50,7 @@ public class BaseDateGroupItemDecoration extends RecyclerView.ItemDecoration {
         listLastItemInGroupsPosition = new ArrayList<>();
         listHeaderPosition = new ArrayList<>();
 
-        if (data != null) {
+        if (data != null && data.size() > 0) {
             // get the item positions in the list, and they are the last one in their group
             TimeZone localTimeZone = TimeZone.getDefault();
             for (int i = 0; i < data.size() - 1; i++) {

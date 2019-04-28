@@ -97,8 +97,10 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
         if (recyclerView.getItemDecorationCount() > 0) {  // prevent from duplication itemDecoration
             recyclerView.removeItemDecorationAt(0);
         }
-        BaseDateGroupItemDecoration dateItemDecoration = new BaseDateGroupItemDecoration(context, data);
-        recyclerView.addItemDecoration(dateItemDecoration);
+        if (data.size() > 0) {
+            BaseDateGroupItemDecoration dateItemDecoration = new BaseDateGroupItemDecoration(context, data);
+            recyclerView.addItemDecoration(dateItemDecoration);
+        }
     }
 
     @Override

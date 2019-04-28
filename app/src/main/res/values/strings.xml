@@ -27,7 +27,8 @@
     <string name="popularity">Popularity</string>
     <string name="publish_at">Publish At</string>
     <string name="favorite">Favorite</string>
-    <string name="history">history</string>
+    <string name="history">History</string>
+    <string name="clear_history">Clear</string>
 
     <string-array name="topics">
         <item>@string/general</item>
