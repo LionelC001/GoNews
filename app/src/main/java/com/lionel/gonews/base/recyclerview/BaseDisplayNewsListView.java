@@ -93,7 +93,12 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     @Override
     public void showNewsWithDateGroup(List<News> data) {
         showNews(data);
-        recyclerView.addItemDecoration(new BaseDateItemDecoration(context, data));
+
+        if (recyclerView.getItemDecorationCount() > 0) {  // prevent from duplication itemDecoration
+            recyclerView.removeItemDecorationAt(0);
+        }
+        BaseDateItemDecoration dateItemDecoration = new BaseDateItemDecoration(context, data);
+        recyclerView.addItemDecoration(dateItemDecoration);
     }
 
     @Override
