@@ -73,8 +73,8 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
 
         viewModel.getFavoriteNews().observe(this, new Observer<List<News>>() {
             @Override
-            public void onChanged(@Nullable List<News> news) {
-                newsListView.showNews(news);
+            public void onChanged(@Nullable List<News> newsList) {
+                newsListView.showNews(newsList);
             }
         });
     }

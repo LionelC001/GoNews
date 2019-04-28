@@ -13,18 +13,18 @@ import java.util.List;
 
 import static com.lionel.gonews.util.Constants.COLUMN_BROWSE_DATE;
 import static com.lionel.gonews.util.Constants.COLUMN_FAVORITE;
+import static com.lionel.gonews.util.Constants.COLUMN_FAVORITE_DATE;
 import static com.lionel.gonews.util.Constants.COLUMN_HISTORY;
-import static com.lionel.gonews.util.Constants.COLUMN_ID;
 import static com.lionel.gonews.util.Constants.COLUMN_TITLE;
 import static com.lionel.gonews.util.Constants.TABLE_LOCAL_NEWS;
 
 @Dao
 public abstract class LocalNewsDao {
 
-    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " IS 1 ORDER BY " + COLUMN_BROWSE_DATE + " DESC, " + COLUMN_ID + " DESC ")
+    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_HISTORY + " IS 1 ORDER BY " + COLUMN_BROWSE_DATE + " DESC ")
     public abstract LiveData<List<News>> getAllHistoryNews();
 
-    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_FAVORITE + " IS 1 ORDER BY " + COLUMN_ID + " DESC ")
+    @Query("SELECT * FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_FAVORITE + " IS 1 ORDER BY " + COLUMN_FAVORITE_DATE + " DESC ")
     public abstract LiveData<List<News>> getAllFavoriteNews();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -40,8 +40,8 @@ public abstract class LocalNewsDao {
         }
     }
 
-    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_FAVORITE + " = 1  WHERE " + COLUMN_TITLE + " = :title AND " + COLUMN_FAVORITE + " = 0")
-    public abstract void updateIsFavorite(String title);
+    @Query("UPDATE " + TABLE_LOCAL_NEWS + " SET " + COLUMN_FAVORITE + " = 1, " + COLUMN_FAVORITE_DATE + " = :date WHERE " + COLUMN_TITLE + " = :title AND " + COLUMN_FAVORITE + " = 0")
+    public abstract void updateIsFavorite(String title, String date);
 
     @Query("SELECT COUNT(" + COLUMN_TITLE + ") FROM " + TABLE_LOCAL_NEWS + " WHERE " + COLUMN_TITLE + " = :title  AND " + COLUMN_FAVORITE + " = 1")
     public abstract LiveData<Integer> checkIsFavorite(String title);

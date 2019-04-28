@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import static com.lionel.gonews.util.Constants.DATE_EEEE_MMMM_DD_YY;
+import static com.lionel.gonews.util.Constants.DATE_ISO8601;
 import static com.lionel.gonews.util.Constants.DATE_YYYY_MM_DD;
 
 public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
@@ -73,10 +74,18 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
 
 
     private boolean isDrawingDateGroup(int position) {
-        if (data != null && position == 0) {
+        if (data == null) {
+            return false;
+        }
+
+        if (position == 0) {
             return true;
         }
-        return data != null && !data.get(position).browseDate.equals(data.get(position - 1).browseDate);
+
+        TimeZone localTimeZone = TimeZone.getDefault();
+        String dateCurrentItem = DateConvertManager.turnToSpecificPatternAndTimeZone(data.get(position).browseDate, DATE_ISO8601, localTimeZone, DATE_YYYY_MM_DD, localTimeZone);
+        String dateLastItem = DateConvertManager.turnToSpecificPatternAndTimeZone(data.get(position - 1).browseDate, DATE_ISO8601, localTimeZone, DATE_YYYY_MM_DD, localTimeZone);
+        return !dateCurrentItem.equals(dateLastItem);
     }
 
     private void drawGroupDate(Canvas canvas, View child, int position) {

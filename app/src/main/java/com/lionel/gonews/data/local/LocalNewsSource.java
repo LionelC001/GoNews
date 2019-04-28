@@ -23,16 +23,11 @@ public class LocalNewsSource {
         return localNewsDao.getAllFavoriteNews();
     }
 
-    public LiveData<Integer> checkIsFavorite(String title) {
-        return localNewsDao.checkIsFavorite(title);
-    }
-
-
-    public void insertOrUpdateHistory(final News localNews) {
+    public void insertOrUpdateHistory(final News news) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                localNewsDao.insertOrUpdateHistory(localNews);
+                localNewsDao.insertOrUpdateHistory(news);
             }
         }).start();
     }
@@ -41,9 +36,13 @@ public class LocalNewsSource {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                localNewsDao.updateIsFavorite(news.title);
+                localNewsDao.updateIsFavorite(news.title, news.favoriteDate);
             }
         }).start();
+    }
+
+    public LiveData<Integer> checkIsFavorite(News news) {
+        return localNewsDao.checkIsFavorite(news.title);
     }
 
     public void deleteAllHistory() {
@@ -55,11 +54,11 @@ public class LocalNewsSource {
         }).start();
     }
 
-    public void deleteFavorite(final String title) {
+    public void deleteFavorite(final News news) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                localNewsDao.deleteFavorite(title);
+                localNewsDao.deleteFavorite(news.title);
             }
         }).start();
     }

@@ -75,7 +75,7 @@ public class ContentAct extends AppCompatActivity {
     private void initChkBoxFavorite() {
         chkFavorite = findViewById(R.id.chkBoxFavorite);
 
-        final LiveData<Integer> favoriteNewsCount = viewModel.checkIsFavoriteNews(news.title);
+        final LiveData<Integer> favoriteNewsCount = viewModel.checkIsFavoriteNews(news);
         favoriteNewsCount.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer count) {

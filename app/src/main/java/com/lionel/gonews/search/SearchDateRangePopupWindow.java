@@ -2,7 +2,6 @@ package com.lionel.gonews.search;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import com.lionel.gonews.R;
 import com.lionel.gonews.base.BasePopupWindow;
 import com.lionel.gonews.util.DateConvertManager;
+
+import static com.lionel.gonews.util.Constants.DATE_YYYY_MM_DD;
 
 public class SearchDateRangePopupWindow extends BasePopupWindow {
 
@@ -56,7 +57,7 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
     }
 
     private void initRangeToText() {
-        txtDateRangeTo.setText(DateConvertManager.getCurrentLocalYYMMDD());
+        txtDateRangeTo.setText(DateConvertManager.getCurrentDateSpecificPattern(DATE_YYYY_MM_DD));
     }
 
     private void initBtn() {

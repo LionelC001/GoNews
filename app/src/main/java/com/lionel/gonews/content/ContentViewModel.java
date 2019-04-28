@@ -10,7 +10,8 @@ import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.local.LocalNewsSource;
 
-import static com.lionel.gonews.util.DateConvertManager.getCurrentLocalYYMMDD;
+import static com.lionel.gonews.util.Constants.DATE_ISO8601;
+import static com.lionel.gonews.util.DateConvertManager.getCurrentDateSpecificPattern;
 
 public class ContentViewModel extends AndroidViewModel {
     private final LocalNewsSource localNewsSource;
@@ -28,8 +29,8 @@ public class ContentViewModel extends AndroidViewModel {
         binding.setVariable(BR.newsData, news);
     }
 
-    public LiveData<Integer> checkIsFavoriteNews(String title) {
-        return localNewsSource.checkIsFavorite(title);
+    public LiveData<Integer> checkIsFavoriteNews(News news) {
+        return localNewsSource.checkIsFavorite(news);
     }
 
     public void setFavoriteClickedFromObserve() {
@@ -38,18 +39,19 @@ public class ContentViewModel extends AndroidViewModel {
 
     public void storeNewsHistory() {
         news.isHistory = true;
-        news.browseDate = getCurrentLocalYYMMDD();
+        news.browseDate = getCurrentDateSpecificPattern(DATE_ISO8601);
         localNewsSource.insertOrUpdateHistory(news);
     }
 
     public void deleteFavorite() {
-        localNewsSource.deleteFavorite(news.title);
+        localNewsSource.deleteFavorite(news);
         isFavoriteExist = false;
     }
 
     public void updateFavorite() {
         if (!isFavoriteExist) {
             news.isFavorite = true;
+            news.favoriteDate =  getCurrentDateSpecificPattern(DATE_ISO8601);
             localNewsSource.updateIsFavorite(news);
         }
     }

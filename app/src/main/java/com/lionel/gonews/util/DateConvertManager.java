@@ -50,10 +50,10 @@ public class DateConvertManager {
         return turnYYMMDDToIntArray(today);
     }
 
-    public static String getCurrentLocalYYMMDD() {
+    public static String getCurrentDateSpecificPattern(String pattern) {
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
-        return formatDateToString(date, DATE_YYYY_MM_DD, TimeZone.getDefault());
+        return formatDateToString(date, pattern, TimeZone.getDefault());
     }
 
     public static String turnToSpecificPatternAndTimeZone(String time, String fromPattern, TimeZone fromTimeZone, String toPattern, TimeZone toTimeZone) {
