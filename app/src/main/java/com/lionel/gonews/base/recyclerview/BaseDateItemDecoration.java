@@ -2,11 +2,15 @@ package com.lionel.gonews.base.recyclerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.lionel.gonews.R;
@@ -60,14 +64,40 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
             View child = parent.getChildAt(i);
             int position = parent.getChildLayoutPosition(child);
             if (isDrawingDateGroup(position)) {
-                drawGroupDate(c, child, position);
+                drawGroupDateText(c, child, position);
             }
         }
     }
 
     @Override
-    public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView
-            parent, @NonNull RecyclerView.State state) {
+    public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+        LinearLayoutManager manager = (LinearLayoutManager) parent.getLayoutManager();
+        int firstPosition = manager.findFirstVisibleItemPosition();
+        Log.d("<>", "firstPosition: " + firstPosition);
+        View child = parent.findViewHolderForAdapterPosition(firstPosition).itemView;
+
+//        Log.d("<>", "c")
+//        drawGroupDateText(c, child, firstPosition);
+
+        RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+
+        int left = child.getLeft();
+        int right = child.getRight();
+        int bottom = paddingTop;
+        int baseline = paddingTop - paddingTop / 4;
+
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+        paint.setAntiAlias(true);
+        RectF rect = new RectF(left, 0, right, bottom + params.topMargin);
+        c.drawRoundRect(rect,15,15,paint);
+
+
+        paint.setColor(Color.BLACK);
+        c.drawText(getDateText(firstPosition), left, baseline, paint);
+        c.drawLine(left, bottom, right, bottom, paint);
+
+
 
 
     }
@@ -88,7 +118,7 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
         return !dateCurrentItem.equals(dateLastItem);
     }
 
-    private void drawGroupDate(Canvas canvas, View child, int position) {
+    private void drawGroupDateText(Canvas canvas, View child, int position) {
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
         int left = child.getLeft();
         int right = child.getRight();
