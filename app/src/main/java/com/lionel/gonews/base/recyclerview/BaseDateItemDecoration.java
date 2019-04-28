@@ -29,6 +29,7 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
     private int paddingTop;
     private List<News> data;
     private Paint paint;
+    private int groupLastPosition;
 
     public BaseDateItemDecoration(Context context, List<News> data) {
         this.data = data;
@@ -73,33 +74,33 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
     public void onDrawOver(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         LinearLayoutManager manager = (LinearLayoutManager) parent.getLayoutManager();
         int firstPosition = manager.findFirstVisibleItemPosition();
-        Log.d("<>", "firstPosition: " + firstPosition);
         View child = parent.findViewHolderForAdapterPosition(firstPosition).itemView;
-
-//        Log.d("<>", "c")
-//        drawGroupDateText(c, child, firstPosition);
 
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
 
         int left = child.getLeft();
         int right = child.getRight();
-        int bottom = paddingTop;
-        int baseline = paddingTop - paddingTop / 4;
+        int bottom;
+        int baseline;
 
+
+        Log.d("<>", "firstPosition: " + firstPosition);
+        Log.d("<>", "groupLastPosition: " + groupLastPosition);
+        if (firstPosition == groupLastPosition && child.getBottom() + params.bottomMargin < paddingTop + params.topMargin) {
+            bottom = child.getBottom();
+            baseline = child.getBottom() - paddingTop / 4;
+        } else {
+            bottom = paddingTop;
+            baseline = paddingTop - paddingTop / 4;
+        }
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
         RectF rect = new RectF(left, 0, right, bottom + params.topMargin);
-        c.drawRoundRect(rect,15,15,paint);
-
-
+        c.drawRoundRect(rect, 15, 15, paint);
         paint.setColor(Color.BLACK);
-        c.drawText(getDateText(firstPosition), left, baseline, paint);
+        c.drawText(getDateText(firstPosition), left + 20, baseline, paint);
         c.drawLine(left, bottom, right, bottom, paint);
-
-
-
-
     }
 
 
@@ -115,7 +116,12 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
         TimeZone localTimeZone = TimeZone.getDefault();
         String dateCurrentItem = DateConvertManager.turnToSpecificPatternAndTimeZone(data.get(position).browseDate, DATE_ISO8601, localTimeZone, DATE_YYYY_MM_DD, localTimeZone);
         String dateLastItem = DateConvertManager.turnToSpecificPatternAndTimeZone(data.get(position - 1).browseDate, DATE_ISO8601, localTimeZone, DATE_YYYY_MM_DD, localTimeZone);
-        return !dateCurrentItem.equals(dateLastItem);
+        if (!dateCurrentItem.equals(dateLastItem)) {
+            groupLastPosition = position - 1;
+//            Log.d("<>", "lastposition: " + groupLastPosition);
+            return true;
+        }
+        return false;
     }
 
     private void drawGroupDateText(Canvas canvas, View child, int position) {
@@ -124,7 +130,7 @@ public class BaseDateItemDecoration extends RecyclerView.ItemDecoration {
         int right = child.getRight();
         int bottom = child.getTop() - params.topMargin;
         int baseline = child.getTop() - params.topMargin - paddingTop / 4;
-        canvas.drawText(getDateText(position), left, baseline, paint);
+        canvas.drawText(getDateText(position), left + 20, baseline, paint);
         canvas.drawLine(left, bottom, right, bottom, paint);
     }
 
