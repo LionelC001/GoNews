@@ -14,6 +14,7 @@ import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.data.remote.QueryFilter;
 import com.lionel.gonews.util.DateConvertManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -62,8 +63,7 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
     }
 
     public void storeQueryWord(String queryWord) {
-        Log.d("<>", "storeQueryWord");
-        queryWordSource.insert(new QueryWord(queryWord));
+        queryWordSource.insert(new QueryWord(replaceAllSpaceWitchPlus(queryWord)));
     }
 
     public String replaceAllSpaceWitchPlus(String queryWord) {
@@ -109,5 +109,13 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
 
     public void deleteAllQueryWord(){
         queryWordSource.deleteAll();
+    }
+
+    public List<String> getCleanQueryWords(List<QueryWord> queryWords){
+        List<String> cleanQueryWords = new ArrayList<>();
+        for(QueryWord queryWord : queryWords){
+            cleanQueryWords.add(queryWord.word.replace("+", " "));
+        }
+        return cleanQueryWords;
     }
 }

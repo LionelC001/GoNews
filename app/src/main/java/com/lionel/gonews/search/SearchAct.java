@@ -136,11 +136,9 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         viewModel.getAllQueryWord().observe(this, new Observer<List<QueryWord>>() {
             @Override
             public void onChanged(@Nullable List<QueryWord> queryWords) {
-                searchBox.setSearchHistory(queryWords);
-                Log.d("<>", "setSearchHistory");
+                searchBox.setSearchHistory(viewModel.getCleanQueryWords(queryWords));
             }
         });
-
     }
 
     private void setIsShowBackground(boolean isShowing) {

@@ -19,7 +19,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lionel.gonews.R;
-import com.lionel.gonews.data.local.query_word.QueryWord;
 import com.lionel.gonews.util.KeyboardManager;
 
 import java.util.ArrayList;
@@ -54,25 +53,15 @@ public class SearchBox extends FrameLayout {
         this.callback = callback;
     }
 
-    public void setSearchHistory(List<QueryWord> data) {
+    public void setSearchHistory(List<String> data) {
         ArrayAdapter<String> adapter = new SearchHistoryAdapter(context,
                 R.layout.item_search_box_history, R.id.txItemSearchHistory,
-                toListStr(data),
+                data,
                 edtSearchBox);
 
         if (edtSearchBox != null) {
             edtSearchBox.setAdapter(adapter);
         }
-    }
-
-    private List<String> toListStr(List<QueryWord> data){
-        List<String> listStr = new ArrayList<>();
-        if(data!= null) {
-            for(QueryWord queryWord : data) {
-                listStr.add(queryWord.word);
-            }
-        }
-        return listStr;
     }
 
     private void initEdtSearchBox() {
@@ -126,6 +115,7 @@ public class SearchBox extends FrameLayout {
             @Override
             public void onClick(View v) {
                 edtSearchBox.setText("");
+                edtSearchBox.showDropDown();
             }
         });
     }
