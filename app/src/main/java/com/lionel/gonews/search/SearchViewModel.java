@@ -1,11 +1,15 @@
 package com.lionel.gonews.search;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.lionel.gonews.base.BaseRemoteSourceViewModel;
 import com.lionel.gonews.data.News;
+import com.lionel.gonews.data.local.query_word.QueryWord;
+import com.lionel.gonews.data.local.query_word.QueryWordSource;
 import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.data.remote.QueryFilter;
 import com.lionel.gonews.util.DateConvertManager;
@@ -19,10 +23,13 @@ import static com.lionel.gonews.util.Constants.RELEVANCY;
 
 public class SearchViewModel extends BaseRemoteSourceViewModel {
 
+    private final QueryWordSource queryWordSource;
     private QueryFilter.QueryEverythingFilter queryEverythingFilter;
 
     public SearchViewModel(@NonNull Application application) {
         super(application);
+
+        queryWordSource = new QueryWordSource(application.getApplicationContext());
     }
 
     public MutableLiveData<List<News>> getNewsDataLiveData() {
@@ -52,6 +59,11 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
         }
         queryEverythingFilter.queryWord = cleanWord;
         super.setQueryFilter(queryEverythingFilter);
+    }
+
+    public void storeQueryWord(String queryWord) {
+        Log.d("<>", "storeQueryWord");
+        queryWordSource.insert(new QueryWord(queryWord));
     }
 
     public String replaceAllSpaceWitchPlus(String queryWord) {
@@ -89,5 +101,13 @@ public class SearchViewModel extends BaseRemoteSourceViewModel {
 
     public void loadMoreNews() {
         super.loadMoreNews();
+    }
+
+    public LiveData<List<QueryWord>> getAllQueryWord() {
+        return queryWordSource.getAll();
+    }
+
+    public void deleteAllQueryWord(){
+        queryWordSource.deleteAll();
     }
 }

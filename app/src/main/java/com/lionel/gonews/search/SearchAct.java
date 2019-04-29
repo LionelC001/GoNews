@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.lionel.gonews.R;
 import com.lionel.gonews.base.recyclerview.IDisplayNewsList;
 import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
+import com.lionel.gonews.data.local.query_word.QueryWord;
 import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.util.DialogManager;
 
@@ -128,9 +130,17 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     private void initSearchBox() {
-        SearchBox searchBox = findViewById(R.id.searchBox);
+        final SearchBox searchBox = findViewById(R.id.searchBox);
         searchBox.setCallback(this);
-        // searchBox.setSearchHistory(data);
+
+        viewModel.getAllQueryWord().observe(this, new Observer<List<QueryWord>>() {
+            @Override
+            public void onChanged(@Nullable List<QueryWord> queryWords) {
+                searchBox.setSearchHistory(queryWords);
+                Log.d("<>", "setSearchHistory");
+            }
+        });
+
     }
 
     private void setIsShowBackground(boolean isShowing) {
@@ -144,6 +154,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     @Override
     public void startQuery(String queryWord) {
         newsListView.showLoadingAnimAgain();
+        viewModel.storeQueryWord(queryWord);
         viewModel.setQueryWord(queryWord);
         viewModel.initNewsWithoutCache();
     }
@@ -151,6 +162,11 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     @Override
     public void onBackBtnPressed() {
         finish();
+    }
+
+    @Override
+    public void deleteAllQueryWord() {
+        viewModel.deleteAllQueryWord();
     }
 
     @Override
