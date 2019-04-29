@@ -6,7 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.local.LocalNewsSource;
+import com.lionel.gonews.data.local.news.LocalNewsSource;
 
 import java.util.List;
 

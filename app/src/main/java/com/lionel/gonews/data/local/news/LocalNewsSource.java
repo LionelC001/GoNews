@@ -1,4 +1,4 @@
-package com.lionel.gonews.data.local;
+package com.lionel.gonews.data.local.news;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;

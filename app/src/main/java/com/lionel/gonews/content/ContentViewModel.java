@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.lionel.gonews.BR;
 import com.lionel.gonews.data.News;
-import com.lionel.gonews.data.local.LocalNewsSource;
+import com.lionel.gonews.data.local.news.LocalNewsSource;
 
 import static com.lionel.gonews.util.Constants.DATE_ISO8601;
 import static com.lionel.gonews.util.DateConvertManager.getCurrentDateSpecificPattern;
