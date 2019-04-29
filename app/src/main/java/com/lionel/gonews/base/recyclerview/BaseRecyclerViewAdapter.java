@@ -15,9 +15,6 @@ import com.lionel.gonews.data.News;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lionel.gonews.util.Constants.TYPE_BOTTOM;
-import static com.lionel.gonews.util.Constants.TYPE_NEWS;
-
 /**
  * An adapter for {@link BaseDisplayNewsListView}.
  * manage tasks like:
@@ -30,6 +27,9 @@ public class BaseRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public interface IRecyclerViewAdapterCallback {
         void onItemClick(News news);
     }
+
+    private static final int TYPE_NEWS = 1;
+    private static final int TYPE_BOTTOM = 2;
 
     private IRecyclerViewAdapterCallback callback;
     private List<News> data = new ArrayList<>();

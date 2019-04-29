@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -101,7 +100,7 @@ public class SearchBox extends FrameLayout {
         edtSearchBox.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     edtSearchBox.showDropDown();
                 }
             }
@@ -146,7 +145,7 @@ public class SearchBox extends FrameLayout {
         private List<String> data;
         private final View targetView;
 
-        public SearchHistoryAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects, @NonNull View targetView) {
+        private SearchHistoryAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects, @NonNull View targetView) {
             super(context, resource, textViewResourceId, objects);
 
             this.resource = resource;
