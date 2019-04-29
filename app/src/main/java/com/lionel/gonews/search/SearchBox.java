@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -79,11 +80,12 @@ public class SearchBox extends FrameLayout {
         edtSearchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 doSearch();
             }
         });
 
-        //as search button on keyboard is pressed
+        //as search button on keyboard is pressed, hide keyboard
         edtSearchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -93,6 +95,15 @@ public class SearchBox extends FrameLayout {
                     return true;
                 }
                 return false;
+            }
+        });
+
+        edtSearchBox.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    edtSearchBox.showDropDown();
+                }
             }
         });
     }
@@ -115,7 +126,6 @@ public class SearchBox extends FrameLayout {
             @Override
             public void onClick(View v) {
                 edtSearchBox.setText("");
-                edtSearchBox.showDropDown();
             }
         });
     }
