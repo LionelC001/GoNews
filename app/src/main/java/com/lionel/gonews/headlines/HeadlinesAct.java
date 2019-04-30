@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import com.lionel.gonews.R;
 import com.lionel.gonews.favorite_history.FavoriteHistoryAct;
 import com.lionel.gonews.search.SearchAct;
+import com.lionel.gonews.util.DialogManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,7 +67,8 @@ public class HeadlinesAct extends AppCompatActivity {
         btnAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                drawerLayout.closeDrawer(GravityCompat.START);
+                DialogManager.showAbout(HeadlinesAct.this);
             }
         });
     }

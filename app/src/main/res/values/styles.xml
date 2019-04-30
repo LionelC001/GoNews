@@ -33,7 +33,7 @@
     </style>
 
     <style name="SearchBoxClearText">
-        <item name ="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textColor">@color/colorDeepGray</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/x14sp</item>
     </style>
@@ -92,5 +92,22 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/x18sp</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AboutTitleText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/x30sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AboutTextBoldText">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/x20sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AboutTextText">
+        <item name="android:textSize">@dimen/x18sp</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 </resources>

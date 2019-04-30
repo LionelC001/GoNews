@@ -3,6 +3,9 @@ package com.lionel.gonews.util;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
 
 import com.lionel.gonews.R;
 
@@ -22,10 +25,25 @@ public class DialogManager {
                     isErrorDialogShowing = false;
                 }
             });
-            AlertDialog dialog = builder.create();
-            dialog.getWindow().setBackgroundDrawableResource(R.drawable.round_corner_white);
-            dialog.getWindow().setWindowAnimations(R.style.AnimDialog);
-            dialog.show();
+            showDialog(builder);
         }
+    }
+
+    public static void showAbout(Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.layout_about, null, false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(view);
+        builder.setCancelable(true);
+        showDialog(builder);
+    }
+
+    private static void showDialog(AlertDialog.Builder builder) {
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.round_corner_white);
+        dialog.getWindow().setWindowAnimations(R.style.AnimDialog);
+        dialog.show();
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
     }
 }
