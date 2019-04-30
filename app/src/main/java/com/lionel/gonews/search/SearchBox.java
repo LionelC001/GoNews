@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -54,10 +56,13 @@ public class SearchBox extends FrameLayout {
     }
 
     public void setSearchHistory(List<String> data) {
-        ArrayAdapter<String> adapter = new SearchHistoryAdapter(context,
-                R.layout.item_search_box_history, R.id.txItemSearchHistory,
-                data,
-                edtSearchBox);
+//        ArrayAdapter<String> adapter = new SearchHistoryAdapter(context,
+//                R.layout.item_search_box_history, R.id.txItemSearchHistory,
+//                data,
+//                edtSearchBox);
+
+
+        SearchHistoryAdapter adapter = new SearchHistoryAdapter(context, data, edtSearchBox);
 
         if (edtSearchBox != null) {
             edtSearchBox.setAdapter(adapter);
@@ -137,36 +142,42 @@ public class SearchBox extends FrameLayout {
         }
     }
 
+    private class SearchHistoryAdapter extends BaseAdapter implements Filterable {
+        private static final int TYPE_QUERY_WORD = 1;
+        private static final int TYPE_CLEAR = 2;
 
-    private class SearchHistoryAdapter extends ArrayAdapter<String> {
-        private final int resource;
-        private final int textViewResourceId;
         private final List<String> originalData;
         private List<String> data;
         private final View targetView;
 
-        private SearchHistoryAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull List<String> objects, @NonNull View targetView) {
-            super(context, resource, textViewResourceId, objects);
+        private SearchHistoryAdapter(Context context, List<String> data, @NonNull View targetView) {
 
-            this.resource = resource;
-            this.textViewResourceId = textViewResourceId;
-            this.originalData = objects;
-            this.data = objects;
+            this.originalData = data;
+            this.data = data;
             this.targetView = targetView;
+        }
+
+        private class QueryWordHolder {
+            public TextView queryWord;
+        }
+
+        private class ClearHolder {
+            public TextView txtClear;
         }
 
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            if (convertView == null) {
-                convertView = inflater.inflate(resource, parent, false);
+            View view;
+
+            if (getItemViewType(position) == TYPE_QUERY_WORD) {
+                view = bindQueryWordHolder(position, convertView, parent);
+            } else {
+                view = bindClearHolder(convertView, parent);
             }
-            TextView textView = convertView.findViewById(textViewResourceId);
-            textView.setText(data.get(position));
 
             //hide keyboard if list is scrolling or touched
-            convertView.setOnTouchListener(new OnTouchListener() {
+            view.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -176,18 +187,70 @@ public class SearchBox extends FrameLayout {
                 }
             });
 
-            return convertView;
+            return view;
+        }
+
+        private View bindQueryWordHolder(int position, View convertView, ViewGroup parent) {
+            QueryWordHolder queryWordHolder;
+            View view;
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+                view = inflater.inflate(R.layout.item_search_box_history, null);
+                queryWordHolder = new QueryWordHolder();
+                queryWordHolder.queryWord = view.findViewById(R.id.txItemSearchHistory);
+                view.setTag(queryWordHolder);
+            } else {
+                view = convertView;
+                queryWordHolder = (QueryWordHolder) convertView.getTag();
+
+            }
+            queryWordHolder.queryWord.setText(data.get(position));
+            return view;
+        }
+
+        private View bindClearHolder(View convertView, ViewGroup parent) {
+            View view;
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+                view = inflater.inflate(R.layout.item_search_box_clear, null);
+            } else {
+                view = convertView;
+            }
+            return view;
+        }
+
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position < data.size()) {
+                Log.d("<>", "TYPE_QUERY_WORD");
+                return TYPE_QUERY_WORD;
+            } else {
+                Log.d("<>", "TYPE_CLEAR");
+                return TYPE_CLEAR;
+            }
         }
 
         @Override
         public int getCount() {
-            return data != null ? data.size() : 0;
+            if (data != null && data.size() > 0 && data.size() == originalData.size()) {
+                return data.size() + 1;
+            }
+            if (data != null && data.size() > 0) {
+                return data.size();
+            }
+            return 0;
         }
 
         @Nullable
         @Override
         public String getItem(int position) {
-            return data.get(position);
+            return position < data.size() ? data.get(position) : null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
         }
 
         @NonNull

@@ -29,6 +29,7 @@
     <string name="favorite">Favorite</string>
     <string name="history">History</string>
     <string name="clear_history">Clear</string>
+    <string name="clear_all">Clear All</string>
 
     <string-array name="topics">
         <item>@string/general</item>
