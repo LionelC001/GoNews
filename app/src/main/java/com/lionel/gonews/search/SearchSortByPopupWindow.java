@@ -29,8 +29,18 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
         this.context = context;
         this.callback = callback;
 
+        initDimBehind();
+        initBackgroundStyle();
         initView();
         initRadioGroup();
+    }
+
+    private void initDimBehind(){
+        super.setIsDimBehind(true);
+    }
+
+    private void initBackgroundStyle() {
+        super.setBackgroundStyle(context.getDrawable(R.drawable.frame_gray_round_corner_white));
     }
 
     private void initView() {

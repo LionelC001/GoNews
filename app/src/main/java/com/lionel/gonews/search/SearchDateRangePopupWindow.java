@@ -35,10 +35,20 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
         this.context = context;
         this.callback = callback;
 
+        initDimBehind();
+        initBackgroundStyle();
         initView();
         initDateTextView();
         initBtn();
         initOldValue();
+    }
+
+    private void initDimBehind(){
+        super.setIsDimBehind(true);
+    }
+
+    private void initBackgroundStyle() {
+        super.setBackgroundStyle(context.getDrawable(R.drawable.frame_gray_round_corner_white));
     }
 
     private void initView() {

@@ -1,16 +1,16 @@
 package com.lionel.gonews.base;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import com.lionel.gonews.R;
-
 public class BasePopupWindow extends PopupWindow {
 
     private final Context context;
+    private boolean isDimBehind = false;
 
     public BasePopupWindow(Context context) {
         this.context = context;
@@ -21,10 +21,17 @@ public class BasePopupWindow extends PopupWindow {
     private void initLayoutParams() {
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        setBackgroundDrawable(context.getDrawable(R.drawable.frame_gray_round_corner_white));
         setElevation(4f);
         setFocusable(true);
         setOutsideTouchable(true);
+    }
+
+    public void setBackgroundStyle(Drawable backgroundDrawable) {
+        setBackgroundDrawable(backgroundDrawable);
+    }
+
+    public void setIsDimBehind(boolean isDimBehind) {
+        this.isDimBehind = isDimBehind;
     }
 
     public void setView(View view) {
@@ -35,9 +42,13 @@ public class BasePopupWindow extends PopupWindow {
         getContentView().measure(makeDropDownMeasureSpec(getWidth()), makeDropDownMeasureSpec(getHeight()));
         int offsetX = -getContentView().getMeasuredWidth();
         showAsDropDown(anchor, offsetX, 20, gravity);
-        dimBehind();
+
+        if (isDimBehind) {
+            dimBehind();
+        }
     }
 
+    // can't get measure spec unless do this process,
     private int makeDropDownMeasureSpec(int measureSpec) {
         int mode;
         if (measureSpec == ViewGroup.LayoutParams.WRAP_CONTENT) {
