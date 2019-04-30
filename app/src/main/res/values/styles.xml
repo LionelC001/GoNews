@@ -32,6 +32,12 @@
         <item name="android:textSize">@dimen/x20sp</item>
     </style>
 
+    <style name="SearchBoxClearText">
+        <item name ="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/x14sp</item>
+    </style>
+
     <style name="ItemNewsTitleText">
         <item name="android:textColor">@color/colorDeepGray</item>
         <item name="android:textSize">@dimen/x16sp</item>
