@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -59,6 +60,14 @@ public class HeadlinesAct extends AppCompatActivity {
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return false;
+            }
+        });
+
+        View btnAbout = navigationView.getHeaderView(0).findViewById(R.id.imgAbout);
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
