@@ -46,6 +46,16 @@ public class ContentAct extends AppCompatActivity {
         super.onResume();
     }
 
+    @Override
+    protected void onPause() {
+        // avoid memory leak
+        if (popupWindowFavorite != null && popupWindowFavorite.isShowing()) {
+            popupWindowFavorite.dismiss();
+            popupWindowFavorite = null;
+        }
+        super.onPause();
+    }
+
     private void initViewModel() {
         viewModel = ViewModelProviders.of(this).get(ContentViewModel.class);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, R.layout.act_content);

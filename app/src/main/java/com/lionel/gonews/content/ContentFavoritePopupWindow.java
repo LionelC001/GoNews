@@ -42,7 +42,8 @@ public class ContentFavoritePopupWindow extends BasePopupWindow {
     }
 
     private void setAutoDismiss() {
-        new Handler().postDelayed(new Runnable() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 dismiss();
