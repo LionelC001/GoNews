@@ -31,7 +31,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     private SearchDateRangePopupWindow datePopupWindow;
     private SearchSortByPopupWindow sortByPopupWindow;
     private View imgBackground;
-    private boolean isPopupWindowAllowed = false; // to tell that activity is already prepared, so we can show the popup window anytime
+    private boolean isActPrepared = false; // to tell that activity is already prepared, so we can show the popup window anytime
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
 
     @Override
     protected void onResume() {
-        isPopupWindowAllowed = true;
+        isActPrepared = true;
         super.onResume();
     }
 
@@ -134,7 +134,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnSortByFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPopupWindowAllowed) {
+                if (isActPrepared) {
                     sortByPopupWindow.show(btnSortByFilter);
                 }
             }
@@ -145,7 +145,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnDateFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPopupWindowAllowed) {
+                if (isActPrepared) {
                     datePopupWindow.show(btnDateFilter);
                 }
             }

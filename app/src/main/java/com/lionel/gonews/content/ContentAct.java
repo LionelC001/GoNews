@@ -25,7 +25,7 @@ public class ContentAct extends AppCompatActivity {
     private CheckBox chkFavorite;
     private News news;
     private ContentFavoritePopupWindow popupWindowFavorite;
-    private boolean isPopupWindowAllowed = false; // to tell that activity is already prepared, so we can show the popup window anytime
+    private boolean isActPrepared = false; // to tell that activity is already prepared, so we can show the popup window anytime
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class ContentAct extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        isPopupWindowAllowed = true;
+        isActPrepared = true;
         super.onResume();
     }
 
@@ -122,7 +122,7 @@ public class ContentAct extends AppCompatActivity {
         if (popupWindowFavorite == null) {
             popupWindowFavorite = new ContentFavoritePopupWindow(this);
         }
-        if (isPopupWindowAllowed) {
+        if (isActPrepared) {
             popupWindowFavorite.show(chkFavorite);
         }
     }
