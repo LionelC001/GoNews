@@ -24,6 +24,8 @@ public class ContentAct extends AppCompatActivity {
     private ContentViewModel viewModel;
     private CheckBox chkFavorite;
     private News news;
+    private ContentFavoritePopupWindow popupWindowFavorite;
+    private boolean isPopupWindowAllowed = false;   // to tell that activity is already prepared, so we can show the popup window anytime
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +38,12 @@ public class ContentAct extends AppCompatActivity {
         initBtnShare();
         initChkBoxFavorite();
         storeLocalNewsHistory();
+    }
+
+    @Override
+    protected void onResume() {
+        isPopupWindowAllowed = true;
+        super.onResume();
     }
 
     private void initViewModel() {
@@ -92,11 +100,21 @@ public class ContentAct extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     viewModel.updateFavorite();
+                    showPopupWindowFavorite();
                 } else {
                     viewModel.deleteFavorite();
                 }
             }
         });
+    }
+
+    private void showPopupWindowFavorite() {
+        if (popupWindowFavorite == null) {
+            popupWindowFavorite = new ContentFavoritePopupWindow(this);
+        }
+        if (isPopupWindowAllowed) {
+            popupWindowFavorite.show(chkFavorite);
+        }
     }
 
     private void storeLocalNewsHistory() {
