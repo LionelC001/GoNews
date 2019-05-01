@@ -31,6 +31,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     private SearchDateRangePopupWindow datePopupWindow;
     private SearchSortByPopupWindow sortByPopupWindow;
     private View imgBackground;
+    private boolean isPopupWindowAllowed = false; // to tell that activity is already prepared, so we can show the popup window anytime
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,32 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         initLayoutResult();
         initSearchBox();
     }
+
+    @Override
+    protected void onResume() {
+        isPopupWindowAllowed = true;
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        // avoid memory leak
+        dismissAllPopupWindow();
+        super.onPause();
+    }
+
+    private void dismissAllPopupWindow() {
+        if (datePopupWindow != null && datePopupWindow.isShowing()) {
+            datePopupWindow.dismiss();
+            datePopupWindow = null;
+        }
+
+        if (sortByPopupWindow != null && sortByPopupWindow.isShowing()) {
+            sortByPopupWindow.dismiss();
+            sortByPopupWindow = null;
+        }
+    }
+
 
     private void initObserve() {
         viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
@@ -107,7 +134,9 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnSortByFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortByPopupWindow.show(btnSortByFilter);
+                if (isPopupWindowAllowed) {
+                    sortByPopupWindow.show(btnSortByFilter);
+                }
             }
         });
 
@@ -116,7 +145,9 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnDateFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                datePopupWindow.show(btnDateFilter);
+                if (isPopupWindowAllowed) {
+                    datePopupWindow.show(btnDateFilter);
+                }
             }
         });
 

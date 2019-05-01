@@ -42,7 +42,6 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
 
     public SearchBox(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.search_box, this);
 
         this.context = context;
 
