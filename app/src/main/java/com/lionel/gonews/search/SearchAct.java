@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -83,7 +82,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
             @Override
             public void onChanged(@Nullable ErrorInfo errorInfo) {
                 if (errorInfo.isError) {
-                    DialogManager.showErrorDialog(SearchAct.this, errorInfo.msg);
+                    DialogManager.showError(SearchAct.this, errorInfo.msg);
                 }
                 newsListView.setIsErrorState(errorInfo.isError);
             }

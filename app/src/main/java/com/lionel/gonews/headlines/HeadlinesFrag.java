@@ -83,7 +83,7 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
             @Override
             public void onChanged(@Nullable ErrorInfo errorInfo) {
                 if (errorInfo.isError) {
-                    DialogManager.showErrorDialog(getActivity(), errorInfo.msg);
+                    DialogManager.showError(getActivity(), errorInfo.msg);
                 }
                 newsListView.setIsErrorState(errorInfo.isError);
             }

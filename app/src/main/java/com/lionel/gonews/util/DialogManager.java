@@ -12,7 +12,7 @@ import com.lionel.gonews.R;
 public class DialogManager {
     private static boolean isErrorDialogShowing = false;
 
-    public static void showErrorDialog(Context context, String errorMsg) {
+    public static void showError(Context context, String errorMsg) {
         if (!isErrorDialogShowing) {
             isErrorDialogShowing = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
