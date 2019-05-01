@@ -20,12 +20,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lionel.gonews.R;
+import com.lionel.gonews.util.DialogManager;
 import com.lionel.gonews.util.KeyboardManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchBox extends FrameLayout {
+public class SearchBox extends FrameLayout implements DialogManager.IDialogCallback {
 
     private final Context context;
     private AppCompatAutoCompleteTextView edtSearchBox;
@@ -134,6 +135,11 @@ public class SearchBox extends FrameLayout {
         }
     }
 
+    @Override
+    public void onDialogPositiveButtonClick() {
+        callback.deleteAllQueryWord();
+    }
+
     private class SearchHistoryAdapter extends BaseAdapter implements Filterable {
         private static final int TYPE_QUERY_WORD = 1;
         private static final int TYPE_CLEAR = 2;
@@ -186,13 +192,12 @@ public class SearchBox extends FrameLayout {
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    callback.deleteAllQueryWord();
+                    DialogManager.showAsking(context, SearchBox.this, context.getString(R.string.tip_dialog_clear_all_query));
                     edtSearchBox.clearFocus();
                 }
             });
             return view;
         }
-
 
         @Override
         public int getItemViewType(int position) {

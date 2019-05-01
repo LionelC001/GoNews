@@ -19,8 +19,6 @@
     <string name="hour">h</string>
     <string name="minute">m</string>
     <string name="ago">ago</string>
-    <string name="ok">OK</string>
-    <string name="error_dialog_title">OOPS!\tSomething went wrong!</string>
     <string name="error_dialog_content">Please check your network connection and try to refresh page.</string>
     <string name="my_favorite_news">My Favorite News</string>
     <string name="share">Share</string>
@@ -39,6 +37,8 @@
     <string name="clear_all">Clear All</string>
     <string name="about">About</string>
     <string name="added">Added!</string>
+    <string name="tips">Tip</string>
+    <string name="tip_dialog_clear_all_query">Are you sure to clear all query history?</string>
 
     <string-array name="topics">
         <item>@string/general</item>
