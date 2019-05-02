@@ -1,9 +1,9 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorYellow</item>
+        <item name="colorPrimary">@color/colorBlue</item>
+        <item name="colorPrimaryDark">@color/colorDarkBlue</item>
+        <item name="colorAccent">@color/colorLightBlue</item>
     </style>
 
     <style name="Toolbar">
@@ -23,7 +23,7 @@
     </style>
 
     <style name="SearchBoxText">
-        <item name="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
         <item name="android:textSize">@dimen/x24sp</item>
     </style>
 
@@ -33,13 +33,13 @@
     </style>
 
     <style name="SearchBoxClearText">
-        <item name="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/x14sp</item>
     </style>
 
     <style name="ItemNewsTitleText">
-        <item name="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
         <item name="android:textSize">@dimen/x16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -72,7 +72,7 @@
     </style>
 
     <style name="SearchResultCountText">
-        <item name="android:textColor">@color/colorDeepGray</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
         <item name="android:textSize">@dimen/x16sp</item>
     </style>
 

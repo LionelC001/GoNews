@@ -8,5 +8,5 @@
     <ProgressBar
         android:layout_width="match_parent"
         android:layout_height="@dimen/x48dp"
-        android:indeterminateTint="@color/colorDeepGray" />
+        android:indeterminateTint="@color/colorDarkGray" />
 </LinearLayout>

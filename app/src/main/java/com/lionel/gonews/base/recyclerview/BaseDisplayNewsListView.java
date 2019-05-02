@@ -66,7 +66,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
 
     private void initRefreshLayout() {
         refreshLayout = findViewById(R.id.refreshLayout);
-        refreshLayout.setColorSchemeResources(R.color.colorDeepGray);
+        refreshLayout.setColorSchemeResources(R.color.colorDarkGray);
         refreshLayout.setDistanceToTriggerSync(DISTANCE_TO_SYNC);
         refreshLayout.setProgressViewEndTarget(false, END_POSITION);
         refreshLayout.setSize(SwipeRefreshLayout.LARGE);

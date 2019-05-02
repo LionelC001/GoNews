@@ -164,7 +164,7 @@ public class BaseDateGroupItemDecoration extends RecyclerView.ItemDecoration {
         canvas.drawRoundRect(rect, headerCornerRadius, headerCornerRadius, paint);
 
         // draw title
-        paint.setColor(context.getResources().getColor(R.color.colorDeepGray));
+        paint.setColor(context.getResources().getColor(R.color.colorDarkGray));
         canvas.drawText(title, rectLeft + headerPadding, textBaseline, paint);
 
         // draw underline
