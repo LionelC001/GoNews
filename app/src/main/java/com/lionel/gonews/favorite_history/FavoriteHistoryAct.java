@@ -14,6 +14,7 @@ import com.lionel.gonews.R;
 import com.lionel.gonews.base.recyclerview.IDisplayNewsList;
 import com.lionel.gonews.content.ContentAct;
 import com.lionel.gonews.data.News;
+import com.lionel.gonews.util.DialogManager;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
 import static com.lionel.gonews.util.Constants.TYPE_ACT;
 import static com.lionel.gonews.util.Constants.TYPE_FAVORITE;
 
-public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNewsList.IDisplayNewsListCallback {
+public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNewsList.IDisplayNewsListCallback, DialogManager.IDialogCallback {
 
     private FavoriteHistoryViewModel viewModel;
     private IDisplayNewsList newsListView;
@@ -49,7 +50,7 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
         txtClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.deleteAllHistoryNews();
+                DialogManager.showAsking(FavoriteHistoryAct.this, FavoriteHistoryAct.this, getString(R.string.tip_dialog_clear_all_page_history));
             }
         });
 
@@ -114,6 +115,11 @@ public class FavoriteHistoryAct extends AppCompatActivity implements IDisplayNew
     @Override
     public void onLoadMoreNews() {
         // nothing to do.
+    }
+
+    @Override
+    public void onDialogPositiveButtonClick() {
+        viewModel.deleteAllHistoryNews();
     }
 
     private class NewsDataObserver implements Observer<List<News>> {

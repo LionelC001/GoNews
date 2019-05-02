@@ -37,8 +37,9 @@
     <string name="clear_all">Clear All</string>
     <string name="about">About</string>
     <string name="added">Added!</string>
-    <string name="tips">Tip</string>
-    <string name="tip_dialog_clear_all_query">Are you sure to clear all query history?</string>
+    <string name="tips">Tips</string>
+    <string name="tip_dialog_clear_all_query_history">Are you sure to clear all query history?</string>
+    <string name="tip_dialog_clear_all_page_history">Are you sure to clear all pages history?</string>
 
     <string-array name="topics">
         <item>@string/general</item>

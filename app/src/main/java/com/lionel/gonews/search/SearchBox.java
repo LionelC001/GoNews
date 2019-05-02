@@ -198,7 +198,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
             view.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    DialogManager.showAsking(context, SearchBox.this, context.getString(R.string.tip_dialog_clear_all_query));
+                    DialogManager.showAsking(context, SearchBox.this, context.getString(R.string.tip_dialog_clear_all_query_history));
                     edtSearchBox.clearFocus();
                 }
             });
