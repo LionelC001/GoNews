@@ -42,6 +42,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
 
     public SearchBox(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        inflate(context, R.layout.search_box, this);
 
         this.context = context;
 
@@ -57,7 +58,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
         edtSearchBox.post(new Runnable() {
             @Override
             public void run() {
-                edtSearchBox.showDropDown();
+                showDropDown();
             }
         });
 
@@ -86,7 +87,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    edtSearchBox.showDropDown();
+                    showDropDown();
                 }
             }
         });
@@ -124,6 +125,15 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
         if (edtSearchBox != null) {
             edtSearchBox.setAdapter(adapter);
         }
+    }
+
+    public void showDropDown() {
+        edtSearchBox.post(new Runnable() {
+            @Override
+            public void run() {
+                edtSearchBox.showDropDown();
+            }
+        });
     }
 
     private void doSearch() {

@@ -31,7 +31,6 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     private SearchDateRangePopupWindow datePopupWindow;
     private SearchSortByPopupWindow sortByPopupWindow;
     private View imgBackground;
-    private boolean isActPrepared = false; // to tell that activity is already prepared, so we can show the popup window anytime
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +43,6 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         initLayoutResult();
         initSearchBox();
     }
-
-    @Override
-    protected void onResume() {
-        isActPrepared = true;
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        // avoid memory leak
-        dismissAllPopupWindow();
-        super.onPause();
-    }
-
-    private void dismissAllPopupWindow() {
-        if (datePopupWindow != null && datePopupWindow.isShowing()) {
-            datePopupWindow.dismiss();
-            datePopupWindow = null;
-        }
-
-        if (sortByPopupWindow != null && sortByPopupWindow.isShowing()) {
-            sortByPopupWindow.dismiss();
-            sortByPopupWindow = null;
-        }
-    }
-
 
     private void initObserve() {
         viewModel.getNewsDataLiveData().observe(this, new Observer<List<News>>() {
@@ -134,9 +107,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnSortByFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isActPrepared) {
-                    sortByPopupWindow.show(btnSortByFilter);
-                }
+                sortByPopupWindow.show(btnSortByFilter);
             }
         });
 
@@ -145,9 +116,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         btnDateFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isActPrepared) {
-                    datePopupWindow.show(btnDateFilter);
-                }
+                datePopupWindow.show(btnDateFilter);
             }
         });
 
@@ -169,6 +138,24 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
                 searchBox.setSearchHistory(viewModel.getCleanQueryWords(queryWords));
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        dismissAllPopupWindow();   // avoid memory leak
+        super.onPause();
+    }
+
+    private void dismissAllPopupWindow() {
+        if (datePopupWindow != null && datePopupWindow.isShowing()) {
+            datePopupWindow.dismiss();
+            datePopupWindow = null;
+        }
+
+        if (sortByPopupWindow != null && sortByPopupWindow.isShowing()) {
+            sortByPopupWindow.dismiss();
+            sortByPopupWindow = null;
+        }
     }
 
     private void setIsShowBackground(boolean isShowing) {

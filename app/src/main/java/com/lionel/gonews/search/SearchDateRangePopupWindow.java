@@ -43,7 +43,7 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
         initOldValue();
     }
 
-    private void initDimBehind(){
+    private void initDimBehind() {
         super.setIsDimBehind(true);
     }
 

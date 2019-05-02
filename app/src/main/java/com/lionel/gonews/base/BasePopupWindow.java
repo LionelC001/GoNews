@@ -38,14 +38,18 @@ public class BasePopupWindow extends PopupWindow {
         setContentView(view);
     }
 
-    public void show(View anchor, int gravity) {
-        getContentView().measure(makeDropDownMeasureSpec(getWidth()), makeDropDownMeasureSpec(getHeight()));
-        int offsetX = -getContentView().getMeasuredWidth();
-        showAsDropDown(anchor, offsetX, 20, gravity);
-
-        if (isDimBehind) {
-            dimBehind();
-        }
+    public void show(final View anchor, final int gravity) {
+        anchor.post(new Runnable() {
+            @Override
+            public void run() {
+                getContentView().measure(makeDropDownMeasureSpec(getWidth()), makeDropDownMeasureSpec(getHeight()));
+                int offsetX = -getContentView().getMeasuredWidth();
+                showAsDropDown(anchor, offsetX, 20, gravity);
+                if (isDimBehind) {
+                    dimBehind();
+                }
+            }
+        });
     }
 
     // can't get measure spec unless do this process,
