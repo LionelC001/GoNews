@@ -54,14 +54,6 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
     private void initEdtSearchBox() {
         edtSearchBox = findViewById(R.id.edtSearchBox);
 
-        //show history list only once at beginning
-        edtSearchBox.post(new Runnable() {
-            @Override
-            public void run() {
-                showDropDown();
-            }
-        });
-
         // events of history list is pressed
         edtSearchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -111,6 +103,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
             @Override
             public void onClick(View v) {
                 edtSearchBox.setText("");
+                edtSearchBox.clearFocus();
             }
         });
     }
@@ -134,6 +127,10 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
                 edtSearchBox.showDropDown();
             }
         });
+    }
+
+    public boolean getIsDropDownShowing() {
+        return edtSearchBox.isPopupShowing();
     }
 
     private void doSearch() {

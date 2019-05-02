@@ -18,19 +18,25 @@ import com.lionel.gonews.data.local.query_word.QueryWord;
 import com.lionel.gonews.data.remote.ErrorInfo;
 import com.lionel.gonews.util.DialogManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.lionel.gonews.util.Constants.NEWS_CONTENT;
+import static com.lionel.gonews.util.Constants.POPUP_WINDOW_DATE_RANGE_STATE;
+import static com.lionel.gonews.util.Constants.POPUP_WINDOW_SORT_BY_STATE;
+import static com.lionel.gonews.util.Constants.SEARCH_BOX_DROP_DOWN_STATE;
 
 public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBoxCallback, IDisplayNewsList.IDisplayNewsListCallback, SearchDateRangePopupWindow.IDateRangeCallback, SearchSortByPopupWindow.ISortByCallback {
 
     private SearchViewModel viewModel;
+    private SearchBox searchBox;
     private TextView txtResultCount;
     private ImageButton btnSortByFilter, btnDateFilter;
     private IDisplayNewsList newsListView;
     private SearchDateRangePopupWindow datePopupWindow;
     private SearchSortByPopupWindow sortByPopupWindow;
     private View imgBackground;
+    private boolean isShowSearchBoxDropDown = true;  //at the beginning, show dropDown. if screen orientation has changed, we want the showing state is same like before.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +95,14 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         });
     }
 
+    private void setIsShowBackground(boolean isShowing) {
+        if (isShowing) {
+            imgBackground.setVisibility(View.VISIBLE);
+        } else {
+            imgBackground.setVisibility(View.GONE);
+        }
+    }
+
     private void showFilter() {
         if (btnSortByFilter.getVisibility() != View.VISIBLE ||
                 btnDateFilter.getVisibility() != View.VISIBLE) {
@@ -129,7 +143,7 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     private void initSearchBox() {
-        final SearchBox searchBox = findViewById(R.id.searchBox);
+        searchBox = findViewById(R.id.searchBox);
         searchBox.setCallback(this);
 
         viewModel.getAllQueryWord().observe(this, new Observer<List<QueryWord>>() {
@@ -141,9 +155,42 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     @Override
-    protected void onPause() {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        isShowSearchBoxDropDown = savedInstanceState.getBoolean(SEARCH_BOX_DROP_DOWN_STATE);
+        restoreDatePopupWindow(savedInstanceState.getStringArrayList(POPUP_WINDOW_DATE_RANGE_STATE));
+        restoreSortByPopupWindow(savedInstanceState.getInt(POPUP_WINDOW_SORT_BY_STATE));
+
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private void restoreDatePopupWindow(ArrayList<String> state) {
+        datePopupWindow.setState(state);
+    }
+
+    private void restoreSortByPopupWindow(int state) {
+        sortByPopupWindow.setState(state);
+    }
+
+    @Override
+    protected void onResume() {
+        if (searchBox != null && isShowSearchBoxDropDown) {
+            searchBox.showDropDown();
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(SEARCH_BOX_DROP_DOWN_STATE, searchBox.getIsDropDownShowing());
+        outState.putStringArrayList(POPUP_WINDOW_DATE_RANGE_STATE, datePopupWindow.getState());
+        outState.putInt(POPUP_WINDOW_SORT_BY_STATE, sortByPopupWindow.getState());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onStop() {
         dismissAllPopupWindow();   // avoid memory leak
-        super.onPause();
+        super.onStop();
     }
 
     private void dismissAllPopupWindow() {
@@ -155,14 +202,6 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
         if (sortByPopupWindow != null && sortByPopupWindow.isShowing()) {
             sortByPopupWindow.dismiss();
             sortByPopupWindow = null;
-        }
-    }
-
-    private void setIsShowBackground(boolean isShowing) {
-        if (isShowing) {
-            imgBackground.setVisibility(View.VISIBLE);
-        } else {
-            imgBackground.setVisibility(View.GONE);
         }
     }
 

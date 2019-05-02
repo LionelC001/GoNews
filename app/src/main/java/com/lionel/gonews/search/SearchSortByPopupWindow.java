@@ -15,6 +15,7 @@ import static com.lionel.gonews.util.Constants.RELEVANCY;
 
 public class SearchSortByPopupWindow extends BasePopupWindow {
     private final Context context;
+    private RadioGroup radGrp;
     private final ISortByCallback callback;
     private View viewSortBy;
     private String value = RELEVANCY;
@@ -35,7 +36,7 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
         initRadioGroup();
     }
 
-    private void initDimBehind(){
+    private void initDimBehind() {
         super.setIsDimBehind(true);
     }
 
@@ -50,7 +51,7 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
     }
 
     private void initRadioGroup() {
-        RadioGroup radGrp = viewSortBy.findViewById(R.id.radioGrp);
+        radGrp = viewSortBy.findViewById(R.id.radioGrp);
         radGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -76,6 +77,14 @@ public class SearchSortByPopupWindow extends BasePopupWindow {
             callback.onSortBySelected(value);
         }
         super.dismiss();
+    }
+
+    public int getState() {
+        return radGrp.getCheckedRadioButtonId();
+    }
+
+    public void setState(int state) {
+        radGrp.check(state);
     }
 
     private boolean checkIsValueChanged() {

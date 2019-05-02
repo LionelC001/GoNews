@@ -13,6 +13,8 @@ import com.lionel.gonews.R;
 import com.lionel.gonews.base.BasePopupWindow;
 import com.lionel.gonews.util.DateConvertManager;
 
+import java.util.ArrayList;
+
 import static com.lionel.gonews.util.Constants.DATE_YYYY_MM_DD;
 
 public class SearchDateRangePopupWindow extends BasePopupWindow {
@@ -104,6 +106,18 @@ public class SearchDateRangePopupWindow extends BasePopupWindow {
             callback.onDateRangeSelected(txtDateRangeFrom.getText().toString(), txtDateRangeTo.getText().toString());
         }
         super.dismiss();
+    }
+
+    public ArrayList<String> getState() {
+        ArrayList<String> state = new ArrayList<>();
+        state.add(txtDateRangeFrom.getText().toString());
+        state.add(txtDateRangeTo.getText().toString());
+        return state;
+    }
+
+    public void setState(ArrayList<String> state) {
+        txtDateRangeFrom.setText(state.get(0));
+        txtDateRangeTo.setText(state.get(1));
     }
 
     private boolean checkIsDateChanged() {
