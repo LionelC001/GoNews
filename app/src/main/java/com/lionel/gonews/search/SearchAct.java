@@ -188,9 +188,9 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
     }
 
     @Override
-    protected void onStop() {
+    protected void onDestroy() {
         dismissAllPopupWindow();   // avoid memory leak
-        super.onStop();
+        super.onDestroy();
     }
 
     private void dismissAllPopupWindow() {

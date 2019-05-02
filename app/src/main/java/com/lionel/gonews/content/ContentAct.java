@@ -25,7 +25,6 @@ public class ContentAct extends AppCompatActivity {
     private CheckBox chkFavorite;
     private News news;
     private ContentFavoritePopupWindow popupWindowFavorite;
-    private boolean isActPrepared = false; // to tell that activity is already prepared, so we can show the popup window anytime
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,22 +37,6 @@ public class ContentAct extends AppCompatActivity {
         initBtnShare();
         initChkBoxFavorite();
         storeLocalNewsHistory();
-    }
-
-    @Override
-    protected void onResume() {
-        isActPrepared = true;
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        // avoid memory leak
-        if (popupWindowFavorite != null && popupWindowFavorite.isShowing()) {
-            popupWindowFavorite.dismiss();
-            popupWindowFavorite = null;
-        }
-        super.onPause();
     }
 
     private void initViewModel() {
@@ -122,12 +105,20 @@ public class ContentAct extends AppCompatActivity {
         if (popupWindowFavorite == null) {
             popupWindowFavorite = new ContentFavoritePopupWindow(this);
         }
-        if (isActPrepared) {
-            popupWindowFavorite.show(chkFavorite);
-        }
+        popupWindowFavorite.show(chkFavorite);
     }
 
     private void storeLocalNewsHistory() {
         viewModel.storeNewsHistory();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // avoid memory leak
+        if (popupWindowFavorite != null && popupWindowFavorite.isShowing()) {
+            popupWindowFavorite.dismiss();
+            popupWindowFavorite = null;
+        }
+        super.onDestroy();
     }
 }
