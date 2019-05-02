@@ -48,6 +48,6 @@ public class ContentFavoritePopupWindow extends BasePopupWindow {
             public void run() {
                 dismiss();
             }
-        }, 2000);
+        }, 1500);
     }
 }
