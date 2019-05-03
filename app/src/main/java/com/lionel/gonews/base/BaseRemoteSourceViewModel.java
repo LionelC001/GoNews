@@ -8,8 +8,8 @@ import android.support.annotation.NonNull;
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
 import com.lionel.gonews.data.remote.ErrorInfo;
-import com.lionel.gonews.data.remote.RemoteNewsSource;
 import com.lionel.gonews.data.remote.QueryFilter;
+import com.lionel.gonews.data.remote.RemoteNewsSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +50,8 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     protected BaseRemoteSourceViewModel(@NonNull Application application) {
         super(application);
         newsRemoteSource = new RemoteNewsSource(application.getApplicationContext());
+
+        isLoading.setValue(false);
     }
 
     protected MutableLiveData<List<News>> getNewsDataLiveData() {
@@ -111,8 +113,10 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     }
 
     private void loadNews(QueryFilter queryFilter) {
-        isLoading.setValue(true);
-        newsRemoteSource.queryNews(queryFilter, this);
+        if (!isLoading.getValue()) {
+            isLoading.setValue(true);
+            newsRemoteSource.queryNews(queryFilter, this);
+        }
     }
 
     @Override

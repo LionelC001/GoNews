@@ -115,8 +115,8 @@ public class HeadlinesFrag extends Fragment implements IDisplayNewsList.IDisplay
         viewModel.initNews();
     }
 
-    private void setIsShowBackground(boolean isShowing){
-        if(!isShowing){
+    private void setIsShowBackground(boolean isShowing) {
+        if (!isShowing) {
             getView().findViewById(R.id.imgBackground).setVisibility(View.GONE);
         }
     }
