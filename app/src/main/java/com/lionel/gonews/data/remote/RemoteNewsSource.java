@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -49,6 +50,9 @@ import static com.lionel.gonews.util.Constants.US;
 
 public class RemoteNewsSource implements INewsSource {
 
+    private static final int TIMEOUT_MS = 5000;
+    private static final int MAX_NUM_RETRIES = 1;
+
     private final Context context;
 
     public RemoteNewsSource(Context context) {
@@ -56,7 +60,7 @@ public class RemoteNewsSource implements INewsSource {
     }
 
     @Override
-    public void queryNews(@NonNull QueryFilter queryFilter,@NonNull IQueryNewsCallback callback) {
+    public void queryNews(@NonNull QueryFilter queryFilter, @NonNull IQueryNewsCallback callback) {
         String url;
         if (queryFilter.type.equals(NEWS_TYPE_HEADLINES)) {
             url = getHeadlinesUrl((QueryHeadlinesFilter) queryFilter);
@@ -170,6 +174,12 @@ public class RemoteNewsSource implements INewsSource {
                             callback.onFailed(msg);
                         }
                     });
+
+            setRetryTime();
+        }
+
+        private void setRetryTime() {
+            super.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, MAX_NUM_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         }
     }
 }
