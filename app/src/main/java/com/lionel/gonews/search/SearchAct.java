@@ -235,6 +235,9 @@ public class SearchAct extends AppCompatActivity implements SearchBox.ISearchBox
 
     @Override
     public void onIntentToNewsContent(News news) {
+        searchBox.dismissDropDownAndClearFocus();  // hide dropDown as News item be clicked
+        isShowSearchBoxDropDown = searchBox.getIsDropDownShowing();
+
         Intent intent = new Intent();
         intent.setClass(this, ContentAct.class);
         intent.putExtra(NEWS_CONTENT, news);

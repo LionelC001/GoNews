@@ -103,7 +103,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
             @Override
             public void onClick(View v) {
                 edtSearchBox.setText("");
-                edtSearchBox.clearFocus();
+                dismissDropDownAndClearFocus();
             }
         });
     }
@@ -129,6 +129,11 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
         });
     }
 
+    public void dismissDropDownAndClearFocus() {
+        edtSearchBox.clearFocus();
+        edtSearchBox.dismissDropDown();
+    }
+
     public boolean getIsDropDownShowing() {
         return edtSearchBox.isPopupShowing();
     }
@@ -136,7 +141,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
     private void doSearch() {
         String queryWord = edtSearchBox.getText().toString();
         if (callback != null) {
-            edtSearchBox.clearFocus();
+            dismissDropDownAndClearFocus();
             callback.startQuery(queryWord);
         }
     }
@@ -199,7 +204,7 @@ public class SearchBox extends FrameLayout implements DialogManager.IDialogCallb
                 @Override
                 public void onClick(View v) {
                     DialogManager.showAsking(context, SearchBox.this, context.getString(R.string.tip_dialog_clear_all_query_history));
-                    edtSearchBox.clearFocus();
+                    dismissDropDownAndClearFocus();
                 }
             });
             return view;
