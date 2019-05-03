@@ -156,7 +156,7 @@ public class RemoteNewsSource implements INewsSource {
                                 msg = context.getString(R.string.no_connection_error);
                             } else if (error instanceof TimeoutError) {
                                 Log.d("<>", "TimeoutError");
-                                msg = context.getString(R.string.time_error);
+                                msg = context.getString(R.string.timeout_error);
                             } else if (error instanceof AuthFailureError) {
                                 Log.d("<>", "AuthFailureError");
                             } else if (error instanceof ServerError) {
