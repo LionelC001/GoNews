@@ -63,9 +63,9 @@ public class DialogManager {
 
     private static void showDialog(AlertDialog.Builder builder) {
         AlertDialog dialog = builder.create();
+        dialog.show();
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.round_corner_white);
         dialog.getWindow().setWindowAnimations(R.style.AnimDialog);
-        dialog.show();
         dialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
     }
 }

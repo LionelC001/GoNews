@@ -61,7 +61,7 @@ public class BaseDisplayNewsListView extends FrameLayout implements IDisplayNews
     }
 
     private boolean isRecyclerViewHasItems() {
-        return adapter.getItemCount() > 1;  // 1 means background view
+        return adapter.getItemCount() > 0;
     }
 
     private void initRefreshLayout() {

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-public class BasePopupWindow extends PopupWindow {
+public abstract class BasePopupWindow extends PopupWindow {
 
     private final Context context;
     private boolean isDimBehind = false;

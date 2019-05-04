@@ -20,7 +20,7 @@ import static com.lionel.gonews.util.Constants.PAGESIZE;
  * a bridge between View and RemoteNewsSource.
  *
  * <p>
- * you must call {@link #setQueryFilter(QueryFilter)} before initNews() or initNewsWithoutCache().
+ * you must call {@link #setQueryFilter(QueryFilter)} before {@link #initNews()} or  {@link #initNewsWithoutCache()}.
  * </p>
  *
  * <p>
@@ -97,7 +97,7 @@ public abstract class BaseRemoteSourceViewModel extends AndroidViewModel impleme
     }
 
     /**
-     * for refresh and query-everying
+     * for refresh or search
      */
     protected void initNewsWithoutCache() {
         cachedNewsData = new ArrayList<>();
