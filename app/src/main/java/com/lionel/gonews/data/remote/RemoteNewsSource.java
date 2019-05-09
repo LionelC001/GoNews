@@ -17,6 +17,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lionel.gonews.BuildConfig;
 import com.lionel.gonews.R;
 import com.lionel.gonews.data.INewsSource;
 import com.lionel.gonews.data.News;
@@ -87,7 +88,7 @@ public class RemoteNewsSource implements INewsSource {
         url.append(QUERY_COUNTRY).append(US).append("&");
         url.append(QUERY_LANGUAGE).append(ENG).append("&");
         url.append(QUERY_PAGESIZE).append(PAGESIZE).append("&");
-        url.append(NEWS_API_KEY);
+        url.append(NEWS_API_KEY).append(BuildConfig.API_KEY);
 
         return url.toString();
     }
@@ -120,7 +121,7 @@ public class RemoteNewsSource implements INewsSource {
 //        url.append(QUERY_COUNTRY).append(US).append("&");
         url.append(QUERY_LANGUAGE).append(ENG).append("&");
         url.append(QUERY_PAGESIZE).append(PAGESIZE).append("&");
-        url.append(NEWS_API_KEY);
+        url.append(NEWS_API_KEY).append(BuildConfig.API_KEY);
 
         return url.toString();
     }
